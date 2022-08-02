@@ -1,49 +1,57 @@
 # Webpack：TypeScript + Jest + Sass + ESLint
 
-### 初始化项目
-**初始化package.json**
-首先，我们需要创建一个 npm 项目，但是我使用 yarn来安装,yarn的一些优点:
+#🌈 🚀 React18 Hook + typescript4 + Jest 🚀
 
-安装：yarn init -y
+# 前言
 
+从零配置基于 webpack5.74.0 搭建 React 应用模板，方便快速的进行开发，React（React Hook + React-router + Axios ）ESLint 等项目开发规范等。
 
-# Webpack 
-yarn add webpack webpack-cli --save-dev
+# 技术栈
 
-创建多个 webpack 配置，一个用于开发，另一个用于构建生产
+涉及的技术栈均采用当前最新的版本和语法：
 
-# TypeScript
+-   使用 Webpack5.7.1 构建项目（不使用 create-react-app、umi 等脚手架）；
+-   使用 Babel8 配置转换 ES6、React、Mobx 等语法；
+-   使用 TypeScript 进行严格类型检查；
+-   使用 ESLint 代码规范校验，Prettier stylelint 代码自动格式化工具，EditorConfig 代码风格统一工具
+-   React 版本 V18.0.0，全部采用函数化 Hooks 特性开发项目组件；
+-   采用 React-router6 工具 配置项目路由；
+-   采用 Mobx5 + Hooks 实现项目数据状态管理；
+-   封装 Axios 库实现与后台 http 请求交互；
 
-创建tsconfig.json
+## 目录结构
 
-yarn add --save-dev typescript ts-loader
-
-# SASS
-安装 sass 和 loader：
-
-yarn add --save-dev sass-loader style-loader css-loader node-sass
-
-安装 MiniCssExtractPlugin。我们需要这个插件来生成单独的 CSS 文件到 dist 文件夹。
-
-yarn add --save-dev mini-css-extract-plugin
-
-# Webpack 插件
-
-yarn add clean-webpack-plugin copy-webpack-plugin fork-ts-checker-webpack-plugin html-webpack-plugin --save-dev
-
-# Jest
-yarn add --save-dev jest ts-jest
-运行：yarn ts-jest config:init
-创建一个规范文件夹，并在那里创建任何 *.spec.ts 文件。Jest 会找到它并运行单元测试。
-
-要启动测试，您需要运行一个小命令：
-
-npx jest
-将其添加到package.json文件中的 npm 脚本中：
-“test”: “npx jest”
-
-您的测试应位于 spec 文件夹中，名称格式为*.spec.ts。
-
-# ESLint
-
-yarn add @typescript-eslint/eslint-plugin @typescript-eslint/parser --dev
+```
+├── config                  // webpack配置
+│   ├── webpack.common.js   // webpack通用配置
+│   ├── webpack.dev.js      // webpack开发环境配置
+│   └── webpack.prod.js     // webpack生产环境配置
+│   └── paths.js            // webpack路径配置
+├── dist                    // 打包输出目录
+├── public                  // 项目公开目录
+├── src                     // src开发目录
+│   ├── assets              // 静态资源
+│   ├── components          // 公共组件
+│   ├── routers             // 项目路由配置
+│   ├── views               // 具体业务页面
+│   ├── services            // axios服务等相关
+│   ├── redux               // 全局公共 mobx store
+│   ├── utils               // 工具库/通用函数
+│   ├── index.html          // 入口html页面
+│   └── index.js            // 项目入口文件
+├── .babel.config.js        // babel配置,依赖什么样的插件
+├── .browserslistrc         // 浏览器过滤规则配置,babel依赖这个文件，同样css也依赖
+├── .editorconfig           // 项目格式配置
+├── .eslintrc.json          // ESLint配置
+├── .eslintignore           // ESLint配置屏蔽不需要检测的文件或目录
+├── .prettierrc.js          // Prettier 代码自动格式化配置
+├── .prettierignore         // Prettier 代码自动格式化配置屏蔽不必要的文件
+├── .editorconfig           // EditorConfig 代码风格统一配置
+├── .editorconfig           // EditorConfig 代码风格统一配置
+├── .stylelintrc.js         // stylelint是CSS 规范校验工具配置
+├── .gitignore              // git 忽略配置
+├── .postcssrc.js           // postcss配置,依赖什么样的插件
+├── tsconfig.json           // typescript配置
+├── package.json            // 依赖包配置
+└── README.md               // 项目说明
+```
