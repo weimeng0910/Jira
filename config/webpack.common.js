@@ -3,6 +3,7 @@ const resolveApp = require("./paths");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const friendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { merge } = require("webpack-merge");
 
 //导入其它的配置
@@ -14,7 +15,7 @@ const devConfig = require("./webpack.dev");
 
 const commonConfig = {
   // 入口文件
-  entry: "./src/index.ts",
+  entry: "./src/index.tsx",
   // mode: "development",
   devtool: "source-map",
   optimization: {
@@ -23,39 +24,104 @@ const commonConfig = {
   // 输出
   output: {
     // 文件名称
-    filename: "[name].[contenthash].js",
+    filename: "js/[name].[contenthash:8].js",
     // 输出目录
     path: resolveApp("./dist"),
-    // 每次编译输出的时候，清空dist目录 - 这里就不需要clean-webpack-plugin了
-    clean: true,
-    // 所有URL访问的前缀路径
-    publicPath: "/",
+    // publicPath: "../",
+    // clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(js|jsx?)$/,
         exclude: /node_modules/,
-        use: {
-          loader: "ts-loader",
-          options: {
-            // disable type checker - we will use it in fork plugin
-            transpileOnly: true,
-          },
-        },
+        // use:['babel-loader']
+        use: ["babel-loader?optional=runtime&cacheDirectory", "astroturf/loader"],
+      },
+
+      {
+        test: /\.(ts|tsx?)$/,
+        exclude: /node_modules/,
+        // use: ["ts-loader"],
+        use: [{ loader: "ts-loader", options: { compilerOptions: { noEmit: false } } }],
       },
       {
-        test: /\.(scss|css)$/,
+        test: /\.css$/,
+
         use: [
-          process.env.NODE_ENV !== "production" ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
           {
-            loader: "sass-loader",
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: "css-loader",
             options: {
-              sourceMap: true,
+              importLoaders: 1,
+
+              esModule: false,
+            },
+          },
+          {
+            loader: "postcss-loader",
+          },
+        ],
+      },
+      {
+        test: /\.s[ca]ss$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+      },
+      {
+        test: /\.less$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: "css-loader" },
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
             },
           },
         ],
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "sass-loader",
+          },
+        ],
+      },
+      {
+        test: /\.styl$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader", "stylus-loader"],
+      },
+      // 图片文件引入
+      {
+        test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "img/[hash][ext][query]",
+        },
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8 * 1024, // 限制于 8kb
+          },
+        },
+        // 只解析src目录
+        include: resolveApp("./src"),
+      },
+      {
+        test: /\.txt/,
+        type: "asset/source",
       },
     ],
   },
@@ -69,8 +135,11 @@ const commonConfig = {
     },
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "css/[name].[contenthash:8].css",
+    }),
     new HtmlWebpackPlugin({
-      title: "News System",
+      title: "Jira System",
       // HTML模板文件
       template: resolveApp("./public/index.html"),
 

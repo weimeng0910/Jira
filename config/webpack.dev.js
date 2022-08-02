@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require("path");
+
 const resolveApp = require("./paths");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-//const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 
@@ -13,7 +13,7 @@ module.exports = {
   // 指定环境
   mode: "development",
   // 输出source-map的方式，增加调试。eval是默认推荐的选择，build fast and rebuild fast！
-  devtool: "inline-cheap-source-map",
+  devtool: "eval-source-map",
   // 本地服务器配置
   devServer: {
     hot: true,
@@ -27,6 +27,7 @@ module.exports = {
     static: {
       directory: resolveApp("public"),
     },
+
     // 代理请求设置
     proxy: {
       "/api": {
@@ -59,14 +60,12 @@ module.exports = {
     new ForkTsCheckerWebpackPlugin({
       async: false,
     }),
-    // new ESLintPlugin({
-    //   extensions: ["js", "jsx", "ts", "tsx"],
-    // }),
+
     new ESLintPlugin({
       extensions: ["js", "jsx", "ts", "tsx"],
       exclude: "node_modules",
       context: "src",
     }),
-    //new ReactRefreshWebpackPlugin(),
+    new ReactRefreshWebpackPlugin(),
   ],
 };
