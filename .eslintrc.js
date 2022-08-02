@@ -1,6 +1,6 @@
 
 module.exports = {
-  extends: ["eslint:recommended", "plugin:react/recommended",require.resolve("@umijs/fabric/dist/eslint")],
+  extends: ["eslint:recommended", "plugin:react/recommended"],
   env: {
     // 浏览器环境中的全局变量
     browser: true,
@@ -8,8 +8,7 @@ module.exports = {
     es6: true,
   },
   globals: {
-    // 全局变量:在全局中使用 REACT_APP_ENV时  eslint就不会出现警告
-    REACT_APP_ENV: true,
+
     $: true,
     process: true,
     __dirname: true,
@@ -112,7 +111,7 @@ module.exports = {
     "react/no-unknown-property": 2,
     "react/prefer-es6-class": 2,
     "react/prop-types": 0,
-    "react/react-in-jsx-scope": 2,
+    "react/react-in-jsx-scope":"off",
     "react/self-closing-comp": 0,
     "react/sort-comp": 0,
     "react/no-array-index-key": 0,
