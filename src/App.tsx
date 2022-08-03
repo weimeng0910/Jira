@@ -1,8 +1,11 @@
-import { FC } from 'react';
-import '@/css/text.css';
+import text from '@/css/text.css';
 import flower from '@/img/search.png';
+import { FC } from 'react';
+
+
+
 export const App: FC = () => (
-    <div className="font">
-        123 <img src={flower} alt="flower.jpeg无法显示" />
+    <div>
+        <h1 className={text.text}>123</h1> <img src={flower} alt="flower.jpeg无法显示" />
     </div>
 );

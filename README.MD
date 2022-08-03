@@ -30,28 +30,30 @@
 ├── dist                    // 打包输出目录
 ├── public                  // 项目公开目录
 ├── src                     // src开发目录
-│   ├── assets              // 静态资源
+│   ├── public              // 静态资源
 │   ├── components          // 公共组件
 │   ├── routers             // 项目路由配置
 │   ├── views               // 具体业务页面
 │   ├── services            // axios服务等相关
 │   ├── redux               // 全局公共 mobx store
 │   ├── utils               // 工具库/通用函数
+│   ├── typings.d.ts        // css modules 类型声明文件
 │   ├── index.html          // 入口html页面
-│   └── index.js            // 项目入口文件
-├── .babel.config.js        // babel配置,依赖什么样的插件
+│   ├── index.html          // 入口html页面
+│   └── index.tsx           // 项目入口文件
+├── .babel.config.js         // babel配置,依赖什么样的插件
 ├── .browserslistrc         // 浏览器过滤规则配置,babel依赖这个文件，同样css也依赖
-├── .editorconfig           // 项目格式配置
+├── .editorconfig            // 项目格式配置
 ├── .eslintrc.json          // ESLint配置
 ├── .eslintignore           // ESLint配置屏蔽不需要检测的文件或目录
 ├── .prettierrc.js          // Prettier 代码自动格式化配置
 ├── .prettierignore         // Prettier 代码自动格式化配置屏蔽不必要的文件
-├── .editorconfig           // EditorConfig 代码风格统一配置
-├── .editorconfig           // EditorConfig 代码风格统一配置
+├── .editorconfig            // EditorConfig 代码风格统一配置
+├── .jest.config.js          // jest代码测试配置
 ├── .stylelintrc.js         // stylelint是CSS 规范校验工具配置
 ├── .gitignore              // git 忽略配置
 ├── .postcssrc.js           // postcss配置,依赖什么样的插件
-├── tsconfig.json           // typescript配置
+├── tsconfig.json            // typescript配置
 ├── package.json            // 依赖包配置
 └── README.md               // 项目说明
 

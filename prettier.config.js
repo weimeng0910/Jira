@@ -1,7 +1,4 @@
-
-
 module.exports = {
-
     // 一行最多 100 字符
     printWidth: 100,
     // 使用 4 个空格缩进
@@ -36,5 +33,18 @@ module.exports = {
     // 根据显示样式决定 html 要不要折行
     htmlWhitespaceSensitivity: 'css',
     // 换行符使用 lf
-    endOfLine: 'lf'
+    endOfLine: 'lf',
+    importOrder: [
+        // 默认情况下，首先会放置外部依赖项
+
+        // 内部依赖
+        '^../(.*)',
+
+        // 本地依赖项，样式除外
+        '^./((?!scss).)*$',
+
+        // 其他
+        '^./(.*)'
+    ],
+    importOrderSeparation: true
 };
