@@ -44,7 +44,7 @@
     ".eslintrc.js",
     ".stylelintrc.js",
     ".prettierrc.js"
-  ],
+, "src/config/env.js"  ],
   //exclude表示要排除的、不编译的文件，他也可以指定一个列表
   "exclude": ["node_modules", "build", "dist"]
 }

@@ -57,4 +57,94 @@
 ├── package.json            // 依赖包配置
 └── README.md               // 项目说明
 
+
+```
+
+### 本地 node 服务器
+
+### 配制 json-serve
+
+优点：
+1、配制简单,json-server 可以瞬间起动 REST API Server 2.增删改查真实模拟
+
+缺点：与接口管理工具相比，无法随后端 API 的修改而自动修改
+
+```
+
+yarn add json-server
+
+```
+
+## 使用 dotenv 加载.env---全局环境变量
+
+dotenv 是一个零依赖模块，它将环境变量从 .env 文件加载到 process.env 中。dotenv 提供许多的方法，最常用的是 dotenv.config()。
+最常用的是配制.env 文件，可以配制上线所需要的 API 接口的 URL
+
+一、 .env 文件说明
+
+.env --- 全局默认配置文件，在所有的环境中被载入，当你指定了环境，它也会合并,并且优先级大于.env，没有指定环境时先找它
+
+.env.development --- 指定开发环境的配置文件
+
+.env.production --- 指定生产环境的配置文件，当 build 运行会触发此文件
+
+先在.env 文件中声明环境变量
+
+全局默认配置文件，无论什么环境都会加载合并
+
+```
+REACT_APP_API_URL=online.com
+
+```
+
+在 webpack.common.js，内容如下
+
+```
+const Dotenv = require('dotenv-webpack');
+module.exports = {
+    plugins: [
+        new Dotenv()
+    ]
+}
+```
+
+然后无论你想在哪里使用变量.env 写
+
+```
+process.env.REACT_APP_YOURVARIABLE
+```
+
+无需导入 dotenv. 它已经在 webpack.common.js
+
+### dotenv 加载优先级
+
+.env 全局默认配置文件，无论什么环境都会加载合并
+.env.development 开发环境的全局配置文件
+dotenv.config() 方法可以接收一个 option 对象，其中 option.path 代表我们期望加载的.env\*文件路径。
+需要注意的是，只要一个环境变量已经被设置过，dotenv 就不会修改它 。也就是说，dotenv 始终以先加载到的变量声明为更高优先级
+
+我们期望的效果是，.env.local 文件中定义的环境变量获得最高优先级，.env.development 其次，.env 中的通用配置优先级最低，由此我们可以在 config/env.js 中进行如下的处理：
+
+```
+// config/env.js
+
+const path = require("path");
+const fs = require("fs");
+const dotEnv = require("dotenv");
+
+// 先构造出.env*文件的绝对路径
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
+const pathsDotenv = resolveApp(".env");
+
+// 按优先级由高到低的顺序加载.env文件
+dotEnv.config({ path: `${pathsDotenv}.local` })  // 加载.env.local
+dotEnv.config({ path: `${pathsDotenv}.development` })  // 加载.env.development
+dotEnv.config({ path: `${pathsDotenv}` })  // 加载.env
+
+// 打印一下此时的process.env
+console.log(process.env.NAME);
+console.log(process.env.AGE); // 20
+console.log(process.env.COUNTRY); // China
+console.log(process.env.LOCAL_ENV); // local
 ```

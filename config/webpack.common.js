@@ -6,6 +6,9 @@ const friendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { merge } = require('webpack-merge');
 
+//通过 webpack 在你的 React 应用程序中使用 dotenv
+const Dotenv = require('dotenv-webpack');
+
 //导入其它的配置
 const prodConfig = require('./webpack.prod');
 
@@ -35,8 +38,8 @@ const commonConfig = {
             {
                 test: /\.(js|jsx?)$/,
                 exclude: /node_modules/,
-                // use:['babel-loader']
-                use: ['babel-loader?optional=runtime&cacheDirectory', 'astroturf/loader']
+                use: ['babel-loader']
+                //use: ['babel-loader?optional=runtime&cacheDirectory', 'astroturf/loader']
             },
 
             {
@@ -147,6 +150,7 @@ const commonConfig = {
         }
     },
     plugins: [
+        new Dotenv(),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash:8].css'
         }),
@@ -166,6 +170,7 @@ const commonConfig = {
 module.exports = env => {
     const isProduction = env.isProduction;
     //合并配置信息
+
     const config = isProduction ? prodConfig : devConfig;
 
     const mergeConfig = merge(commonConfig, config);

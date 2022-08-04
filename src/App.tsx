@@ -1,11 +1,11 @@
-import text from '@/css/text.css';
-import flower from '@/img/search.png';
 import { FC } from 'react';
 
+import { ProjectListScreen } from '@/screens/project-list';
 
-
+//import text from '@/css/text.css';
+//import flower from '@/img/search.png';
 export const App: FC = () => (
     <div>
-        <h1 className={text.text}>123</h1> <img src={flower} alt="flower.jpeg无法显示" />
+        <ProjectListScreen />
     </div>
 );
