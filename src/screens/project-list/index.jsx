@@ -8,6 +8,7 @@ import SearchPanel from './search-panel';
 //获取数据地址
 
 const apiUrl = process.env.REACT_APP_API_URL;
+
 console.log(apiUrl);
 
 export const ProjectListScreen = () => {

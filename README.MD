@@ -77,74 +77,85 @@ yarn add json-server
 
 ## 使用 dotenv 加载.env---全局环境变量
 
+```
+
+yarn add -D dotenv-webpack
+
+```
+
 dotenv 是一个零依赖模块，它将环境变量从 .env 文件加载到 process.env 中。dotenv 提供许多的方法，最常用的是 dotenv.config()。
-最常用的是配制.env 文件，可以配制上线所需要的 API 接口的 URL
+最常用的是配制.env 文件，可以配制上线所需要的 API 接口的 URL,凡是在 .env 設置的全局变量，一律都是使用 process.env.XXX 將其读取，這邊唯一要注意的是 .env 設置的全局变量都是属于字符串，在某些情況下我们得自己處理转型的问題。
 
 一、 .env 文件说明
 
-.env --- 全局默认配置文件，在所有的环境中被载入，当你指定了环境，它也会合并,并且优先级大于.env，没有指定环境时先找它
+.env --- 全局默认配置文件，在所有的环境中被载入
 
 .env.development --- 指定开发环境的配置文件
 
 .env.production --- 指定生产环境的配置文件，当 build 运行会触发此文件
 
-先在.env 文件中声明环境变量
+二、在根目录下建立两个文件，我们在这里只建立.env 和.env.development 两个文件
 
-全局默认配置文件，无论什么环境都会加载合并
+```
+ webpack-demo/
+ │
++└─── .env
++└─── env.development
+
+```
+
+先在.env 文件中声明环境变量，然后无论你想在哪里使用变量 .env 都可用下面的方式
+
+```
+process.env.REACT_APP_YOURVARIABLE
+```
+
+全局默认配置文件，无论什么环境都会加载合并,我们在这里设置上线运行时的 URl 地址
 
 ```
 REACT_APP_API_URL=online.com
 
 ```
 
+在.env.development 文件中设置开发时的 URl 地址，参考如下
+
+```
+REACT_APP_API_URL=http://localhost:5000
+
+```
+
+三.将全局变量文件在 github 中隐藏
+
+目前，我们只是将全局变量的 API 请求地址写到.env 文件内，为了达到隐藏目的，可将其新增至.gitignore 内，这样可以避免 GitHub 内存在任何型态的全局变量
+
+```
+.env
+.env.development
+
+```
+
+四、dotenv-webpack 可传参选项
+可参考 dotenv-webpack Options 可传参列表，以下为常用参数配置：
+path: String
+配置全局变理位置，默认为./.env
+
+systemvars:Boolean
+充许加载所有系统变量
+
 在 webpack.common.js，内容如下
 
 ```
-const Dotenv = require('dotenv-webpack');
+const Dotenv = require("dotenv-webpack");
+
 module.exports = {
-    plugins: [
-        new Dotenv()
-    ]
-}
-```
-
-然后无论你想在哪里使用变量.env 写
-
-```
-process.env.REACT_APP_YOURVARIABLE
-```
-
-无需导入 dotenv. 它已经在 webpack.common.js
-
-### dotenv 加载优先级
-
-.env 全局默认配置文件，无论什么环境都会加载合并
-.env.development 开发环境的全局配置文件
-dotenv.config() 方法可以接收一个 option 对象，其中 option.path 代表我们期望加载的.env\*文件路径。
-需要注意的是，只要一个环境变量已经被设置过，dotenv 就不会修改它 。也就是说，dotenv 始终以先加载到的变量声明为更高优先级
-
-我们期望的效果是，.env.local 文件中定义的环境变量获得最高优先级，.env.development 其次，.env 中的通用配置优先级最低，由此我们可以在 config/env.js 中进行如下的处理：
-
-```
-// config/env.js
-
-const path = require("path");
-const fs = require("fs");
-const dotEnv = require("dotenv");
-
-// 先构造出.env*文件的绝对路径
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = (relativePath) => path.resolve(appDirectory, relativePath);
-const pathsDotenv = resolveApp(".env");
-
-// 按优先级由高到低的顺序加载.env文件
-dotEnv.config({ path: `${pathsDotenv}.local` })  // 加载.env.local
-dotEnv.config({ path: `${pathsDotenv}.development` })  // 加载.env.development
-dotEnv.config({ path: `${pathsDotenv}` })  // 加载.env
-
-// 打印一下此时的process.env
-console.log(process.env.NAME);
-console.log(process.env.AGE); // 20
-console.log(process.env.COUNTRY); // China
-console.log(process.env.LOCAL_ENV); // local
+  plugins: [
+    new Dotenv({
+      path:
+        process.env.NODE_ENV === "development"
+          ? "./.env.development"
+          : "./.env.production",
+      systemvars: true, // 允許讀取 process.env 下的任意系統變量
+    }),
+  ],
+};
 ```

@@ -5,9 +5,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const friendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { merge } = require('webpack-merge');
+
+//获取当前是开发模式还是生产模式
 const isDevelopment = process.env.NODE_ENV !== 'production';
-//通过 webpack 在你的 React 应用程序中使用 dotenv
+
+// 載入 dotenv-webpack
 const Dotenv = require('dotenv-webpack');
+
+//获取Dotenv里配制全局配制文件
+const pathsDotenv = resolveApp('.env');
 
 //导入其它的配置
 const prodConfig = require('./webpack.prod');
@@ -151,7 +157,9 @@ const commonConfig = {
     },
     plugins: [
         new Dotenv({
-            path: isDevelopment ? './.env.development' : './.env'
+            // 判断是不是开发环境，如果是?路径就是.env.development，不是就是.env
+            path: isDevelopment ? `${pathsDotenv}.development` : pathsDotenv,
+            systemvars: true
         }),
         new MiniCssExtractPlugin({
             filename: 'css/[name].[contenthash:8].css'
