@@ -84,7 +84,7 @@ yarn add -D dotenv-webpack
 ```
 
 dotenv 是一个零依赖模块，它将环境变量从 .env 文件加载到 process.env 中。dotenv 提供许多的方法，最常用的是 dotenv.config()。
-最常用的是配制.env 文件，可以配制上线所需要的 API 接口的 URL,凡是在 .env 設置的全局变量，一律都是使用 process.env.XXX 將其读取，這邊唯一要注意的是 .env 設置的全局变量都是属于字符串，在某些情況下我们得自己處理转型的问題。
+最常用的是配制.env 文件，可以配制上线所需要的 API 接口的 URL,凡是在 .env 设置的全局变量，一律都是使用 process.env.XXX 將其读取，這邊唯一要注意的是 .env 设置的全局变量都是属于字符串，在某些情況下我们得自己处理转型的问題。
 
 一、 .env 文件说明
 
