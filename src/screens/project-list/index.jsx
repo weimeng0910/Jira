@@ -21,7 +21,7 @@ export const ProjectListScreen = () => {
     const [list, setList] = useState([]);
 
     //user用户状态
-    const [users, setusers] = useState([]);
+    const [users, setUsers] = useState([]);
 
     //请求用户数据
     useEffect(() => {
@@ -34,14 +34,14 @@ export const ProjectListScreen = () => {
     useEffect(() => {
         fetch(`${apiUrl}/users`).then(async response => {
             if (response.ok) {
-                setusers(await response.json());
+                setUsers(await response.json());
             }
         });
     }, []);
     return (
         <div>
             <SearchPanel users={users} param={param} setParam={setParam} />
-            <List list={list} users={users} />
+            <List users={users} list={list} />
         </div>
     );
 };

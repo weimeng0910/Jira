@@ -29,7 +29,7 @@ export default function SearchPanel({ param, setParam, users }) {
                     {users.map(user => {
                         return (
                             <option key={user.id} value={user.id}>
-                                {user.name}
+                                {user.username}
                             </option>
                         );
                     })}

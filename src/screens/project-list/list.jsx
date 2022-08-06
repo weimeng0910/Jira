@@ -1,6 +1,6 @@
 import React from 'react';
 
-const List = ({ list, users }) => {
+const List = ({ users, list }) => {
     return (
         <table>
             <thead>
@@ -15,7 +15,7 @@ const List = ({ list, users }) => {
                         <td>{project.name}</td>
                         {/* undefined.name */}
                         <td>
-                            {users.find(user => user.id === project.personId)?.name || 'weizhi'}
+                            {users.find(user => user.id === project.personID)?.username || 'weizhi'}
                         </td>
                     </tr>
                 ))}
