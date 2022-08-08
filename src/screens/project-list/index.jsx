@@ -1,9 +1,12 @@
+//导入qs
+import qs from 'qs';
 import React from 'react';
 import { useState, useEffect } from 'react';
 
 import List from './list';
 //导入组件
 import SearchPanel from './search-panel';
+import { cleanObject } from '@/utils/cleanObject';
 
 //获取数据地址
 
@@ -25,7 +28,7 @@ export const ProjectListScreen = () => {
 
     //请求用户数据
     useEffect(() => {
-        fetch(`${apiUrl}/projects`).then(async response => {
+        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async response => {
             if (response.ok) {
                 setList(await response.json());
             }

@@ -15,7 +15,7 @@ const List = ({ users, list }) => {
                         <td>{project.name}</td>
                         {/* undefined.name */}
                         <td>
-                            {users.find(user => user.id === project.personID)?.username || 'weizhi'}
+                            {users.find(user => user.id === project.personId)?.name || 'weizhi'}
                         </td>
                     </tr>
                 ))}
