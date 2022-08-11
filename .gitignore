@@ -18,7 +18,7 @@ pids
 /test/e2e/reports/
 
 # 全局系统变量
-.env
+.env.production
 .env.development
 
 # Editor directories and files

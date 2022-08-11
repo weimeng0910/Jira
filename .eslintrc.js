@@ -24,7 +24,7 @@ module.exports = {
     settings: {
         'import/ignore': ['node_modules'],
         react: {
-            version: 'latest'
+            version: '999.999.999'
         }
     },
     rules: {

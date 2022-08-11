@@ -12,7 +12,7 @@ import { useMount } from '@/utils/hooks/useMount';
 
 //获取API_URL
 const apiUrl = process.env.REACT_APP_API_URL;
-
+console.log(process.env.NODE_ENV);
 export const ProjectListScreen = () => {
     //项目名称和项目ID的状态
     const [param, setParam] = useState({

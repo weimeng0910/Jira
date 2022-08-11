@@ -159,3 +159,11 @@ module.exports = {
   ],
 };
 ```
+
+### 为项目添加 UI 库-Antd
+
+首先安装 Antd 依赖
+
+```
+yarn add antd
+```
