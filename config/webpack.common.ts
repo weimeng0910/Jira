@@ -1,6 +1,6 @@
 
 import path from 'path'
-import { Configuration } from 'webpack'
+import { Configuration, } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 //识别特定类别的 webpack 错误并清理
@@ -61,8 +61,15 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
             }
           ]
         },
+        //解决使用css modules时antd样式不生效
         {
-          test: /\.css$/i,
+          test: /\.css$/,
+          // 采用css modules的解析方式时，排除对node_modules文件处理
+          exclude: [/src/], // antd(node_modules文件)目录
+          use: ['style-loader', 'css-loader']
+        },
+        {
+          test: /\.css$/,
           // 采用css modules的解析方式时，排除对node_modules文件处理
           exclude: [/node_modules/],
           use: [
@@ -73,12 +80,14 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
               loader: 'css-loader',
               options: {
                 importLoaders: 1,
-                sourceMap: true,
                 modules: {
-                  auto: true
+                  mode: 'local',
+                  //auto: (resourcePath: string) => resourcePath.endsWith('.less'),  // 匹配.less文件来进行css模块化。
+                  localIdentName: '[name]__[local]--[hash:base64:10]',
                 }
-              }
+              },
             },
+
             {
               loader: 'postcss-loader'
             }
@@ -109,9 +118,13 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
             {
               loader: 'css-loader',
               options: {
-                modules: true
-              }
+                importLoaders: 2,
+                modules: {
+                  localIdentName: '[name]__[local]--[hash:base64:10]',
+                }
+              },
             },
+            'postcss-loader',
             {
               loader: 'less-loader',
               options: {
@@ -123,20 +136,20 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
-        {
-          test: /\.styl$/,
-          use: [
-            {
-              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
-              options: {
-                modules: true
-              }
-            },
-            {
-              loader: 'stylus-loader'
-            }
-          ]
-        },
+        // {
+        //   test: /\.styl$/,
+        //   use: [
+        //     {
+        //       loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
+        //       options: {
+        //         modules: true
+        //       }
+        //     },
+        //     {
+        //       loader: 'stylus-loader'
+        //     }
+        //   ]
+        // },
         // 图片文件引入
         {
           test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,

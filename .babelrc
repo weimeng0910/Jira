@@ -1,52 +1,3 @@
-// {
-//     "comments": false,
-//     "presets": [
-//         "@babel/env",
-//         "@babel/react",
-//         //"@babel/preset-env",
-//         //"@babel/preset-react",
-//         "@babel/typescript", // 增加转译
-//         "@babel/preset-typescript"
-//     ],
-//     "plugins": [
-//         "dynamic-import-node",
-//         "@babel/plugin-transform-arrow-functions",
-//         "@babel/plugin-syntax-dynamic-import",
-//         "@babel/plugin-proposal-object-rest-spread",
-//         [
-//             "@babel/plugin-transform-runtime",
-//             {
-//                 "regenerator": true
-//             }
-//         ],
-//         [
-//             "@babel/plugin-proposal-decorators",
-//             {
-//                 "legacy": true
-//             }
-//         ],
-//         [
-//             "@babel/plugin-proposal-class-properties",
-//             {
-//                 "loose": true
-//             }
-//         ],
-//         [
-//             "@babel/plugin-proposal-private-methods",
-//             {
-//                 "loose": true
-//             }
-//         ],
-//         [
-//             "import",
-//             {
-//                 "libraryName": "antd",
-//                 // TODO "style": true
-//                 "style": "css"
-//             }
-//         ]
-//     ]
-// }
 {
     "comments": false,
     "presets": [
@@ -62,6 +13,7 @@
         "@babel/react"
     ],
     "plugins": [
+        ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }, "antd"],
         "dynamic-import-node",
         "@babel/plugin-transform-runtime",
         "@babel/plugin-transform-arrow-functions",
