@@ -50,7 +50,16 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
         {
           test: /\.(ts|tsx?)$/,
           exclude: /node_modules/,
-          use: [{ loader: 'ts-loader', options: { compilerOptions: { noEmit: false } } }]
+          use: [
+            {
+              loader: 'ts-loader',
+              options:
+              {
+                compilerOptions:
+                  { noEmit: false }
+              }
+            }
+          ]
         },
         {
           test: /\.css$/i,
@@ -58,7 +67,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           exclude: [/node_modules/],
           use: [
             {
-              loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
+              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader
             },
             {
               loader: 'css-loader',
@@ -79,7 +88,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           test: /\.s[ca]ss$/,
           use: [
             {
-              loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader'
+              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader
             },
             {
               loader: 'css-loader',
@@ -96,7 +105,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
         {
           test: /\.less$/,
           use: [
-            { loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader' },
+            { loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader },
             {
               loader: 'css-loader',
               options: {
@@ -118,7 +127,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           test: /\.styl$/,
           use: [
             {
-              loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
               options: {
                 modules: true
               }

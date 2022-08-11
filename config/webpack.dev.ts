@@ -9,6 +9,9 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import { merge } from 'webpack-merge' // 文件合并
 //导入基础文件
 import { CommonConfig } from './webpack.common'
+
+const openBrowser = require('../util/openBrowser')
+
 // dev环境下相关配置文件
 const config: Configuration = merge(CommonConfig('development'), {
   plugins: [
@@ -34,6 +37,8 @@ const config: Configuration = merge(CommonConfig('development'), {
     new ReactRefreshWebpackPlugin()
   ]
 })
+const host: string = '127.0.0.1'
+const port: string = '3000'
 const devserver = new WebpackDevServer({
 
   headers: { 'Access-Control-Allow-Origin': '*' },
@@ -42,10 +47,14 @@ const devserver = new WebpackDevServer({
   setupExitSignals: true,
   // 启动GZIP压缩
   compress: true,
+  host: host,
   // 设置端口号
-  port: 3000,
-  open: true,
+  port: port,
+  //open: true,
   //historyApiFallback: true,
 }, webpack(config)
 );
-devserver.start()
+devserver.start().then(() => {
+  // 启动界面
+  openBrowser(`http://${host}:${port}`)
+})
