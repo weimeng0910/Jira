@@ -85,6 +85,7 @@
     "postcss-nested": "^5.0.6",
     "postcss-preset-env": "^7.7.2",
     "prettier": "^2.7.1",
+    "prettier-plugin-sort-imports": "^1.7.0",
     "react-error-overlay": "6.0.9",
     "react-refresh": "^0.14.0",
     "sass": "^1.54.0",

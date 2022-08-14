@@ -34,17 +34,28 @@ module.exports = {
     htmlWhitespaceSensitivity: 'css',
     // 换行符使用 lf
     endOfLine: 'lf',
+
+    //用来控制import输入顺序
+
     importOrder: [
         // 默认情况下，首先会放置外部依赖项
-
-        // 内部依赖
-        '^../(.*)',
-
+        '^@(assets|components|context|hooks|lib|pages|routes|services|styles|ui|utils)/?(.*)$',
+        //<THIRD_PARTY_MODULES>将第三方导入分配到适当的位置
+        '<THIRD_PARTY_MODULES>',
         // 本地依赖项，样式除外
         '^./((?!scss).)*$',
-
         // 其他
-        '^./(.*)'
+        '^[./]'
     ],
-    importOrderSeparation: true
+    importOrderSeparation: true,
+    importOrderParserPlugins: ['jsx', 'typescript'],
+    overrides: [
+        {
+            files: ['*.js', '*.jsx', '*.ts', '*.tsx', '*.json', '*.yml', '*.yaml', '*.md'],
+            options: {
+                tabWidth: 4,
+                singleAttributePerLine: true
+            }
+        }
+    ]
 };

@@ -7,7 +7,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import friendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
 
-//const packages = require('../package.json')
+
 //定义函数保存base
 export const CommonConfig = (mode: "development" | "production"): Configuration => {
 
@@ -136,20 +136,20 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
-        // {
-        //   test: /\.styl$/,
-        //   use: [
-        //     {
-        //       loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
-        //       options: {
-        //         modules: true
-        //       }
-        //     },
-        //     {
-        //       loader: 'stylus-loader'
-        //     }
-        //   ]
-        // },
+        {
+          test: /\.styl$/,
+          use: [
+            {
+              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
+              options: {
+                modules: true
+              }
+            },
+            {
+              loader: 'stylus-loader'
+            }
+          ]
+        },
         // 图片文件引入
         {
           test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,

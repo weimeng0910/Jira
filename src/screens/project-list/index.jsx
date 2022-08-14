@@ -1,25 +1,32 @@
-//导入qs
+//导入qs和UI
 import { Button } from 'antd';
 import qs from 'qs';
+// 外部依赖
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import List from './list';
 //导入组件
+import List from './list';
 import SearchPanel from './search-panel';
+//导入样式文件
+import '@/css/style.css';
+// 本地依赖
 import { cleanObject } from '@/utils/cleanObject';
 import useDebounce from '@/utils/hooks/useDebounce';
 import { useMount } from '@/utils/hooks/useMount';
 
-//获取API_URL
+//获取数据连接地址API_URL
 const apiUrl = process.env.REACT_APP_API_URL;
 console.log(process.env.NODE_ENV);
+
 export const ProjectListScreen = () => {
-    //项目名称和项目ID的状态
+    // 组件状态
     const [param, setParam] = useState({
         name: '',
         personId: ''
     });
+
+    //自定义hook
     const debounceParam = useDebounce(param, 2000);
 
     //定义请求的工程列表的状态
@@ -38,6 +45,8 @@ export const ProjectListScreen = () => {
             }
         );
     }, [debounceParam]); //当用户点击下拉，param就会变化触发请求下拉数据
+
+    //自定义hook
     useMount(() => {
         fetch(`${apiUrl}/users`).then(async response => {
             if (response.ok) {
@@ -47,8 +56,15 @@ export const ProjectListScreen = () => {
     });
     return (
         <div>
-            <SearchPanel users={users} param={debounceParam} setParam={setParam} />
-            <List users={users} list={list} />
+            <SearchPanel
+                users={users}
+                param={debounceParam}
+                setParam={setParam}
+            />
+            <List
+                users={users}
+                list={list}
+            />
             <Button type="primary">Antd 按钮</Button>
         </div>
     );

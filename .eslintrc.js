@@ -1,26 +1,29 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:react/recommended'],
+    extends: ['eslint:recommended', 'plugin:react/recommended'], // 拓展
     env: {
         // 浏览器环境中的全局变量
         browser: true,
         commonjs: true,
-        es6: true
+        es6: true,
+        node: true
     },
     globals: {
+        // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
         $: true,
         process: true,
         __dirname: true
     },
-    parser: '@typescript-eslint/parser',
+    parser: '@typescript-eslint/parser', // 解析器，本解析器支持Ts
     parserOptions: {
+        // 解析器配置选项
         ecmaFeatures: {
             jsx: true,
             modules: true
         },
-        sourceType: 'module',
-        ecmaVersion: 6
+        sourceType: 'module', // 代码支持es6，使用module
+        ecmaVersion: 6 // 指定es版本
     },
-    plugins: ['react', 'standard', 'promise', '@typescript-eslint'],
+    plugins: ['react', 'standard', 'promise', '@typescript-eslint'], // 插件
     settings: {
         'import/ignore': ['node_modules'],
         react: {

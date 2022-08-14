@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function useDebounce<T>(value: T, delay: number = 300): T {
   //定义一个内部的变量用来更新value
@@ -40,4 +40,4 @@ export default function useDebounce<T>(value: T, delay: number = 300): T {
 // 思路：首次运行log()时,判断变量是否为真，此时为undefied,则把把定时器赋值给变量，第二次执行log();时，发现tiemerId是值是tiemeId1，重新设定定时器tiemeId2，第三次调用log()时，重新设置定时器为timerId3,等待指行，如果多次调用则会依次反复，当我们停止下来时，没有执行清除定时器，超过一定时间后触发回调函数。
 /**
  * 注意，自定义hook一定是在他的内部需要使用别的hook，不需要别的hook就定义成函数就可以
-*/
+ */
