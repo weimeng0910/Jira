@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export default function useDebounce<T>(value: T, delay: number = 300): T {
+export default function useDebounce<T>(value: T, delay?: number): T {
   //定义一个内部的变量用来更新value
   const [debouncedValue, setDebouncedValue] = useState(value);
 

@@ -39,13 +39,17 @@ module.exports = {
         'no-irregular-whitespace': 0,
         'no-trailing-spaces': 1,
         'eol-last': 0,
-        'no-unused-vars': [
-            1,
-            {
-                vars: 'all',
-                args: 'after-used'
-            }
-        ],
+        //'no-unused-vars': [
+        //    1,
+        //    {
+        //        vars: 'all',
+        //        args: 'after-used'
+        //    }
+        //],
+        //'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        //'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['error'],
         'no-case-declarations': 0,
         'no-underscore-dangle': 0,
         'no-alert': 2,

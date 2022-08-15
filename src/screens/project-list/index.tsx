@@ -2,14 +2,14 @@
 import { Button } from 'antd';
 import qs from 'qs';
 // 外部依赖
-import React from 'react';
+//import React from 'react';
 import { useEffect, useState } from 'react';
 
-//导入组件
+//导入内部组件
 import List from './list';
 import SearchPanel from './search-panel';
 //导入样式文件
-import '@/css/style.css';
+//import '@/css/style.css';
 // 本地依赖
 import { cleanObject } from '@/utils/cleanObject';
 import useDebounce from '@/utils/hooks/useDebounce';

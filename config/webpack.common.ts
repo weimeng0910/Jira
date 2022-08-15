@@ -136,20 +136,20 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
-        {
-          test: /\.styl$/,
-          use: [
-            {
-              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
-              options: {
-                modules: true
-              }
-            },
-            {
-              loader: 'stylus-loader'
-            }
-          ]
-        },
+        //{
+        //  test: /\.styl$/,
+        //  use: [
+        //    {
+        //      loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
+        //      options: {
+        //        modules: true
+        //      }
+        //    },
+        //    {
+        //      loader: 'stylus-loader'
+        //    }
+        //  ]
+        //},
         // 图片文件引入
         {
           test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,

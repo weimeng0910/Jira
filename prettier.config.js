@@ -39,6 +39,7 @@ module.exports = {
 
     importOrder: [
         // 默认情况下，首先会放置外部依赖项
+        '^@formily/(.*)',
         '^@(assets|components|context|hooks|lib|pages|routes|services|styles|ui|utils)/?(.*)$',
         //<THIRD_PARTY_MODULES>将第三方导入分配到适当的位置
         '<THIRD_PARTY_MODULES>',
