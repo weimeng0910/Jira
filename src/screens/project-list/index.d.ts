@@ -1,1 +1,1 @@
-export function ProjectListScreen(): JSX.Element;
+export declare const ProjectListScreen: () => JSX.Element;

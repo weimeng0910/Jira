@@ -1,10 +1,11 @@
+declare const _extends: string[];
+export { _extends as extends };
 export declare namespace env {
     const browser: boolean;
     const commonjs: boolean;
     const es6: boolean;
+    const node: boolean;
 }
-declare const _extends: string[];
-export { _extends as extends };
 export declare namespace globals {
     const $: boolean;
     const process: boolean;
@@ -28,12 +29,6 @@ export declare const settings: {
 };
 export declare const rules: {
     quotes: (string | number)[];
-    'sort-imports': string;
-    'import/order': string;
-    'simple-import-sort/sort': string;
-    'import/first': string;
-    'import/newline-after-import': string;
-    'import/no-duplicates': string;
     'no-console': number;
     'no-debugger': number;
     'no-var': number;
@@ -41,10 +36,8 @@ export declare const rules: {
     'no-irregular-whitespace': number;
     'no-trailing-spaces': number;
     'eol-last': number;
-    'no-unused-vars': (number | {
-        vars: string;
-        args: string;
-    })[];
+    'no-unused-vars': string;
+    '@typescript-eslint/no-unused-vars': string[];
     'no-case-declarations': number;
     'no-underscore-dangle': number;
     'no-alert': number;
@@ -86,7 +79,6 @@ export declare const rules: {
         when: string;
         children: boolean;
     })[];
-    'react/jsx-indent': (string | number)[];
     'react/jsx-key': number;
     'react/jsx-no-bind': number;
     'react/jsx-no-duplicate-props': number;
@@ -111,16 +103,4 @@ export declare const rules: {
     'react/no-array-index-key': number;
     'react/no-deprecated': number;
     'react/jsx-equals-spacing': number;
-    overrides: {
-        files: string;
-        env: {
-            node: boolean;
-        };
-        rules: {
-            'simple-import-sort/sort': string;
-            'import/order': (string | {
-                'newlines-between': string;
-            })[];
-        };
-    }[];
 };

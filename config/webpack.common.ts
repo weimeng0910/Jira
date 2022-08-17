@@ -3,6 +3,10 @@ import path from 'path'
 import { Configuration, } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+//很棒的ts-loader
+//import { CheckerPlugin } from 'awesome-typescript-loader'
+//加载antd
+import tsImportPluginFactory from "ts-import-plugin";
 //识别特定类别的 webpack 错误并清理
 import friendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
@@ -39,27 +43,34 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           exclude: /node_modules/,
           use: [
             {
-              loader: 'babel-loader',
+              loader: "babel-loader?optional=runtime&cacheDirectory",
               options: {
+
                 cacheDirectory: true
               }
             }
           ]
         },
 
+
+
         {
-          test: /\.(ts|tsx?)$/,
+          test: /\.(j|t)sx?$/,
+          loader: 'ts-loader',
           exclude: /node_modules/,
-          use: [
-            {
-              loader: 'ts-loader',
-              options:
-              {
-                compilerOptions:
-                  { noEmit: false }
-              }
+          options: {
+            transpileOnly: true,
+            getCustomTransformers: () => ({
+              before: [tsImportPluginFactory([{
+                libraryName: 'antd',
+                libraryDirectory: 'lib',
+                style: true
+              }])]
+            }),
+            compilerOptions: {
+              module: 'es2015'
             }
-          ]
+          },
         },
         //解决使用css modules时antd样式不生效
         {
@@ -93,32 +104,45 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
             }
           ]
         },
-        {
-          test: /\.s[ca]ss$/,
-          use: [
-            {
-              loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader
-            },
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true
-              }
-            },
-            {
-              loader: 'sass-loader'
-            }
-          ]
-        },
 
+
+        //对于antd
         {
           test: /\.less$/,
+          exclude: [
+            /\.(css)$/,
+            /src/
+          ],
+          use: [
+            { loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader },
+            {
+              loader: 'css-loader'
+            },
+            {
+              loader: 'less-loader',
+              options: {
+                lessOptions: {
+                  javascriptEnabled: true,
+                }
+
+              }
+            }
+          ]
+
+        },
+        //对于自身的less文件
+        {
+          test: /\.less$/,
+          exclude: [
+            /\.(css)$/,
+            /node_modules/
+          ],
           use: [
             { loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader },
             {
               loader: 'css-loader',
               options: {
-                importLoaders: 2,
+                //importLoaders: 3,
                 modules: {
                   localIdentName: '[name]__[local]--[hash:base64:10]',
                 }
@@ -136,20 +160,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
-        //{
-        //  test: /\.styl$/,
-        //  use: [
-        //    {
-        //      loader: isProduction ? 'style-loader' : MiniCssExtractPlugin.loader,
-        //      options: {
-        //        modules: true
-        //      }
-        //    },
-        //    {
-        //      loader: 'stylus-loader'
-        //    }
-        //  ]
-        //},
+
         // 图片文件引入
         {
           test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
@@ -184,6 +195,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
       }
     },
     plugins: [
+      //new CheckerPlugin(),
       new Dotenv({
         path:
           isProduction

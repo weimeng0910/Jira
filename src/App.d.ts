@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
-import '@/app.less';
-
+import '@/App.less';
+import '@/css/style.css';
 export declare const App: FC;

@@ -97,7 +97,7 @@ module.exports = {
                 children: true
             }
         ],
-        'react/jsx-indent': ['error', 4],
+        //'react/jsx-indent': ['error', 4],//如果您不使用 JSX，那么您可以禁用此规则。
         'react/jsx-key': 2,
         'react/jsx-no-bind': 0,
         'react/jsx-no-duplicate-props': 2,
