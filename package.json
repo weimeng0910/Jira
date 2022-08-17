@@ -107,7 +107,6 @@
   },
   "dependencies": {
     "antd": "^4.22.5",
-    "awesome-typescript-loader": "^5.2.1",
     "craco-antd": "^2.0.0",
     "dotenv": "^16.0.1",
     "file-loader": "^6.2.0",

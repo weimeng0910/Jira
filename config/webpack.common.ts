@@ -3,8 +3,6 @@ import path from 'path'
 import { Configuration, } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-//很棒的ts-loader
-//import { CheckerPlugin } from 'awesome-typescript-loader'
 //加载antd
 import tsImportPluginFactory from "ts-import-plugin";
 //识别特定类别的 webpack 错误并清理
@@ -38,22 +36,6 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
     },
     module: {
       rules: [
-        {
-          test: /\.(js|jsx?)$/,
-          exclude: /node_modules/,
-          use: [
-            {
-              loader: "babel-loader?optional=runtime&cacheDirectory",
-              options: {
-
-                cacheDirectory: true
-              }
-            }
-          ]
-        },
-
-
-
         {
           test: /\.(j|t)sx?$/,
           loader: 'ts-loader',
@@ -195,7 +177,6 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
       }
     },
     plugins: [
-      //new CheckerPlugin(),
       new Dotenv({
         path:
           isProduction
