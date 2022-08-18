@@ -4,59 +4,59 @@
 
 # 前言
 
-从零配置基于 webpack5.74.0 搭建 React 应用模板，方便快速的进行开发，React（React Hook + React-router + Axios ）ESLint 等项目开发规范等。
+从零配置基于 webpack5.58.1 搭建 React 应用模板，方便快速的进行开发，React（React Hook + typescript+Antd ）ESLint 等项目开发规范等。
 
 # 技术栈
 
 涉及的技术栈均采用当前最新的版本和语法：
 
--   使用 Webpack5.7.1 构建项目（不使用 create-react-app、umi 等脚手架）；
+-   使用 webpack5.58.1 构建项目（不使用 create-react-app、umi 等脚手架）；
 -   使用 Babel8 配置转换 ES6、React、Mobx 等语法；
 -   使用 TypeScript 进行严格类型检查；
 -   使用 ESLint 代码规范校验，Prettier stylelint 代码自动格式化工具，EditorConfig 代码风格统一工具
 -   React 版本 V18.0.0，全部采用函数化 Hooks 特性开发项目组件；
 -   采用 React-router6 工具 配置项目路由；
--   采用 Mobx5 + Hooks 实现项目数据状态管理；
--   封装 Axios 库实现与后台 http 请求交互；
+-   采用 redux + Hooks 实现项目数据状态管理；
 
 ## 目录结构
 
 ```
-├── config                  // webpack配置
-│   ├── webpack.common.js   // webpack通用配置
-│   ├── webpack.dev.js      // webpack开发环境配置
-│   └── webpack.prod.js     // webpack生产环境配置
-│   └── paths.js            // webpack路径配置
-├── dist                    // 打包输出目录
-├── public                  // 项目公开目录
-├── src                     // src开发目录
-│   ├── public              // 静态资源
-│   ├── components          // 公共组件
-│   ├── routers             // 项目路由配置
-│   ├── views               // 具体业务页面
-│   ├── services            // axios服务等相关
-│   ├── redux               // 全局公共 mobx store
-│   ├── utils               // 工具库/通用函数
-│   ├── typings.d.ts        // css modules 类型声明文件
-│   ├── index.html          // 入口html页面
-│   ├── index.html          // 入口html页面
-│   └── index.tsx           // 项目入口文件
-├── .babel.config.js         // babel配置,依赖什么样的插件
-├── .browserslistrc         // 浏览器过滤规则配置,babel依赖这个文件，同样css也依赖
-├── .editorconfig            // 项目格式配置
-├── .eslintrc.json          // ESLint配置
-├── .eslintignore           // ESLint配置屏蔽不需要检测的文件或目录
-├── .prettierrc.js          // Prettier 代码自动格式化配置
-├── .prettierignore         // Prettier 代码自动格式化配置屏蔽不必要的文件
-├── .editorconfig            // EditorConfig 代码风格统一配置
-├── .jest.config.js          // jest代码测试配置
-├── .stylelintrc.js         // stylelint是CSS 规范校验工具配置
-├── .gitignore              // git 忽略配置
-├── .postcssrc.js           // postcss配置,依赖什么样的插件
-├── tsconfig.json            // typescript配置
-├── package.json            // 依赖包配置
-└── README.md               // 项目说明
-
+├── config                     // webpack配置
+│   ├── webpack.common.ts      // webpack通用配置
+│   ├── webpack.dev.ts         // webpack开发环境配置
+│   └── webpack.prod.ts        // webpack生产环境配置
+├── dist                       // 打包输出目录
+├── public                     // 项目公开目录
+├── util                       // 通过 AppleScript 重用现有的 Chrome 选项卡
+│   ├── openbrowser.js         // 使用给定的 URL 打开浏览器的文件
+│   ├── openChrome.applescript // Mac下的配制文件
+├── src                        // src开发目录
+│   ├── public                 // 静态资源
+│   ├── components             // 公共组件
+│   ├── routers                // 项目路由配置
+│   ├── pages                  // 具体业务页面
+│   ├── css                    // 样式文件
+│   ├── redux                  // 全局公共 mobx store
+│   ├── utils                  // 工具库/通用函数
+│   ├── typings.d.ts           // css modules 类型声明文件
+│   ├── App.less               // Antd样式
+│   ├── App.tsx                // 入口页面
+│   ├── typings.d.ts           // build时声明文件typings.d.ts
+│   └── index.tsx              // 项目入口文件
+├── .babelrc                   // babel配置,依赖什么样的插件
+├── .browserslistrc            // 浏览器过滤规则配置,babel依赖这个文件，同样css也依赖
+├── .eslintrc.js               // ESLint配置
+├── .eslintignore              // ESLint配置屏蔽不需要检测的文件或目录
+├── .prettierrc.js             // Prettier 代码自动格式化配置
+├── .prettierignore            // Prettier 代码自动格式化配置屏蔽不必要的文件
+├── .editorconfig              // EditorConfig 代码风格统一配置
+├── .jest.config.js            // jest代码测试配置
+├── .stylelintrc.js            // stylelint是CSS 规范校验工具配置
+├── .gitignore                 // git 忽略配置
+├── .postcssrc.js              // postcss配置,依赖什么样的插件,PostCSS是一个用 JavaScript 工具和插件转换 CSS 代码的工具
+├── tsconfig.json              // typescript配置
+├── package.json               // 依赖包配置
+└── README.md                  // 项目说明
 
 ```
 
