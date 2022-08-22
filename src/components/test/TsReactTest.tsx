@@ -1,8 +1,6 @@
 import { Button } from 'antd';
 
-//import '@/App.less';
 import { useArray } from '@/utils/hooks/useArray';
-//import React from 'react';
 import { useMount } from '@/utils/hooks/useMount';
 
 export const TsReactTest = () => {
