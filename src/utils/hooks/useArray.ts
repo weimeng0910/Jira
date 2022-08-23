@@ -1,15 +1,11 @@
 import { useState } from 'react';
 
-type CurrentObj = {
-  name: string;
-  age: number;
-};
 
-export const useArray = (curentObj: CurrentObj[]) => {
+export const useArray = <T>(curentObj: T[]) => {
 
   const [value, setValue] = useState(curentObj);
 
-  const add = (addObj: CurrentObj) => {
+  const add = (addObj: T) => {
 
     setValue([...value, addObj]);
 
@@ -22,11 +18,17 @@ export const useArray = (curentObj: CurrentObj[]) => {
   };
 
   const removeIndex = (index: number) => {
-    console.log(index);
-
-    setValue(value.splice(index, 1));
+    const copy = [...value];
+    copy.splice(index, 1);
+    setValue(copy);
 
   };
 
-  return { value, add, clear, removeIndex };
+  return {
+    value,
+    setValue,
+    add,
+    clear,
+    removeIndex
+  };
 };
