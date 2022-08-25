@@ -1,10 +1,29 @@
 import { Button } from 'antd';
 import { FormEvent } from 'react';
 
+const apiUrl = process.env.REACT_APP_API_URL;
+
 export default function LoginScreen() {
+    const login = (param: { usename: string; password: string }) => {
+        fetch(`${apiUrl}/login`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(param)
+        }).then(async (response: Response) => {
+            if (response.ok) {
+                console.log('111');
+            }
+        });
+    };
     const handlSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(event.currentTarget);
+
+        const usename = (event.currentTarget.elements[0] as HTMLInputElement).value;
+        const password = (event.currentTarget.elements[1] as HTMLInputElement).value;
+        console.log(usename, password);
+        login({ usename, password });
     };
     return (
         <form onSubmit={handlSubmit}>
