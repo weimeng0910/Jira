@@ -18,6 +18,17 @@ module.exports = {
         // 解析器配置选项
         ecmaFeatures: {
             jsx: true,
+            // lambda表达式
+            arrowFunctions: true,
+            // 解构赋值
+            destructuring: true,
+            // class
+            classes: true,
+            // http://es6.ruanyifeng.com/#docs/function#函数参数的默认值
+            defaultParams: true,
+            // 块级作用域，允许使用let const
+            blockBindings: true,
+            // 允许使用模块，模块内默认严格模式
             modules: true
         },
         sourceType: 'module', // 代码支持es6，使用module
@@ -30,8 +41,9 @@ module.exports = {
             version: '999.999.999'
         }
     },
+
     rules: {
-        quotes: [2, 'single'],
+        quotes: [1, 'single', { allowTemplateLiterals: true }], //引号类型 `` "" ''
         'no-console': 0,
         'no-debugger': 1,
         'no-var': 1,
@@ -39,15 +51,6 @@ module.exports = {
         'no-irregular-whitespace': 0,
         'no-trailing-spaces': 1,
         'eol-last': 0,
-        //'no-unused-vars': [
-        //    1,
-        //    {
-        //        vars: 'all',
-        //        args: 'after-used'
-        //    }
-        //],
-        //'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-        //'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': ['error'],
         'no-case-declarations': 0,

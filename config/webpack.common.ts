@@ -41,6 +41,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           loader: 'ts-loader',
           exclude: /node_modules/,
           options: {
+
             transpileOnly: true,
             getCustomTransformers: () => ({
               before: [tsImportPluginFactory([{

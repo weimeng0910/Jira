@@ -2,11 +2,12 @@ import { Button } from 'antd';
 import { FormEvent } from 'react';
 
 const apiUrl = process.env.REACT_APP_API_URL;
+console.log(apiUrl);
 
 export default function LoginScreen() {
     const login = (param: { usename: string; password: string }) => {
-        fetch(`${apiUrl}/login`, {
-            method: 'post',
+        fetch(`${apiUrl}/register`, {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -47,7 +48,7 @@ export default function LoginScreen() {
                     htmlType={'submit'}
                     style={{ marginLeft: '300px' }}
                 >
-                    登陆
+                    注册
                 </Button>
             </div>
         </form>

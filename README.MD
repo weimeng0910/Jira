@@ -162,8 +162,14 @@ module.exports = {
 
 ### 为项目添加 UI 库-Antd
 
-首先安装 Antd 依赖
+安装 Antd 依赖
 
 ```
 yarn add antd
+```
+
+### 前后端分离之 JWT+Mock Service Worker
+
+```
+yarn add msw
 ```
