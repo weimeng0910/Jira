@@ -1,20 +1,16 @@
 import { Button } from 'antd';
 import { FormEvent } from 'react';
 
-const apiUrl = process.env.REACT_APP_API_URL;
-console.log(apiUrl);
+//const apiUrl = process.env.REACT_APP_API_URL;
+//console.log(apiUrl);
 
 export default function LoginScreen() {
     const login = (param: { usename: string; password: string }) => {
-        fetch(`${apiUrl}/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(param)
+        fetch(`/login`, {
+            method: 'POST'
         }).then(async (response: Response) => {
             if (response.ok) {
-                console.log('111');
+                console.log(param);
             }
         });
     };
