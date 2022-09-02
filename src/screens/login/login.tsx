@@ -1,26 +1,32 @@
 import { Button } from 'antd';
 import { FormEvent } from 'react';
 
-//const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = process.env.REACT_APP_API_URL;
 //console.log(apiUrl);
 
 export default function LoginScreen() {
-    const login = (param: { usename: string; password: string }) => {
-        fetch(`/login`, {
-            method: 'POST'
+    const login = (params: { username: string; password: string }) => {
+        fetch(`${apiUrl}/login`, {
+            method: 'POST',
+            headers: {
+                // Adding this header is important so that "req.body"
+                // is parsed into an object in your request handler.
+                'Content-Type': 'text/html;charset:utf-8'
+            },
+            body: new URLSearchParams(params)
         }).then(async (response: Response) => {
             if (response.ok) {
-                console.log(param);
+                console.log(Response, '111');
             }
         });
     };
     const handlSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        const usename = (event.currentTarget.elements[0] as HTMLInputElement).value;
+        const username = (event.currentTarget.elements[0] as HTMLInputElement).value;
         const password = (event.currentTarget.elements[1] as HTMLInputElement).value;
-        console.log(usename, password);
-        login({ usename, password });
+        console.log(username, password);
+        login({ username, password });
     };
     return (
         <form onSubmit={handlSubmit}>

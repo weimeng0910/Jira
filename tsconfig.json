@@ -46,7 +46,6 @@
         "noEmit": true, // 不输出(意思是不编译代码，只执行类型检查)
 
         "sourceMap": true, // 生成相应的.map文件
-        "declaration": true, // 生成相应的.d.ts文件
 
         "noUnusedParameters": true, // 报告未使用参数的错误
         "experimentalDecorators": true, // 启用对ES装饰器的实验性支持
@@ -54,6 +53,7 @@
         "noFallthroughCasesInSwitch": true,
 
         "paths": {
+            "crypto": ["node_modules/crypto-js"],
             "@/*": ["./src/*"]
         }
     },

@@ -1,5 +1,11 @@
 module.exports = {
-    extends: ['eslint:recommended', 'plugin:react/recommended'], // 拓展
+    extends: [
+        'eslint:recommended',
+        //'plugin:react/recommended',
+        //'plugin:@typescript-eslint/eslint-recommended',
+        'plugin:@typescript-eslint/recommended',
+        'prettier/@typescript-eslint'
+    ], // 拓展
     env: {
         // 浏览器环境中的全局变量
         browser: true,
@@ -51,8 +57,16 @@ module.exports = {
         'no-irregular-whitespace': 0,
         'no-trailing-spaces': 1,
         'eol-last': 0,
+        'no-use-before-define': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-use-before-define': ['error'],
+        '@typescript-eslint/explicit-member-accessibility': 'off',
+        '@typescript-eslint/prefer-interface': 'off',
+        '@typescript-eslint/member-ordering': 'error',
+        '@typescript-eslint/no-explicit-any': 'off',
         'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': ['error'],
+        '@typescript-eslint/no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars-experimental': 'error',
         'no-case-declarations': 0,
         'no-underscore-dangle': 0,
         'no-alert': 2,
