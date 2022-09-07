@@ -1,11 +1,8 @@
+const { resolve } = require;
+const OFF = 0;
+const WARN = 1;
+const ERROR = 2;
 module.exports = {
-    extends: [
-        'eslint:recommended',
-        //'plugin:react/recommended',
-        //'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-        'prettier/@typescript-eslint'
-    ], // 拓展
     env: {
         // 浏览器环境中的全局变量
         browser: true,
@@ -13,6 +10,25 @@ module.exports = {
         es6: true,
         node: true
     },
+    root: true, // 标识当前配置文件为eslint的根配置文件，停止在父级目录中寻找
+    extends: [
+        'airbnb', // top ' airbnb
+        'airbnb-typescript',
+        'airbnb/hooks',
+        'plugin:eslint-comments/recommended',
+        'plugin:import/typescript',
+        'plugin:react/recommended', // ESLint 内置规则官方推荐的共享配置
+        'plugin:import/recommended',
+        'plugin:react/jsx-runtime',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:promise/recommended',
+        'plugin:unicorn/recommended',
+        // 调整 TypeScript 通用语法和击球的共享设置来自 eslint:recommended
+        'plugin:@typescript-eslint/recommended',
+        'eslint:recommended',
+        'prettier'
+    ], // 拓展
     globals: {
         // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
         $: true,
@@ -24,6 +40,7 @@ module.exports = {
         // 解析器配置选项
         ecmaFeatures: {
             jsx: true,
+            requireConfigFile: false, //不要加引号 这样既可解决问题
             // lambda表达式
             arrowFunctions: true,
             // 解构赋值
@@ -37,107 +54,194 @@ module.exports = {
             // 允许使用模块，模块内默认严格模式
             modules: true
         },
+
         sourceType: 'module', // 代码支持es6，使用module
-        ecmaVersion: 6 // 指定es版本
-    },
-    plugins: ['react', 'standard', 'promise', '@typescript-eslint'], // 插件
-    settings: {
-        'import/ignore': ['node_modules'],
-        react: {
-            version: '999.999.999'
-        }
+        ecmaVersion: 12, // 指定es版本
+
+        // 通过准备另一个文件，解析器将解析 npm 包文件，并且 VS Code 和这可以防止性能下降时链接和解析新文件失败。
+        project: './tsconfig.json'
     },
 
+    plugins: [
+        'react',
+        'unicorn',
+        'import',
+        'jsx-a11y',
+        'react-hooks',
+        'standard',
+        'promise',
+        '@typescript-eslint',
+        'prettier'
+    ], // 插件
+    settings: {
+        react: {
+            version: '999.999.999'
+            // version: 'detect' // 自动选择你已安装的版本
+        },
+
+        'import/resolver': {
+            node: {
+                extensions: ['.tsx', '.ts', '.js', '.json']
+            },
+            typescript: {
+                directory: [resolve('./tsconfig.json')]
+            }
+        }
+    },
+    // 添加自己的规则
     rules: {
-        quotes: [1, 'single', { allowTemplateLiterals: true }], //引号类型 `` "" ''
-        'no-console': 0,
-        'no-debugger': 1,
-        'no-var': 1,
-        semi: ['error', 'always'],
-        'no-irregular-whitespace': 0,
-        'no-trailing-spaces': 1,
-        'eol-last': 0,
-        'no-use-before-define': 'off',
-        '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-use-before-define': ['error'],
-        '@typescript-eslint/explicit-member-accessibility': 'off',
-        '@typescript-eslint/prefer-interface': 'off',
-        '@typescript-eslint/member-ordering': 'error',
-        '@typescript-eslint/no-explicit-any': 'off',
-        'no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-        '@typescript-eslint/no-unused-vars-experimental': 'error',
-        'no-case-declarations': 0,
-        'no-underscore-dangle': 0,
-        'no-alert': 2,
-        'no-lone-blocks': 0,
-        'no-class-assign': 2,
-        'no-cond-assign': 2,
-        'no-const-assign': 2,
-        'no-delete-var': 2,
-        'no-dupe-keys': 2,
-        'use-isnan': 2,
-        'no-duplicate-case': 2,
-        'no-dupe-args': 2,
-        'no-empty': 2,
-        'no-func-assign': 2,
-        'no-invalid-this': 0,
-        'no-redeclare': 2,
-        'no-spaced-func': 2,
-        'no-this-before-super': 0,
-        'no-undef': 2,
-        'no-return-assign': 0,
-        'no-script-url': 2,
-        'no-use-before-define': 2,
-        'no-extra-boolean-cast': 0,
-        'no-unreachable': 1,
-        'comma-dangle': 2,
-        'no-mixed-spaces-and-tabs': 2,
-        'prefer-arrow-callback': 0,
-        'arrow-parens': 0,
-        'arrow-spacing': 0,
-        camelcase: 0,
-        'jsx-quotes': [1, 'prefer-double'],
-        'react/display-name': 0,
-        'react/forbid-prop-types': [
-            2,
+        // 非开发模式禁用debugger
+        'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
+        'import/extensions': [
+            'error',
+            'ignorePackages',
             {
-                forbid: ['any']
+                js: 'never',
+                jsx: 'never',
+                ts: 'never',
+                tsx: 'never'
             }
         ],
-        'react/jsx-boolean-value': 0,
-        'react/jsx-closing-bracket-location': 1,
-        'react/jsx-curly-spacing': [
-            2,
+        'unicorn/filename-case': [
+            ERROR,
             {
-                when: 'never',
-                children: true
+                cases: {
+                    // 中划线
+                    kebabCase: true,
+                    // 小驼峰
+                    camelCase: true,
+                    // 下划线
+                    snakeCase: false,
+                    // 大驼峰
+                    pascalCase: true
+                }
             }
         ],
-        //'react/jsx-indent': ['error', 4],//如果您不使用 JSX，那么您可以禁用此规则。
-        'react/jsx-key': 2,
-        'react/jsx-no-bind': 0,
-        'react/jsx-no-duplicate-props': 2,
-        'react/jsx-no-literals': 0,
-        'react/jsx-no-undef': 1,
-        'react/jsx-pascal-case': 0,
-        'react/jsx-sort-props': 0,
-        'react/jsx-uses-react': 1,
-        'react/jsx-uses-vars': 2,
-        'react/no-danger': 0,
-        'react/no-did-mount-set-state': 0,
-        'react/no-did-update-set-state': 0,
-        'react/no-direct-mutation-state': 2,
-        'react/no-multi-comp': 0,
-        'react/no-set-state': 0,
-        'react/no-unknown-property': 2,
-        'react/prefer-es6-class': 2,
-        'react/prop-types': 0,
-        'react/react-in-jsx-scope': 'off',
-        'react/self-closing-comp': 0,
-        'react/sort-comp': 0,
-        'react/no-array-index-key': 0,
-        'react/no-deprecated': 1,
-        'react/jsx-equals-spacing': 2
-    }
+        //'import/no-cycle': [
+        //    'error',
+        //    {
+        //        maxDepth: 1,
+        //        ignoreExternal: true
+        //    }
+        //],
+        'import/order': [
+            'error',
+            {
+                groups: [['builtin', 'external']],
+                'newlines-between': 'always'
+            }
+        ],
+
+        'import/no-extraneous-dependencies': [ERROR, { devDependencies: true }],
+        'import/prefer-default-export': OFF,
+        //'import/no-unresolved': [2, { commonjs: true, amd: true }],
+        'import/no-unresolved': ERROR,
+        'import/named': 0,
+        //'import/namespace': 0,
+        //'import/default': 2,
+        //'import/export': 2,
+        'import/no-dynamic-require': OFF,
+
+        'unicorn/import-style': OFF,
+        'unicorn/no-null': OFF,
+        'unicorn/prevent-abbreviations': OFF,
+        'unicorn/no-process-exit': OFF,
+        'unicorn/better-regex': ERROR,
+
+        'unicorn/no-array-instanceof': WARN,
+        'unicorn/no-for-loop': WARN,
+        'unicorn/prefer-add-event-listener': [
+            ERROR,
+            {
+                excludedPackages: ['koa', 'sax']
+            }
+        ],
+        'unicorn/prefer-query-selector': ERROR,
+        'unicorn/no-array-reduce': OFF,
+
+        '@typescript-eslint/explicit-function-return-type': OFF,
+        '@typescript-eslint/no-non-null-assertion': OFF,
+        '@typescript-eslint/no-useless-constructor': ERROR,
+        '@typescript-eslint/no-empty-function': WARN,
+        '@typescript-eslint/no-var-requires': OFF,
+        '@typescript-eslint/explicit-module-boundary-types': OFF,
+        '@typescript-eslint/no-explicit-any': OFF,
+        '@typescript-eslint/no-use-before-define': ERROR,
+        '@typescript-eslint/no-unused-vars': WARN,
+        'no-unused-vars': OFF,
+        'react/jsx-filename-extension': [ERROR, { extensions: ['.tsx', 'ts', '.jsx', 'js'] }],
+        'react/jsx-indent-props': [ERROR, 4],
+        'react/jsx-indent': [ERROR, 4],
+        'react/jsx-one-expression-per-line': OFF,
+        'react/destructuring-assignment': OFF,
+        'react/state-in-constructor': OFF,
+        'react/require-default-props': OFF,
+        'react/jsx-props-no-spreading': OFF,
+        'react/prop-types': OFF,
+        //'react/react-in-jsx-scope': 'off',
+        //'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+
+        'react/function-component-definition': [
+            2,
+            {
+                namedComponents: ['arrow-function', 'function-declaration'],
+                unnamedComponents: 'arrow-function'
+            }
+        ],
+        'jsx-a11y/click-events-have-key-events': OFF,
+        'jsx-a11y/no-noninteractive-element-interactions': OFF,
+        'jsx-a11y/no-static-element-interactions': OFF,
+        'jsx-a11y/label-has-associated-control': [
+            2,
+            {
+                labelComponents: ['CustomInputLabel'],
+                labelAttributes: ['label'],
+                controlComponents: ['CustomInput'],
+                depth: 3
+            }
+        ],
+        //jsx中使用双引号
+        'jsx-quotes': ['error', 'prefer-double'],
+        'lines-between-class-members': [ERROR, 'always'],
+        // 此选项为您的代码设置特定的标签宽度（默认关闭）
+        // indent: ['error', 2, { MemberExpression: 1 }],
+        indent: 0,
+        'linebreak-style': [ERROR, 'unix'],
+        // 强制使用一致的反勾号、双引号或单引号
+        quotes: [2, 'single', 'avoid-escape'],
+        // 配制单引号
+        //quotes: ['error', 'single', { allowTemplateLiterals: true }],
+        'func-names': OFF,
+
+        'max-classes-per-file': OFF,
+        semi: [ERROR, 'always'], // 要求或禁止使用分号而不是 ASI
+        'no-empty': OFF,
+        'no-param-reassign': OFF,
+        'no-unused-expressions': WARN,
+        'no-plusplus': OFF,
+        'no-console': OFF,
+        'class-methods-use-this': ERROR,
+        'jsx-quotes': [ERROR, 'prefer-single'],
+        'global-require': OFF,
+        'no-use-before-define': OFF,
+        'no-restricted-syntax': OFF,
+        'no-continue': OFF,
+        'no-useless-constructor': 'off',
+        'spaced-comment': 0 // 要求或禁止注释中紧跟在 // 或 /* 后面的空格（默认关闭）
+    },
+
+    overrides: [
+        {
+            files: ['**/*.d.ts', '*.ts', '*.tsx'],
+            rules: {
+                'import/no-duplicates': OFF
+            }
+        },
+        {
+            files: ['scripts/**/*.ts'],
+            rules: {
+                'import/no-extraneous-dependencies': OFF
+            }
+        }
+    ]
 };

@@ -1,4 +1,3 @@
-
 import path from 'path'
 import { Configuration, } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -23,6 +22,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
     mode,
     // 入口文件
     entry: path.resolve(__dirname, '../src/index.tsx'),
+
     optimization: {
       usedExports: true
     },
