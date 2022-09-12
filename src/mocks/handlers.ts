@@ -16,7 +16,7 @@ interface RequestParams {
 }
 export const handlers = [
 
-  rest.post<RequestParams>(`${apiUrl}/login`, async (req, res, ctx) => {
+  rest.post<RequestParams>(`${apiUrl}/register`, async (req, res, ctx) => {
     // 获取到url 中的参数
     const body = await req.text();
 
@@ -27,10 +27,23 @@ export const handlers = [
 
     // 组装数据 s
     const userFields = { username, password };
-
+    console.log(userFields, '1111');
+    //window.localStorage.setItem('localStorageKey', JSON.stringify(userFields));
     await db.createUser(userFields);
-
-    return res(ctx.json({ userFields })
+    //let user;
+    //try {
+    //  user = await db.authenticate(userFields);
+    //} catch {
+    //  return res(
+    //    ctx.status(400),
+    //    ctx.json({ status: 400, message: 'error.message' }),
+    //  );
+    //}
+    //return res(ctx.json({ user }));
+    return res(
+      ctx.status(200),
+      ctx.json({ userFields }
+      )
     );
   }),
   rest.get('/user', (req, res, ctx) => {

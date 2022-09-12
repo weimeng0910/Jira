@@ -150,6 +150,7 @@ module.exports = {
 
         'unicorn/no-array-instanceof': WARN,
         'unicorn/no-for-loop': WARN,
+        'unicorn/consistent-function-scoping': OFF, //关闭函数提升
         'unicorn/prefer-add-event-listener': [
             ERROR,
             {
