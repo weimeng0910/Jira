@@ -6,7 +6,7 @@ const apiUrl = process.env.REACT_APP_API_URL;
 
 export default function LoginScreen() {
     const login = (params: { username: string; password: string }) => {
-        fetch(`${apiUrl}/register`, {
+        fetch(`${apiUrl}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'text/html;charset:utf-8'
@@ -44,7 +44,7 @@ export default function LoginScreen() {
                     htmlType='submit'
                     style={{ marginLeft: '300px' }}
                 >
-                    注册
+                    登陆
                 </Button>
             </div>
         </form>

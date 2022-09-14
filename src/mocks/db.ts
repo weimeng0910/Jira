@@ -2,8 +2,8 @@
    本地存储中的数据备份 */
 import CryptoJS from 'crypto-js';
 
-// 定义写入localStorageKey
-const localStorageKey = 'db-back-jira-clone-users';
+import { generteToken } from './core/util';
+
 
 interface Params {
   username: string;
@@ -13,7 +13,8 @@ interface Params {
 interface User {
   id: string;
   username: string;
-  passwordHash?: string;
+  passwordHash: string;
+  token: string | ''
 }
 
 // 枚举
@@ -25,6 +26,15 @@ interface ResponseError extends Error {
   status?: number;
 }
 
+// 定义写入localStorageKey
+const localStorageKey = '__db_auth_provider_token__';
+
+// 定义获得Token的函数
+export const getToken = () => window.localStorage.getItem(localStorageKey);
+console.log(getToken);
+
+
+
 // 加载存在 localStorage里的用户数据
 const loadUsers = () => {
   // 从localStorage读取用户数据
@@ -33,7 +43,9 @@ const loadUsers = () => {
   return users ?? []; // ??在value1和value2之间，只有当value1为null或者 undefined 时取value2，否则取value1
 };
 const clean = (user: User) => {
+  // 如果用户存在passwordHash
   if (user.passwordHash) {
+    //解构其他参数并返回
     const { passwordHash, ...rest } = user;
     return rest;
   }
@@ -91,25 +103,11 @@ function hashcode(data: string) {
   });
   return encryptedData.ciphertext.toString();
 };
-//async function authenticate(params: Params) {
-//  // 解构传进来的参数
-//  const { username, password } = params;
-//  validateUser({ username, password });
-//  const id = hashcode(username);
-//  const user = (await loadUserById(id)) || {};
-//  if (user.passwordHash === hashcode(password)) {
-//    return { ...clean(user), token: Buffer.from(user.id).toString('base64') };
-//  }
-//  const error: ResponseError = new Error("Nom d' utilisateur ou mot de passe incorrect");
-//  error.status = 400;
-//  throw error;
-//}
-
 
 // 创建用户,组装数据
-async function createUser(params: Params) {
+async function createUser(data: { username: string, password: string }) {
   // 解构传进来的参数
-  const { username, password } = params;
+  const { username, password } = data;
   // 检查用户是否为空
   validateUser({ username, password });
   // 加密用户名生成ID
@@ -122,27 +120,44 @@ async function createUser(params: Params) {
     error.status = 400;
     throw error;
   }
+  //定义令牌
+  const token = '';
   // 组装新的用户数据
-  const user = { id, username, passwordHash };
+  const user = { id, username, passwordHash, token };
   // 何存用户
   saveUser(user);
   return loadUserById(id);
 }
 
+//更新用户数据
+//async function updateUser(id, data) {
+//  validateUser(id);
+//  const user = await loadUserById(id);
+//  Object.assign(user, data);
+//  saveUser(user);
+//  return loadUserById(id);
+//}
 
 // 向客户瑞输出token
-// async function authenticate(params: Params) {
-//  const { username, password } = params;
-//  validateUser({ username, password })
-//  const id = hashcode(username)
-//  const user = (await loadUserById(id)) || {}
-//  if (user.passwordHash === hashcode(password)) {
-//    return { ...clean(user), token: Buffer.from(user.id).toString('base64') }
-//  }
-//  const error: ResponseError = new Error("Nom d' utilisateur ou mot de passe incorrect")
-//  error.status = 400
-//  throw error
-// }
+async function authenticate(params: Params) {
+  const { username, password } = params;
+  validateUser({ username, password });
+  const id = hashcode(username);
+  const user = (await loadUserById(id)) || {};
+  if (user.passwordHash === hashcode(password)) {
+    //生成token
+    const token = generteToken(id, 2);
+    const userToken = { ...user, token };
+    // 何存用户
+    saveUser(userToken);
+    return userToken;
+  }
+  const error: ResponseError = new Error("Nom d' utilisateur ou mot de passe incorrect");
+  error.status = 400;
+  throw error;
+}
+//清空数据
+const resetStorage = () => window.localStorage.removeItem(localStorageKey);
 
-// 导出方法
-export { createUser };
+// 导出注册方法createUser，登陆方法authenticate
+export { createUser, authenticate, resetStorage };
