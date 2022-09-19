@@ -2,18 +2,21 @@
    本地存储中的数据备份 */
 import CryptoJS from 'crypto-js';
 
+// 定义写入localStorageKey
+import { localStorageKey } from '../config';
+// 导入生成token的函数
 import { generteToken } from './core/util';
 
 
 interface Params {
-  username: string;
-  password: string;
+  username: string,
+  password: string,
 }
 
 interface User {
-  id: string;
-  username: string;
-  passwordHash: string;
+  id: string,
+  username: string,
+  passwordHash: string,
   token: string | ''
 }
 
@@ -23,16 +26,8 @@ enum Users {
 }
 
 interface ResponseError extends Error {
-  status?: number;
+  status?: number
 }
-
-// 定义写入localStorageKey
-const localStorageKey = '__db_auth_provider_token__';
-
-// 定义获得Token的函数
-export const getToken = () => window.localStorage.getItem(localStorageKey);
-console.log(getToken);
-
 
 
 // 加载存在 localStorage里的用户数据
@@ -156,8 +151,6 @@ async function authenticate(params: Params) {
   error.status = 400;
   throw error;
 }
-//清空数据
-const resetStorage = () => window.localStorage.removeItem(localStorageKey);
 
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, resetStorage };
+export { createUser, authenticate };

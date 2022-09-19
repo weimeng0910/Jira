@@ -1,4 +1,5 @@
 import { Button } from 'antd';
+import { nanoid } from 'nanoid';
 
 import { useArray } from '@/utils/hooks/useArray';
 import { useMount } from '@/utils/hooks/useMount';
@@ -28,29 +29,29 @@ export const TsReactTest = () => {
                 <h1 style={{ marginLeft: '20px' }}>按钮</h1>
                 <Button
                     style={{ margin: '20px' }}
-                    type="primary"
+                    type='primary'
                     onClick={() => add({ name: 'john', age: 22 })}
                 >
                     add john
                 </Button>
                 <Button
                     style={{ margin: '20px' }}
-                    type="primary"
+                    type='primary'
                     onClick={() => removeIndex(0)}
                 >
                     removeIndex
                 </Button>
                 <Button
                     style={{ margin: '20px' }}
-                    type="primary"
+                    type='primary'
                     onClick={() => clear()}
                 >
                     clear
                 </Button>
-                {value.map((item: { name: string; age: number }, index: number) => (
+                {value.map((item: { name: string; age: number }) => (
                     <div
                         style={{ margin: '30px' }}
-                        key={index}
+                        key={nanoid()}
                     >
                         <span>姓名：{item.name}</span>
                         <br />

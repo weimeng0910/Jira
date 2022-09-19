@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { App } from './App';
+import { AppProviders } from './context';
 import { mocker } from '@/mocks/browser';
 
 // 开发环境开启mock服务
@@ -18,6 +19,8 @@ const root = createRoot(rootElement);
 
 root.render(
     <React.StrictMode>
-        <App />
+        <AppProviders>
+            <App />
+        </AppProviders>
     </React.StrictMode>
 );
