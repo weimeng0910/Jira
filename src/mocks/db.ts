@@ -9,6 +9,7 @@ import { generteToken } from './core/util';
 
 
 interface Params {
+  id?: string,
   username: string,
   password: string,
 }
@@ -62,6 +63,24 @@ async function saveUser(user: User) {
   const users = loadUsers();
   users.push(user);
   saveUsers(users);
+}
+// 更新用户数据
+
+async function updateUser(user: User) {
+  console.log(user.id, '1w');
+
+  // 加载原有数据
+  const users = loadUsers();
+
+  const usersNew = users.splice(users.findIndex((e: any) => e.id === user.id), 1);
+
+  //生成token
+  const token = generteToken(user.id, 2);
+  const usersToken = { ...usersNew, token };
+
+  users.push(usersToken);
+  saveUsers(users);
+  //saveUsers(usersToken);
 }
 // 检查用户名和密码是否存在
 const validateUser = (params: Params) => {
@@ -123,16 +142,6 @@ async function createUser(data: { username: string, password: string }) {
   saveUser(user);
   return loadUserById(id);
 }
-
-//更新用户数据
-//async function updateUser(id, data) {
-//  validateUser(id);
-//  const user = await loadUserById(id);
-//  Object.assign(user, data);
-//  saveUser(user);
-//  return loadUserById(id);
-//}
-
 // 向客户瑞输出token
 async function authenticate(params: Params) {
   const { username, password } = params;
@@ -143,9 +152,21 @@ async function authenticate(params: Params) {
     //生成token
     const token = generteToken(id, 2);
     const userToken = { ...user, token };
+
+    updateUser(userToken);
     // 何存用户
-    saveUser(userToken);
+    //saveUser(userToken);
     return userToken;
+    // eslint-disable-next-line unicorn/no-array-for-each
+    //const userToken = user.forEach((item: any) => {
+    //  // eslint-disable-next-line no-cond-assign
+    //  if (item.id = id) {
+    //    item.token = token;
+    //  }
+    //}
+    //);
+    //console.log(userToken, '4444444');
+    //return { ...clean(user), token };
   }
   const error: ResponseError = new Error("Nom d' utilisateur ou mot de passe incorrect");
   error.status = 400;

@@ -53,29 +53,9 @@ export const handlers = [
     return res(ctx.json({ user }));
   }),
 
-  rest.get('/user', (req, res, ctx) => {
-
-    console.log(req);
-
-    const isAuthenticated = sessionStorage.getItem('is-authenticated');
-
-    if (!isAuthenticated) {
-
-      return res(
-
-        ctx.status(403),
-
-        ctx.json({
-          errorMessage: 'Not authorized'
-        })
-      );
-    }
-    // If authenticated, return a mocked user details
-    return res(
-      ctx.status(200),
-      ctx.json({
-        username: 'admin'
-      })
-    );
-  })
+  //rest.get(`${API_URL }/me`, async (req, res, ctx) => {
+  //  const user = await getUser(req)
+  //  const token = getToken(req)
+  //  return res(ctx.json({ user: { ...user, token } }))
+  //}),
 ];

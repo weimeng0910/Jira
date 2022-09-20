@@ -31,6 +31,7 @@ const AuthContext = createContext<
 AuthContext.displayName = 'AuthContext'; // "MyDisplayName.Provider" 在 DevTools 中
 
 export const AuthProvider = (props: { children: ReactNode }) => {
+    // 定义状态
     const [userData, setUserData] = useState<User | null>(null);
 
     // point free 消除user => setUserData(user)中的user参数

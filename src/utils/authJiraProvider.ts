@@ -5,14 +5,15 @@ import axios from 'axios';
 
 // 导入全局配制
 import { API_URL, localStorageKey } from '../config';
-
+// 引入处理数据的文件
+//import * as db from '../mocks/db';
 
 interface Params {
   username: string,
   password: string
 }
 
-interface User {
+interface User extends Params {
   id: string,
   username: string,
   passwordHash: string,
@@ -23,6 +24,7 @@ interface User {
 async function clientApiJira(endpoint: string, data: Params) {
   const config = {
     headers: { 'Content-Type': 'text/html;charset:utf-8' },
+
   };
 
 
@@ -43,9 +45,12 @@ async function getToken() {
 
 // 重新设置用户的token令牌
 function storeToken({ user }: { user: User }) {
-  window.localStorage.setItem(localStorageKey, user.token || '');
+  //window.localStorage.setItem(localStorageKey, user.token || '');
+  const userFields = { ...user };
+  //const usernew = db.updateUser(userFields);
+  //console.log(usernew);
 
-  return user;
+  return userFields;
 }
 
 // 获得登陆后的用户名和密码生成token令牌
