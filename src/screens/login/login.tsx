@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function LoginScreen() {
     const { login, userData } = useAuth();
-    console.log(userData, '111111');
+    console.log(userData);
 
     const handlSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();

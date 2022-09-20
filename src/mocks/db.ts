@@ -67,20 +67,27 @@ async function saveUser(user: User) {
 // 更新用户数据
 
 async function updateUser(user: User) {
-  console.log(user.id, '1w');
+  console.log(user, '12345678');
 
   // 加载原有数据
   const users = loadUsers();
+  console.log(users, 'qqqq');
 
-  const usersNew = users.splice(users.findIndex((e: any) => e.id === user.id), 1);
-
-  //生成token
+  // 生成token
   const token = generteToken(user.id, 2);
-  const usersToken = { ...usersNew, token };
+  // 过滤数组中原来需要更新的数据
+  // eslint-disable-next-line array-callback-return
+  users.map((e: any) => {
+    if (e.id === user.id) {
+      e.token = token;
 
-  users.push(usersToken);
+    }
+  });
+  //onsole.log(usersNew, '12321');
+
+  // 更新并保存数据
   saveUsers(users);
-  //saveUsers(usersToken);
+
 }
 // 检查用户名和密码是否存在
 const validateUser = (params: Params) => {
@@ -150,23 +157,14 @@ async function authenticate(params: Params) {
   const user = (await loadUserById(id)) || {};
   if (user.passwordHash === hashcode(password)) {
     //生成token
-    const token = generteToken(id, 2);
-    const userToken = { ...user, token };
+    //const token = generteToken(id, 2);
+    const userToken = { ...user };
 
     updateUser(userToken);
     // 何存用户
-    //saveUser(userToken);
+    // saveUser(userToken);
     return userToken;
-    // eslint-disable-next-line unicorn/no-array-for-each
-    //const userToken = user.forEach((item: any) => {
-    //  // eslint-disable-next-line no-cond-assign
-    //  if (item.id = id) {
-    //    item.token = token;
-    //  }
-    //}
-    //);
-    //console.log(userToken, '4444444');
-    //return { ...clean(user), token };
+
   }
   const error: ResponseError = new Error("Nom d' utilisateur ou mot de passe incorrect");
   error.status = 400;
