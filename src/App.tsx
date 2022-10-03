@@ -1,13 +1,12 @@
 import { FC } from 'react';
 
+import { AuthenticatedAPP } from './authenticated-app';
+import { useAuth } from './context/AuthContext';
+import { UnauthenticatedAPP } from './unauthenticated-app';
 import '@/App.less';
 import '@/css/style.css';
-import LoginScreen from '@/screens/login/login';
 
-export const App: FC = () => (
-    <div>
-        {/* <ProjectListScreen/> */}
-        {/* <TsReactTest/> */}
-        <LoginScreen />
-    </div>
-);
+export const App: FC = () => {
+    const { userData } = useAuth();
+    return <div>{userData ? <AuthenticatedAPP /> : <UnauthenticatedAPP />}</div>;
+};

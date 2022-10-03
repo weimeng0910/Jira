@@ -228,6 +228,10 @@ module.exports = {
         'no-restricted-syntax': OFF,
         'no-continue': OFF,
         'no-useless-constructor': 'off',
+        //overrides: {
+        //    'no-shadow': 'off',
+        //    '@typescript-eslint/no-shadow': ['error', , { ignoreTypeValueShadow: true }]
+        //},
         'spaced-comment': 0 // 要求或禁止注释中紧跟在 // 或 /* 后面的空格（默认关闭）
     },
 

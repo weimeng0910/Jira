@@ -3,19 +3,8 @@
  */
 import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
 
-import * as authJira from '../utils/authJiraProvider';
-
-interface AuthForm {
-    username: string;
-    password: string;
-}
-
-interface User {
-    id: string;
-    username: string;
-    passwordHash: string;
-    token: string | '';
-}
+import { AuthForm, User } from '@/types/user';
+import * as authJira from '@/utils/authJiraProvider';
 
 const AuthContext = createContext<
     | {
@@ -66,7 +55,7 @@ export const AuthProvider = (props: { children: ReactNode }) => {
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-        throw new Error("useAuth() s'utilise avec <AuthContext.provider>");
+        throw new Error('useAuth()and <AuthContext.provider> 一起使用');
     }
     return context;
 };

@@ -1,11 +1,10 @@
 import { Button } from 'antd';
-import { FormEvent } from 'react';
+import { FormEvent, FC, ReactElement } from 'react';
 
 import { useAuth } from '@/context/AuthContext';
 
-export default function LoginScreen() {
-    const { login, userData } = useAuth();
-    console.log(userData);
+const LoginScreen: FC = (): ReactElement => {
+    const { login } = useAuth();
 
     const handlSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -15,8 +14,6 @@ export default function LoginScreen() {
     };
     return (
         <form onSubmit={handlSubmit}>
-            <div>登陆成功{}</div>
-
             <div style={{ marginLeft: '200px', padding: '20px' }}>
                 <label htmlFor='username'>用户名</label>
                 <input
@@ -42,4 +39,5 @@ export default function LoginScreen() {
             </div>
         </form>
     );
-}
+};
+export default LoginScreen;
