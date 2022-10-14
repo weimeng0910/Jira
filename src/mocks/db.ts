@@ -10,31 +10,8 @@ import CryptoJS from 'crypto-js';
 import { localStorageKey } from '../config';
 // 导入生成token的函数
 import { generteToken } from './core/util';
+import { ResponseError, RequestBody, User, Project } from './type/handlersType';
 
-
-interface Params {
-  id?: string,
-  username: string,
-  password: string,
-}
-
-interface User {
-  id: string,
-  username: string,
-  passwordHash: string,
-  token?: string | ''
-}
-interface Project {
-  creted: number,
-  id: number,
-  name: string,
-  organization: string,
-  personId: number | string
-
-}
-interface ResponseError extends Error {
-  status?: number
-}
 type Users = User[];
 
 // 加载存在 localStorage里的用户数据
@@ -76,7 +53,7 @@ async function saveUser(user: User) {
 }
 
 // 检查用户名和密码是否存在
-const validateUser = (params: Params) => {
+const validateUser = (params: RequestBody) => {
   const { username, password } = params;
   if (!username) {
     const error: ResponseError = new Error('用户名是必须的');
@@ -136,7 +113,7 @@ async function createUser(data: { username: string, password: string }) {
   return loadUserById(id);
 }
 // 客户登陆时返回用户的信息
-async function authenticate(params: Params) {
+async function authenticate(params: RequestBody) {
   const { username, password } = params;
   validateUser({ username, password });
   const id = hashcode(username);

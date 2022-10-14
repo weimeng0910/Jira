@@ -1,10 +1,10 @@
 import { Button } from 'antd';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 
 import LoginScreen from './login';
 import RegisterScreen from './register';
 
-export const UnauthenticatedAPP = () => {
+export const UnauthenticatedAPP: FC = () => {
     const [isRegister, setIsRegister] = useState(false);
 
     return (

@@ -9,30 +9,11 @@ import * as db from './db';
 import { API_URL, projectDB } from '../config';
 // 导入数据
 import { initData } from './initData';
+import { ResponseError, RequestBody, PostRequestParams } from './type/handlersType';
+
+
 // 设置延迟
 // const sleep = t:number => new Promise(resolve => setTimeout(resolve, t));
-interface ResponseError extends Error {
-  status?: number;
-  message: string;
-}
-//Request body type.
-interface RequestBody {
-  username: string;
-  password: string;
-}
-
-//Request parameters
-interface PostRequestParams {
-  personId: string,
-}
-//interface ProjectData {
-//  id: number,
-//  name: string,
-//  pesonId: number,
-//  organization: string,
-//  creted: number
-
-//}
 //数据初始化
 initData();
 // 获得token
