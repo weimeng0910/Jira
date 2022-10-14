@@ -4,24 +4,39 @@
 
 # 前言
 
+<<<<<<< HEAD
 从零配置基于 webpack5.58.1 搭建 React 应用模板，方便快速的进行开发，React（React Hook + typescript+Antd ）ESLint 等项目开发规范等。
+=======
+从零配置基于 webpack5.58.1搭建 React 应用模板，方便快速的进行开发，React（React Hook + typescript+Antd ）ESLint 等项目开发规范等。
+>>>>>>> a0b2860a3471bf281e05a9f36ece7d25c33d3175
 
 # 技术栈
 
 涉及的技术栈均采用当前最新的版本和语法：
 
+<<<<<<< HEAD
 -   使用 webpack5.58.1 构建项目（不使用 create-react-app、umi 等脚手架）；
+=======
+-   使用 webpack5.58.1构建项目（不使用 create-react-app、umi 等脚手架）；
+>>>>>>> a0b2860a3471bf281e05a9f36ece7d25c33d3175
 -   使用 Babel8 配置转换 ES6、React、Mobx 等语法；
 -   使用 TypeScript 进行严格类型检查；
 -   使用 ESLint 代码规范校验，Prettier stylelint 代码自动格式化工具，EditorConfig 代码风格统一工具
 -   React 版本 V18.0.0，全部采用函数化 Hooks 特性开发项目组件；
 -   采用 React-router6 工具 配置项目路由；
 -   采用 redux + Hooks 实现项目数据状态管理；
+<<<<<<< HEAD
+=======
+
+>>>>>>> a0b2860a3471bf281e05a9f36ece7d25c33d3175
 
 ## 目录结构
 
 ```
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a0b2860a3471bf281e05a9f36ece7d25c33d3175
 ├── config                     // webpack配置
 │   ├── webpack.common.ts      // webpack通用配置
 │   ├── webpack.dev.ts         // webpack开发环境配置
@@ -58,6 +73,7 @@
 ├── tsconfig.json              // typescript配置
 ├── package.json               // 依赖包配置
 └── README.md                  // 项目说明
+<<<<<<< HEAD
 =======
 ├── config                   // webpack配置
 │   ├── webpack.common.js   // webpack通用配置
@@ -93,6 +109,8 @@
 ├── tsconfig.json            // typescript配置
 ├── package.json            // 依赖包配置
 └── README.md               // 项目说明
+=======
+>>>>>>> a0b2860a3471bf281e05a9f36ece7d25c33d3175
 
 >>>>>>> meng
 
