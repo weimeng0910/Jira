@@ -1,10 +1,11 @@
 import { Button } from 'antd';
 import { nanoid } from 'nanoid';
+import { FC } from 'react';
 
 import { useArray } from '@/utils/hooks/useArray';
 import { useMount } from '@/utils/hooks/useMount';
 
-export const TsReactTest = () => {
+export const TsReactTest: FC = () => {
     const persons: { name: string; age: number }[] = [
         {
             name: 'mengwei',

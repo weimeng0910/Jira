@@ -1,5 +1,8 @@
-/* 模拟一个后端
-   本地存储中的数据备份 */
+/*
+*  模拟一个后端
+*  本地存储中的数据备份
+*/
+
 // 加密
 import CryptoJS from 'crypto-js';
 
@@ -21,8 +24,14 @@ interface User {
   passwordHash: string,
   token?: string | ''
 }
+interface Project {
+  creted: number,
+  id: number,
+  name: string,
+  organization: string,
+  personId: number | string
 
-
+}
 interface ResponseError extends Error {
   status?: number
 }
@@ -35,17 +44,16 @@ const loadUsers = (): Users => {
 
   return users ?? []; // ??在value1和value2之间，只有当value1为null或者 undefined 时取value2，否则取value1
 };
-// eslint-disable-next-line consistent-return
-const clean = (user: User) => {
 
+const clean = (user: User) => {
+  let result;
   // 如果用户存在passwordHash
   if (user.passwordHash) {
     //解构其他参数并返回
     const { passwordHash, ...rest } = user;
-    return rest;
+    result = rest;
   }
-  // ????
-  //return user;
+  return result;
 };
 
 // 检查用户的ID存在
@@ -127,7 +135,7 @@ async function createUser(data: { username: string, password: string }) {
   saveUser(user);
   return loadUserById(id);
 }
-// 向客户瑞输出token
+// 客户登陆时返回用户的信息
 async function authenticate(params: Params) {
   const { username, password } = params;
   validateUser({ username, password });
@@ -144,5 +152,28 @@ async function authenticate(params: Params) {
   throw error;
 }
 
+/**  screensProjectsData **/
+
+// 加载存在 localStorage里的项目数据
+const loadScreensData = (storageKey: string) => {
+
+  const screensData = JSON.parse(window.localStorage.getItem(storageKey)!) || []; // 非空断言运算符告诉 typescript 您知道自己在做什么
+
+  return screensData ?? []; // ??在value1和value2之间，只有当value1为null或者 undefined 时取value2，否则取value1
+};
+
+// 根据传入参数响应数据
+async function ScreensProjectsData(storageKey: string, personId: string) {
+
+  // 加载localStorage里的项目数据
+  const projectsData = loadScreensData(storageKey);
+  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
+  if (personId) {
+    const result = projectsData.find((item: Project) => item.personId === personId);
+    return result;
+  }
+  return projectsData;
+
+}
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById };
+export { createUser, authenticate, loadUserById, ScreensProjectsData };

@@ -32,6 +32,7 @@
         "moduleResolution": "node", // 使用 Node.js 风格解析模块
         "forceConsistentCasingInFileNames": true, // 不允许对同一个文件使用不一致格式的引用
         "noImplicitAny": true,
+        "strictNullChecks": true,
         "removeComments": true,
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true, // 报告未使用的本地变量的错误

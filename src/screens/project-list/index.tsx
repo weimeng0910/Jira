@@ -3,7 +3,7 @@ import { Button } from 'antd';
 // 外部依赖
 import axios from 'axios';
 import qs from 'qs';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 //导入内部组件
 import List from './list';
@@ -16,7 +16,9 @@ import { cleanObject } from '@/utils/cleanObject';
 import useDebounce from '@/utils/hooks/useDebounce';
 import { useMount } from '@/utils/hooks/useMount';
 
-export const ProjectListScreen = () => {
+// import { useHttp } from '@/utils/http';
+
+export const ProjectListScreen: FC = () => {
     // 组件状态
     const [param, setParam] = useState({
         name: '',
@@ -36,10 +38,11 @@ export const ProjectListScreen = () => {
     useEffect(() => {
         // eslint-disable-next-line promise/catch-or-return
         axios
-            .post(`${API_URL}/projects?${qs.stringify(cleanObject(debounceParam))}`)
+            .get(`${API_URL}/projects?${qs.stringify(cleanObject(debounceParam))}`)
             .then(async response => {
                 // eslint-disable-next-line promise/always-return
                 if (response) {
+                    //console.log(response.data, 'w2');
                     setList(await response.data);
                 }
             });
