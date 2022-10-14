@@ -1,4 +1,3 @@
-
 import path from 'path'
 import { Configuration, } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
@@ -8,7 +7,8 @@ import tsImportPluginFactory from "ts-import-plugin";
 //识别特定类别的 webpack 错误并清理
 import friendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
 import Dotenv from 'dotenv-webpack';
-
+//在 Webpack 中 Polyfill Node.js 核心模块,只有Webpack 5+需要这个模块。
+import NodePolyfillPlugin from 'node-polyfill-webpack-plugin';
 
 //定义函数保存base
 export const CommonConfig = (mode: "development" | "production"): Configuration => {
@@ -22,6 +22,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
     mode,
     // 入口文件
     entry: path.resolve(__dirname, '../src/index.tsx'),
+
     optimization: {
       usedExports: true
     },
@@ -41,6 +42,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           loader: 'ts-loader',
           exclude: /node_modules/,
           options: {
+
             transpileOnly: true,
             getCustomTransformers: () => ({
               before: [tsImportPluginFactory([{
@@ -177,6 +179,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
       }
     },
     plugins: [
+      new NodePolyfillPlugin(),
       new Dotenv({
         path:
           isProduction

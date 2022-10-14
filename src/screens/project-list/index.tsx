@@ -1,13 +1,14 @@
 //导入qs和UI
 import { Button } from 'antd';
-import qs from 'qs';
 // 外部依赖
-//import React from 'react';
-import { useEffect, useState } from 'react';
+import axios from 'axios';
+import qs from 'qs';
+import { FC, useEffect, useState } from 'react';
 
 //导入内部组件
 import List from './list';
 import SearchPanel from './search-panel';
+import { API_URL } from '@/config';
 //导入样式文件
 //import '@/css/style.css';
 // 本地依赖
@@ -15,11 +16,9 @@ import { cleanObject } from '@/utils/cleanObject';
 import useDebounce from '@/utils/hooks/useDebounce';
 import { useMount } from '@/utils/hooks/useMount';
 
-//获取数据连接地址API_URL
-const apiUrl = process.env.REACT_APP_API_URL;
-console.log(process.env.NODE_ENV);
+// import { useHttp } from '@/utils/http';
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen: FC = () => {
     // 组件状态
     const [param, setParam] = useState({
         name: '',
@@ -34,23 +33,28 @@ export const ProjectListScreen = () => {
 
     //user用户状态
     const [users, setUsers] = useState([]);
-
+    // 导入自定义http请求
     //请求用户数据
     useEffect(() => {
-        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(
-            async response => {
-                if (response.ok) {
-                    setList(await response.json());
+        // eslint-disable-next-line promise/catch-or-return
+        axios
+            .get(`${API_URL}/projects?${qs.stringify(cleanObject(debounceParam))}`)
+            .then(async response => {
+                // eslint-disable-next-line promise/always-return
+                if (response) {
+                    //console.log(response.data, 'w2');
+                    setList(await response.data);
                 }
-            }
-        );
+            });
     }, [debounceParam]); //当用户点击下拉，param就会变化触发请求下拉数据
 
     //自定义hook
     useMount(() => {
-        fetch(`${apiUrl}/users`).then(async response => {
-            if (response.ok) {
-                setUsers(await response.json());
+        // eslint-disable-next-line promise/catch-or-return
+        axios.post(`${API_URL}/users`).then(async response => {
+            // eslint-disable-next-line promise/always-return
+            if (response) {
+                setUsers(await response.data);
             }
         });
     });
@@ -65,7 +69,7 @@ export const ProjectListScreen = () => {
                 users={users}
                 list={list}
             />
-            <Button type="primary">Antd 按钮</Button>
+            <Button type='primary'>Antd 按钮</Button>
         </div>
     );
 };

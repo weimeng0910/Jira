@@ -21,6 +21,7 @@
 ## 目录结构
 
 ```
+<<<<<<< HEAD
 ├── config                     // webpack配置
 │   ├── webpack.common.ts      // webpack通用配置
 │   ├── webpack.dev.ts         // webpack开发环境配置
@@ -57,6 +58,43 @@
 ├── tsconfig.json              // typescript配置
 ├── package.json               // 依赖包配置
 └── README.md                  // 项目说明
+=======
+├── config                   // webpack配置
+│   ├── webpack.common.js   // webpack通用配置
+│   ├── webpack.dev.js      // webpack开发环境配置
+│   └── webpack.prod.js     // webpack生产环境配置
+│   └── paths.js            // webpack路径配置
+├── dist                    // 打包输出目录
+├── public                  // 项目公开目录
+├── src                     // src开发目录
+│   ├── mocks               // server，Jwt
+│   ├── components          // 公共组件
+│   ├── routers             // 项目路由配置
+│   ├── views               // 具体业务页面
+│   ├── context             // 全局用户信息
+│   ├── types               // 全局公共类型定义
+│   ├── utils               // 工具库/通用函数
+│   ├── typings.d.ts        // css modules 类型声明文件
+│   ├── index.html          // 入口html页面
+│   ├── index.html          // 入口html页面
+│   └── index.tsx           // 项目入口文件
+├── .babel.config.js         // babel配置,依赖什么样的插件
+├── .browserslistrc         // 浏览器过滤规则配置,babel依赖这个文件，同样css也依赖
+├── .editorconfig            // 项目格式配置
+├── .eslintrc.json          // ESLint配置
+├── .eslintignore           // ESLint配置屏蔽不需要检测的文件或目录
+├── .prettierrc.js          // Prettier 代码自动格式化配置
+├── .prettierignore         // Prettier 代码自动格式化配置屏蔽不必要的文件
+├── .editorconfig            // EditorConfig 代码风格统一配置
+├── .jest.config.js          // jest代码测试配置
+├── .stylelintrc.js         // stylelint是CSS 规范校验工具配置
+├── .gitignore              // git 忽略配置
+├── .postcssrc.js           // postcss配置,依赖什么样的插件
+├── tsconfig.json            // typescript配置
+├── package.json            // 依赖包配置
+└── README.md               // 项目说明
+
+>>>>>>> meng
 
 ```
 
@@ -162,8 +200,16 @@ module.exports = {
 
 ### 为项目添加 UI 库-Antd
 
-首先安装 Antd 依赖
+安装 Antd 依赖
 
 ```
 yarn add antd
+```
+
+### 前后端分离之 JWT+Mock Service Worker
+
+#### Mock Service Worker 进行 mock 数据
+
+```
+yarn add msw
 ```
