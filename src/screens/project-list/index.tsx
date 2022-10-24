@@ -9,12 +9,11 @@ import { FC, useEffect, useState } from 'react';
 import List from './list';
 import SearchPanel from './search-panel';
 import { API_URL } from '@/config';
-//导入样式文件
-//import '@/css/style.css';
 // 本地依赖
 import { cleanObject } from '@/utils/cleanObject';
 import useDebounce from '@/utils/hooks/useDebounce';
-import { useMount } from '@/utils/hooks/useMount';
+
+//import { useMount } from '@/utils/hooks/useMount';
 
 // import { useHttp } from '@/utils/http';
 
@@ -49,15 +48,28 @@ export const ProjectListScreen: FC = () => {
     }, [debounceParam]); //当用户点击下拉，param就会变化触发请求下拉数据
 
     //自定义hook
-    useMount(() => {
+    //useMount(() => {
+    //    // eslint-disable-next-line promise/catch-or-return
+    //    axios.post(`${API_URL}/users`).then(async response => {
+    //        // eslint-disable-next-line promise/always-return
+    //        if (response) {
+    //            setUsers(await response.data);
+    //        }
+    //        return -1;
+    //    });
+    //});
+    useEffect(() => {
         // eslint-disable-next-line promise/catch-or-return
         axios.post(`${API_URL}/users`).then(async response => {
             // eslint-disable-next-line promise/always-return
             if (response) {
+                console.log(response.data, '返回信息');
+
                 setUsers(await response.data);
             }
         });
-    });
+        console.log('加入只调用一次');
+    }, []);
     return (
         <div>
             <SearchPanel

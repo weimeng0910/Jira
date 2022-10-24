@@ -3,25 +3,37 @@
  */
 import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
 
-import { AuthForm, User } from '@/types/user';
+import { AuthForm, UserData } from '@/types/user';
 import * as authJira from '@/utils/authJiraProvider';
+
+// eslint-disable-next-line import/no-cycle
+//import { http } from '@/utils/http';
 
 const AuthContext = createContext<
     | {
-          userData: User | null;
+          userData: UserData | null;
           login: (from: AuthForm) => Promise<void>;
           register: (from: AuthForm) => Promise<void>;
           logout: () => Promise<void>;
       }
     | undefined
 >(undefined);
-
+// 获得token
+//async function getUserByToken() {
+//    let user = null;
+//    const token = await authJira.getToken();
+//    if (token) {
+//        const data = await http('me', { token });
+//        user = data;
+//    }
+//    return user;
+//}
 // context 对象接受一个名为 displayName 的 property，类型为字符串。React DevTools 使用该字符串来确定 context 要显示的内容
 AuthContext.displayName = 'AuthContext'; // "MyDisplayName.Provider" 在 DevTools 中
 
 export const AuthProvider = (props: { children: ReactNode }) => {
     // 定义状态
-    const [userData, setUserData] = useState<User | null>(null);
+    const [userData, setUserData] = useState<UserData | null>(null);
 
     // point free 消除user => setUserData(user)中的user参数
     // const login = (form: AuthForm) => authJira.login(form).then(user => setUserData(user));

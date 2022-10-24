@@ -26,3 +26,9 @@ export interface Project {
   personId: number | string
 
 }
+export interface UserData {
+
+  id: number | string,
+  name: string,
+
+}

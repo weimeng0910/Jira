@@ -2,11 +2,13 @@
 * handlers： 主要为定义 API 逻辑的代码
 */
 import { rest, RestRequest } from 'msw';
+//导入jwt解密token中的id
+import jwt from 'jsonwebtoken';
 
 // 引入处理数据的文件
 import * as db from './db';
 // 导入开发URL
-import { API_URL, projectDB } from '../config';
+import { API_URL, projectDB, userDB } from '../config';
 // 导入数据
 import { initData } from './initData';
 import { ResponseError, RequestBody, PostRequestParams } from './type/handlersType';
@@ -16,30 +18,38 @@ import { ResponseError, RequestBody, PostRequestParams } from './type/handlersTy
 // const sleep = t:number => new Promise(resolve => setTimeout(resolve, t));
 //数据初始化
 initData();
-// 获得token
-const getToken = (req: RestRequest) => req.headers.get('Authorization')?.replace('Bearer ', '');
 
-//检查用户的token
+/*
+* 用户携带token登陆，通过token中的id查找用户是否存在
+*/
+
+// 获得用户携带存在localstorega中的token
+export const getToken = (req: RestRequest) => req.headers.get('Authorization')?.replace('Bearer ', '');
+
+//通过请求头中携带的token，并解密其中的id来检查用户是否存在
 // async ,返回的都是Promise对象
 async function getUser(req: RestRequest) {
+  //获得token
   const token = getToken(req);
   if (!token) {
     const error: ResponseError = new Error('Token是强制性的 ');
     error.status = 401;
     throw error;
   }
+  // 定义一个变量来接收token中的id
   let userId;
 
   try {
     // jwt解密ID
-    userId = Buffer.from(token, 'base64').toString();
-    // userId = jwt.decode(token) as string;
+    //userId = Buffer.from(token, 'base64').toString();
+    userId = jwt.decode(token) as string;
   } catch {
     // 失败了就捕获
     const error: ResponseError = new Error('令牌无效。 请重新连接');
     error.status = 401;
     throw error;
   }
+  // 将id传入获得用户
   const user = db.loadUserById(userId, true);
   if (!user) {
     const error: ResponseError = new Error('找不到使用此令牌的用户');
@@ -48,6 +58,10 @@ async function getUser(req: RestRequest) {
   }
   return user;
 }
+
+/*
+* 处理各种请求把数据返回前端
+*/
 
 export const handlers = [
 
@@ -93,8 +107,8 @@ export const handlers = [
     // 组装数据
     const userFields = { username, password };
 
-    const userData = await db.authenticate(userFields);
-    return res(ctx.json({ userData }));
+    const user = await db.authenticate(userFields);
+    return res(ctx.json({ user }));
   }),
 
   // 响应get请求获得项目数据
@@ -109,7 +123,26 @@ export const handlers = [
     return res(ctx.status(500));
 
   }),
+  // 响应post请求用户列表数据
+  rest.post<RequestBody>(`${API_URL}/users`, async (_req, res, ctx) => {
+    //const user = await getUser(req);
+    //if (user) {
+    //  console.log(user.id, '提交的用户数据');
+    //}
 
+
+
+    // 获得前瑞发送的参数
+    //const { id } = req.params;
+    //调用写入数据的函数
+    const userData = await db.ScreensUserData(userDB);
+    if (userData) {
+      return res(ctx.status(200), ctx.json(userData));
+    }
+    return res(ctx.status(200), ctx.json(userData));
+
+  }),
+  // 携带前瑞token请求
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
     const user = await getUser(req);
     const token = getToken(req);

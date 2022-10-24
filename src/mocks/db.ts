@@ -12,6 +12,7 @@ import { localStorageKey } from '../config';
 import { generteToken } from './core/util';
 import { ResponseError, RequestBody, User, Project } from './type/handlersType';
 
+
 type Users = User[];
 
 // 加载存在 localStorage里的用户数据
@@ -104,25 +105,29 @@ async function createUser(data: { username: string, password: string }) {
     error.status = 400;
     throw error;
   }
-  //定义令牌
-  const token = generteToken(id, 2);
+
   // 组装新的用户数据
-  const user = { id, username, passwordHash, token };
+  const user = { id, username, passwordHash };
   // 何存用户
   saveUser(user);
   return loadUserById(id);
 }
-// 客户登陆时返回用户的信息
+
+
+// 客户登陆时返回用户的信息,生成token
 async function authenticate(params: RequestBody) {
   const { username, password } = params;
+  // 检查用户是否为空
   validateUser({ username, password });
+  // 根据用户名，生成唯一ID
   const id = hashcode(username);
-  const user = loadUsers().find((item: User) => item.id === id)!;
+  // 根据ID读取相关用户数据
+  const user = (await loadUserById(id)) as User;
+  //定义令牌
+  const token = generteToken(id, 2);
   if (user.passwordHash === hashcode(password)) {
-    //console.log(user.token);
 
-    return { ...clean(user) };
-
+    return { ...clean(user), token };
   }
   const error: ResponseError = new Error('用户名或者密码不正确');
   error.status = 400;
@@ -151,6 +156,19 @@ async function ScreensProjectsData(storageKey: string, personId: string) {
   }
   return projectsData;
 
+};
+// 加载项目管理用户数据
+async function ScreensUserData(storageKey: string) {
+
+  // 加载localStorage里的项目数据
+  const userData = loadScreensData(storageKey);
+  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
+  //if (userId) {
+  //  const result = userData.find((item: UserData) => item.id === userId);
+  //  return result;
+  //}
+  return userData;
+
 }
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById, ScreensProjectsData };
+export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData };

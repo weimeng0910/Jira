@@ -17,8 +17,7 @@ interface ResponseError extends Error {
 }
 
 export const http = async (
-  endpoint: string,
-  { data, token, headers, ...customConfig }: Config = {}
+  endpoint: string, { data, token, headers, ...customConfig }: Config = {}
 ) => {
   const config = {
     method: 'GET',
