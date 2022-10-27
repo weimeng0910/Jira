@@ -113,8 +113,12 @@ export const handlers = [
 
   // 响应get请求获得项目数据
   rest.get<RequestBody, PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
+
     // 获得前瑞发送的参数
-    const { personId } = req.params;
+    const personId = req.url.searchParams.get('personId')!;
+    const name = req.url.searchParams.get('name')!;
+    console.log(personId, 'personId 输出');
+    console.log(name, 'name 输出');
     //调用写入数据的函数
     const projectData = await db.ScreensProjectsData(projectDB, personId);
     if (projectData) {

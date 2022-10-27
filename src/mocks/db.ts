@@ -146,6 +146,8 @@ const loadScreensData = (storageKey: string) => {
 
 // 根据传入参数响应数据
 async function ScreensProjectsData(storageKey: string, personId: string) {
+  //console.log(personId, '传入数据库的personId');
+
 
   // 加载localStorage里的项目数据
   const projectsData = loadScreensData(storageKey);

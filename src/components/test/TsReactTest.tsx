@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import { FC } from 'react';
 
 import { useArray } from '@/utils/hooks/useArray';
-import { useMount } from '@/utils/hooks/useMount';
+import useEffectOnce from '@/utils/hooks/useMount';
 
 export const TsReactTest: FC = () => {
     const persons: { name: string; age: number }[] = [
@@ -19,7 +19,7 @@ export const TsReactTest: FC = () => {
 
     const { value, clear, removeIndex, add } = useArray(persons);
 
-    useMount(() => {
+    useEffectOnce(() => {
         console.log(value);
         //add({name:'meng'});
         //removeIndex('123');

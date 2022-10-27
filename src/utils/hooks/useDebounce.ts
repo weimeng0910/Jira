@@ -1,22 +1,22 @@
 import { useEffect, useState } from 'react';
 
-export default function useDebounce<T>(value: T, delay?: number): T {
+export const useDebounce = <T>(value: T, delay?: number): T => {
   //定义一个内部的变量用来更新value
-  const [debouncedValue, setDebouncedValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
     //每次在value值变化时都会设置一个新的定时器
-    const handler = setTimeout(() => {
+    const timeout = setTimeout(() => {
       setDebouncedValue(value);
-    }, delay);
+    }, delay || 500);
     //每次在上一个useEffect处理完以后再运行，清理上次定时器的任务
-    return () => {
-      clearTimeout(handler);
-    };
+    return () =>
+      clearTimeout(timeout);
+
   }, [value, delay]);
 
   return debouncedValue;
-}
+};
 //延迟执行最后一个指令
 // function debounce(fn, delay = 5000) {
 //   //初始化变量
