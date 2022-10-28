@@ -120,7 +120,9 @@ export const handlers = [
     console.log(personId, 'personId 输出');
     console.log(name, 'name 输出');
     //调用写入数据的函数
-    const projectData = await db.ScreensProjectsData(projectDB, personId);
+    const projectData = await db.ScreensProjectsData(projectDB, personId, name);
+    console.log(projectData, '查询到的数据');
+
     if (projectData) {
       return res(ctx.status(200), ctx.json(projectData));
     }

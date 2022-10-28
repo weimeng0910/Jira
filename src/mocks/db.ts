@@ -145,15 +145,18 @@ const loadScreensData = (storageKey: string) => {
 };
 
 // 根据传入参数响应数据
-async function ScreensProjectsData(storageKey: string, personId: string) {
-  //console.log(personId, '传入数据库的personId');
-
+async function ScreensProjectsData(storageKey: string, personId?: string, name?: string) {
 
   // 加载localStorage里的项目数据
   const projectsData = loadScreensData(storageKey);
-  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
-  if (personId) {
-    const result = projectsData.find((item: Project) => item.personId === personId);
+  //localStorage是string|null,personId传入的是strin，所以只需要if(personId)
+  if (personId || name) {
+    const result = projectsData.filter((item: Project) =>
+
+      item.personId === Number.parseInt(personId!, 10) || item.name === name
+    );
+    console.log(result, 'data,personid');
+
     return result;
   }
   return projectsData;

@@ -43,11 +43,8 @@ export const ProjectListScreen = () => {
             .get(`${API_URL}/projects?${qs.stringify(cleanObject(debounceParam))}`)
             //.get(`${API_URL}/projects?${qs.stringify(param)}`)
             .then(async response => {
-                //console.log(response, '返回');
-
                 // eslint-disable-next-line promise/always-return
                 if (response) {
-                    //console.log(response.data, 'w2');
                     setList(await response.data);
                 }
             });
