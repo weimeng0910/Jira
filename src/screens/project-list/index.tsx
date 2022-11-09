@@ -29,7 +29,7 @@ export const ProjectListScreen = () => {
 
     //自定义hook
     const debounceParam = useDebounce<Param>(param, 2000);
-    const result1 = cleanObject(debounceParam);
+    const paramResult = cleanObject(debounceParam);
     //定义请求的工程列表的状态
     const [list, setList] = useState<any>([]);
 
@@ -39,13 +39,13 @@ export const ProjectListScreen = () => {
     //请求用户数据
     useEffect(() => {
         const asynProjectsResult = async () => {
-            const result = await getProjectsList(result1);
+            const result = await getProjectsList(paramResult);
             console.log(result, 'project');
 
             return setList(result);
         };
         asynProjectsResult();
-    }, [result1]);
+    }, [paramResult]);
 
     //useEffect(() => {
     //    // eslint-disable-next-line promise/catch-or-return
