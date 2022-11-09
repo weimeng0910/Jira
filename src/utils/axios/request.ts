@@ -107,13 +107,13 @@ RequestHttp.interceptors.request.use(
  * @params {ILogin} params
  * @return {Promise}
  */
-// export const Login = (params: Params): Promise<IResponse> => axiosInstance.post(`${API_URL}/login`, params).then(res => res.data);
+//export const Login = (params: Params): Promise<IResponse> => RequestHttp.post(`${API_URL}/login`, params).then(res => res.data);
 
 /**
  * @description: 通过id获取用户
  * @params {IUser} params
  * @return {Promise}
  */
-//export const getUserInfo = (params: IUser): Promise<IResponse> => axiosInstance.post('user/getInfo', params).then(res => res.data);
+//export const getUserInfo = (params: IUser): Promise<IResponse> => RequestHttp.post('user/getInfo', params).then(res => res.data);
 
 export default RequestHttp;

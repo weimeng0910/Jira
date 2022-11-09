@@ -4,7 +4,7 @@
 */
 import axios from 'axios';
 
-// 导入全局配制
+// 导入全局配制，本地存储中的 token 键
 import { API_URL, authProviderToken } from '../config';
 // 导入类型
 import { AuthForm, UserData } from '@/types/user';
@@ -68,6 +68,3 @@ async function logout() {
 }
 
 export { getToken, login, register, logout, };
-
-
-export { authProviderToken } from '../config';

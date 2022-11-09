@@ -16,7 +16,7 @@ export const UnauthenticatedAPP: FC = () => {
                 htmlType='submit'
                 style={{ marginLeft: '300px' }}
             >
-                切换到{isRegister ? '登陆' : '注册'}
+                {isRegister ? '已经有账号了？直接登录' : '没有账号？注册新账号'}
             </Button>
         </div>
     );

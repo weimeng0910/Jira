@@ -99,6 +99,7 @@ export const handlers = [
 
   // 登陆
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
+    console.log(req, '后瑞');
 
     const body = await req.json() as RequestBody;
 
@@ -116,12 +117,13 @@ export const handlers = [
 
     // 获得前瑞发送的参数
     const personId = req.url.searchParams.get('personId')!;
+    console.log(personId, '后瑞接收参数');
+
     const name = req.url.searchParams.get('name')!;
-    console.log(personId, 'personId 输出');
-    console.log(name, 'name 输出');
+
     //调用写入数据的函数
     const projectData = await db.ScreensProjectsData(projectDB, personId, name);
-    console.log(projectData, '查询到的数据');
+
 
     if (projectData) {
       return res(ctx.status(200), ctx.json(projectData));
@@ -131,15 +133,6 @@ export const handlers = [
   }),
   // 响应post请求用户列表数据
   rest.post<RequestBody>(`${API_URL}/users`, async (_req, res, ctx) => {
-    //const user = await getUser(req);
-    //if (user) {
-    //  console.log(user.id, '提交的用户数据');
-    //}
-
-
-
-    // 获得前瑞发送的参数
-    //const { id } = req.params;
     //调用写入数据的函数
     const userData = await db.ScreensUserData(userDB);
     if (userData) {
