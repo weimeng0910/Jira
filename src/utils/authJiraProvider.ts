@@ -4,17 +4,29 @@
 */
 import axios from 'axios';
 
+//import { clientApi } from '@/api/index';
 // 导入全局配制，本地存储中的 token 键
 import { API_URL, authProviderToken } from '../config';
 // 导入类型
 import { AuthForm, UserData } from '@/types/user';
 
-// 封装axios
+//Create a function that generates a token
 async function clientApiJira(endpoint: string, data: AuthForm) {
+  console.log(data, '前瑞001');
+
+
+  //const retult = await clientApi(endpoint, data);
+
+  //console.log(retult.data, '002');
+
+
+  //const retult = await clientApi(endpoint, data);
+  //console.log(retult, '数据111');
   const config = {
     headers: { 'Content-Type': 'application/json' },
 
   };
+  //return retult?.data.userData;
   return axios
     .post(`${API_URL}/${endpoint}`, JSON.stringify(data), config)
     .then(response => response.data.user)
@@ -24,13 +36,13 @@ async function clientApiJira(endpoint: string, data: AuthForm) {
       }
     });
 };
+// Gets Token.
 
-// 获得存储的token
 async function getToken() {
   return window.localStorage.getItem(authProviderToken);
 }
 
-// 重新设置用户的token令牌
+//Set Token.
 function storeToken(userData: UserData) {
 
   window.localStorage.setItem(authProviderToken, userData.token || '');

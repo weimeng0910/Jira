@@ -58,25 +58,25 @@ export const http = async (
 
     });
 };
-export const clientApi = async (endpoint: string) => {
-  //const page = 1;
-  const startChar = endpoint.includes('?') ? '&' : '?';
-  //const keyLang = `${startChar}api_key=${API_KEY}&language=${lang}&page=${page}`;
+//export const clientApi = async (endpoint: string) => {
+//  //const page = 1;
+//  const startChar = endpoint.includes('?') ? '&' : '?';
+//  //const keyLang = `${startChar}api_key=${API_KEY}&language=${lang}&page=${page}`;
 
-  return axios.post(`${API_URL}/${endpoint}${startChar}`).catch(error => {
-    if (error.response) {
-      const err = {
-        ...error.response,
-        message: error.response?.data?.status_message,
-      };
-      throw err;
-    }
-    throw error;
+//  return axios.post(`${API_URL}/${endpoint}${startChar}`).catch(error => {
+//    if (error.response) {
+//      const err = {
+//        ...error.response,
+//        message: error.response?.data?.status_message,
+//      };
+//      throw err;
+//    }
+//    throw error;
 
 
 
-  });
-};
+//  });
+//};
 
 export const useHttp = async () => {
   //const { userData } = useAuth();

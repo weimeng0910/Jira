@@ -3,10 +3,10 @@
  */
 import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
 
+import { http } from '@/api/http';
 import { AuthForm, UserData } from '@/types/user';
 import * as authJira from '@/utils/authJiraProvider';
 import useEffectOnce from '@/utils/hooks/useMount';
-import { http } from '@/utils/http';
 
 const AuthContext = createContext<
     | {
@@ -20,10 +20,10 @@ const AuthContext = createContext<
 // 获得token
 async function getUserByToken() {
     let user = null;
-    const token = await authJira.getToken();
+    const token = (await authJira.getToken()) || '';
     if (token) {
-        const data = await http('me', { token });
-        user = data;
+        const data = await http({ url: 'me', method: 'get', token });
+        user = data.user;
     }
     return user;
 }
@@ -58,7 +58,11 @@ export const AuthProvider = (props: { children: ReactNode }) => {
     );
     //加载用户token
     useEffectOnce(() => {
-        getUserByToken();
+        getUserByToken()
+            .then(setUserData)
+            .catch(error => {
+                console.log(error);
+            });
     });
     return (
         <AuthContext.Provider

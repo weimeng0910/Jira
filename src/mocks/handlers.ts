@@ -99,7 +99,8 @@ export const handlers = [
 
   // 登陆
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
-    console.log(req, '后瑞');
+    console.log(req, '后瑞001');
+    console.log(res.name, '后瑞002');
 
     const body = await req.json() as RequestBody;
 
@@ -107,6 +108,7 @@ export const handlers = [
     const password = body.password as string;
     // 组装数据
     const userFields = { username, password };
+    console.log(userFields, '后瑞003');
 
     const user = await db.authenticate(userFields);
     return res(ctx.json({ user }));

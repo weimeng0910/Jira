@@ -4,7 +4,8 @@ import { AuthenticatedAPP } from './authenticated-app';
 import { useAuth } from './context/AuthContext';
 import { UnauthenticatedAPP } from './unauthenticated-app';
 import '@/App.less';
-import '@/css/style.css';
+
+//import '@/css/style.css';
 
 // FC  是 FunctionComponent
 export const App: FC = () => {

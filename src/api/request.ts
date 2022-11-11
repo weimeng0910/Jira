@@ -3,9 +3,12 @@
  */
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import qs from 'qs';
+// 引入antd 提示框，这个项目里用什么组件库这里引什么
 import { message } from 'antd';
 
+// 引入状态码文件
 import { showMessage } from './status';
+// 引入请求地址
 import { API_URL } from '../config';
 // 定义写入localStorageKey
 import { authProviderToken } from '../config';
@@ -17,7 +20,6 @@ export interface IResponse {
 }
 //基础URL，axios将会自动拼接在url前
 const BASE_URL = API_URL;
-
 //默认请求超时时间
 const timeout = 30_000;
 
@@ -32,8 +34,9 @@ const serviceAxios: AxiosInstance = axios.create({
 
   // `headers` 是即将被发送的自定义请求头
   headers: {
+
     Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/x-www-form-urlencoded'// 传参方式表单
   },
 
   // `transformRequest` 允许在向服务器发送前，修改请求数据
@@ -57,6 +60,7 @@ serviceAxios.interceptors.request.use(
 
   (config: AxiosRequestConfig) => {
     // 1.发送网络请求时，在界面中间位置显示Loading的组件
+    //......loading代码
     //2.请求要求用户必须携带token,如果没有携带直接跳转到登陆页面
     // 登录流程控制中，根据本地是否存在token判断用户的登录情况
     // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token

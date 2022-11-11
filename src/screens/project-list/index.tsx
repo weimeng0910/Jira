@@ -1,24 +1,27 @@
-//导入qs和UI
+//UI
 import { Button } from 'antd';
 // 外部依赖
-//import axios from 'axios';
-//import qs from 'qs';
 import { useEffect, useState } from 'react';
 
 //导入内部组件
 import List from './list';
 import SearchPanel from './search-panel';
-//API
+//导入API请求
 import { getUsersList, getProjectsList } from '@/api/index';
-//import { API_URL } from '@/config';
+//导入type
+//import { User } from '@/types/user';
 // 本地依赖
-import { cleanObject } from '@/utils/cleanObject';
+//import { cleanObject } from '@/utils/cleanObject';
 import { useDebounce } from '@/utils/hooks/useDebounce';
 import useEffectOnce from '@/utils/hooks/useMount';
 
 interface Param {
     name: string;
     personId: string;
+}
+export interface User {
+    id: number | string;
+    name: string;
 }
 export const ProjectListScreen = () => {
     // 组件状态
@@ -29,7 +32,7 @@ export const ProjectListScreen = () => {
 
     //自定义hook
     const debounceParam = useDebounce<Param>(param, 2000);
-    const paramResult = cleanObject(debounceParam);
+    //const paramResult = cleanObject(debounceParam);
     //定义请求的工程列表的状态
     const [list, setList] = useState<any>([]);
 
@@ -39,13 +42,13 @@ export const ProjectListScreen = () => {
     //请求用户数据
     useEffect(() => {
         const asynProjectsResult = async () => {
-            const result = await getProjectsList(paramResult);
+            const result = await getProjectsList(debounceParam);
             console.log(result, 'project');
 
             return setList(result);
         };
         asynProjectsResult();
-    }, [paramResult]);
+    }, [debounceParam]);
 
     //useEffect(() => {
     //    // eslint-disable-next-line promise/catch-or-return
