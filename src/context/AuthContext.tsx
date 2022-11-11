@@ -20,7 +20,7 @@ const AuthContext = createContext<
 // 获得token
 async function getUserByToken() {
     let user = null;
-    const token = (await authJira.getToken()) || '';
+    const token = await authJira.getToken();
     if (token) {
         const data = await http({ url: 'me', method: 'get', token });
         user = data.user;
