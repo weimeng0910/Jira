@@ -75,7 +75,7 @@ serviceAxios.interceptors.request.use(
       config.headers.Authorization = token;
     }
     //3.params/data序列化操作
-    if (config.method === 'post') {
+    if (config.method?.toUpperCase() === 'POST') {
       config.data = qs.stringify(config.data);
     }
     return config;

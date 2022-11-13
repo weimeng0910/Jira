@@ -11,7 +11,7 @@ import { getUsersList, getProjectsList } from '@/api/index';
 //导入type
 //import { User } from '@/types/user';
 // 本地依赖
-//import { cleanObject } from '@/utils/cleanObject';
+import { cleanObject } from '@/utils/cleanObject';
 import { useDebounce } from '@/utils/hooks/useDebounce';
 import useEffectOnce from '@/utils/hooks/useMount';
 
@@ -42,7 +42,7 @@ export const ProjectListScreen = () => {
     //请求用户数据
     useEffect(() => {
         const asynProjectsResult = async () => {
-            const result = await getProjectsList(debounceParam);
+            const result = await getProjectsList(cleanObject(debounceParam));
             console.log(result, 'project');
 
             return setList(result);
