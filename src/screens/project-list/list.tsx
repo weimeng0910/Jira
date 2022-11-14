@@ -1,4 +1,5 @@
-//import React from 'react';
+import { Table } from 'antd';
+
 import { User } from '@/screens/project-list/search-panel';
 
 interface Project {
@@ -14,23 +15,30 @@ interface ListProps {
 }
 
 const List = ({ users, list }: ListProps) => (
-    <table>
-        <thead>
-            <tr>
-                <th>名称</th>
-                <th>负责人</th>
-            </tr>
-        </thead>
-        <tbody>
-            {list.map(project => (
-                <tr key={project.id}>
-                    <td>{project.name}</td>
-                    {/* undefined.name */}
-                    <td>{users.find(user => user.id === project.personId)?.name || '未知'}</td>
-                </tr>
-            ))}
-        </tbody>
-    </table>
+    <Table
+        pagination={false}
+        columns={[
+            {
+                title: '名称',
+                dataIndex: 'name',
+                //localeCompare排序中文字符
+                sorter: (a, b) => a.name.localeCompare(b.name)
+            },
+            {
+                title: '负责人',
+
+                render(value, project) {
+                    return (
+                        <span key={value.id}>
+                            {users.find((user: User) => user.id === project.personId)?.name ||
+                                '未知'}
+                        </span>
+                    );
+                }
+            }
+        ]}
+        dataSource={list}
+    />
 );
 
 export default List;

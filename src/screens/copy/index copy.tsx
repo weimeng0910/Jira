@@ -1,9 +1,8 @@
+//UI
+import { Button } from 'antd';
 // 外部依赖
 import { useEffect, useState } from 'react';
 
-//导入内部组件
-import List from './list';
-import SearchPanel from './search-panel';
 //导入API请求
 import { getUsersList, getProjectsList } from '@/api/index';
 //导入type
@@ -12,6 +11,10 @@ import { getUsersList, getProjectsList } from '@/api/index';
 import { cleanObject } from '@/utils/cleanObject';
 import { useDebounce } from '@/utils/hooks/useDebounce';
 import useEffectOnce from '@/utils/hooks/useMount';
+
+//导入内部组件
+import List from '../project-list/list';
+import SearchPanel from '../project-list/search-panel';
 
 interface Param {
     name: string;
@@ -93,6 +96,7 @@ export const ProjectListScreen = () => {
                 users={users || []}
                 list={list || []}
             />
+            <Button type='primary'>Antd 按钮</Button>
         </div>
     );
 };

@@ -106,6 +106,11 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
               loader: 'less-loader',
               options: {
                 lessOptions: {
+                  exclude: /node_modules/,
+                  // modifyVars: theme, // 自定义主题的
+                  modifyVars: {
+                    '@primary-color': '#1DA57A'
+                  },
                   javascriptEnabled: true,
                 }
 
