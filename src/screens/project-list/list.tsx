@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 
+//import { nanoid } from 'nanoid';
 import { User } from '@/screens/project-list/search-panel';
 
 interface Project {
@@ -27,17 +28,14 @@ const List = ({ users, list }: ListProps) => (
             {
                 title: '负责人',
 
-                render(value, project) {
-                    return (
-                        <span key={value.id}>
-                            {users.find((user: User) => user.id === project.personId)?.name ||
-                                '未知'}
-                        </span>
-                    );
-                }
+                render: project => (
+                    <span>{users.find(user => user.id === project.personId)?.name || '未知'}</span>
+                )
             }
         ]}
         dataSource={list}
+        //设置唯一的key
+        rowKey={project => project.id}
     />
 );
 

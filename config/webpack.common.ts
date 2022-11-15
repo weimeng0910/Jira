@@ -168,7 +168,12 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
         {
           test: /\.txt/,
           type: 'asset/source'
-        }
+        },
+        {
+          test: /\.svg$/,
+          use: ['@svgr/webpack', 'svg-url-loader'],
+        },
+
       ]
     },
     performance: {

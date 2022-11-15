@@ -30,6 +30,7 @@
 ├── dist                    // 打包输出目录
 ├── public                  // 项目公开目录
 ├── src                     // src开发目录
+│   ├── assets              // svg图片
 │   ├── mocks               // server，Jwt
 │   ├── components          // 公共组件
 │   ├── routers             // 项目路由配置
@@ -174,4 +175,20 @@ yarn add antd
 
 ```
 yarn add msw
+```
+
+### React 中 css-in-js Emotion 安装和使用
+
+```
+yarn add @emotion/react @emotion/styled
+```
+
+vscode 安装插件，vscode-styled-components
+
+### React 项目中 webpack 加载 svg
+
+```
+yarn add  svg-url-loader --dev
+yarn add  @svgr/webpack --dev
+yarn add  react-svg-loader --dev
 ```
