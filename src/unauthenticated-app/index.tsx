@@ -10,7 +10,7 @@ import right from '@/assets/right.svg';
 
 const Container = styled.div`
     /* 弹性布局 */
-    display: 'flex';
+    display: flex;
     /* 选择column或者column-reverse者时，你的主轴会沿着下面方向延展 — 也就是块排列的方向。 */
     flex-direction: column;
     /* 为了使我们的盒子居中，通过align-items属性，可以将交叉轴上的 item 对齐 */
@@ -20,6 +20,9 @@ const Container = styled.div`
 `;
 const NewCard = styled(Card)`
     width: 40rem;
+
+    /* min-height 属性设置元素的最小高度。 */
+    min-height: 56rem;
     padding: 3.6em 4rem;
     /* 边框出现圆角 */
     border-radius: 0.3rem;
@@ -30,8 +33,7 @@ const NewCard = styled(Card)`
     box-sizing: border-box;
     /* box-shadow 属性向框添加一个或多个阴影。 */
     box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
-    /* min-height 属性设置元素的最小高度。 */
-    min-height: 56rem;
+
     text-align: center;
 `;
 const Header = styled.header`
@@ -56,18 +58,10 @@ export const LongButton = styled(Button)`
 `;
 export const UnauthenticatedAPP = (): ReactElement => {
     const [isRegister, setIsRegister] = useState(false);
-
     return (
         <Container>
-            <div>
-                <img
-                    alt=''
-                    src={logo}
-                />
-            </div>
             <Header />
             <Background />
-
             <NewCard>
                 {isRegister ? <RegisterScreen /> : <LoginScreen />}
                 <Divider />
