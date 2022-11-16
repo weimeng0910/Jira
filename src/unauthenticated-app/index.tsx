@@ -1,12 +1,12 @@
-//import left from '@assets/left.svg';
-//import right from '@assets/right.svg';
 import styled from '@emotion/styled';
-import { Button, Card } from 'antd';
+import { Button, Card, Divider } from 'antd';
 import { useState, ReactElement } from 'react';
 
 import LoginScreen from './login';
 import RegisterScreen from './register';
+import left from '@/assets/left.svg';
 import logo from '@/assets/logo.svg';
+import right from '@/assets/right.svg';
 
 const Container = styled.div`
     /* 弹性布局 */
@@ -40,14 +40,37 @@ const Header = styled.header`
     background-size: 8rem;
     width: 100%;
 `;
+const Background = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed; // 决定背景图片是否会随页面滑动而滑动
+    background-position: left bottom, right bottom;
+    background-size: calc(((100vw - 40rem) / 2) - 3.2rem), calc(((100vw - 40rem) / 2) - 3.2rem),
+        cover;
+    background-image: url(${left}), url(${right});
+`;
+export const LongButton = styled(Button)`
+    width: 100%;
+`;
 export const UnauthenticatedAPP = (): ReactElement => {
     const [isRegister, setIsRegister] = useState(false);
 
     return (
         <Container>
+            <div>
+                <img
+                    alt=''
+                    src={logo}
+                />
+            </div>
             <Header />
+            <Background />
+
             <NewCard>
                 {isRegister ? <RegisterScreen /> : <LoginScreen />}
+                <Divider />
                 <Button
                     onClick={() => setIsRegister(!isRegister)}
                     style={{ justifyContent: 'center' }}

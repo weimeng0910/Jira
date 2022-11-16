@@ -149,11 +149,23 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
+        {
+          test: /\.svg$/,
+          oneOf: [
+            {
+              dependency: { not: ['url'] }, // exclude new URL calls
+              use: ['@svgr/webpack', 'new-url-loader'],
+            },
+            {
+              type: 'asset', // export a data URI or emit a separate file
+            },
+          ],
+        },
 
         // 图片文件引入
         {
-          test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
-          type: 'asset/resource',
+          test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf|svg)$/i,
+          type: 'asset',
           generator: {
             filename: 'img/[hash][ext][query]'
           },
@@ -169,10 +181,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           test: /\.txt/,
           type: 'asset/source'
         },
-        {
-          test: /\.svg$/,
-          use: ['@svgr/webpack', 'svg-url-loader'],
-        },
+
 
       ]
     },

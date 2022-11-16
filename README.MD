@@ -187,8 +187,11 @@ vscode 安装插件，vscode-styled-components
 
 ### React 项目中 webpack 加载 svg
 
+1.使用 SVG 作为组件
+
 ```
-yarn add  svg-url-loader --dev
-yarn add  @svgr/webpack --dev
-yarn add  react-svg-loader --dev
+yarn add  new-url-loader -D
+yarn add -D @svgr/webpack
 ```
+
+3.安装 VSCode Extension: SVG Gallery
