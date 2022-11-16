@@ -1,8 +1,12 @@
+import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
 import { FC, ReactElement } from 'react';
 
 import { useAuth } from '@/context/AuthContext';
 
+const LongButton = styled(Button)`
+    width: 100%;
+`;
 const LoginScreen: FC = (): ReactElement => {
     const { login } = useAuth();
 
@@ -34,13 +38,13 @@ const LoginScreen: FC = (): ReactElement => {
                 />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button
+            <Form.Item>
+                <LongButton
                     type='primary'
                     htmlType='submit'
                 >
                     登陆
-                </Button>
+                </LongButton>
             </Form.Item>
         </Form>
     );

@@ -1,8 +1,12 @@
+import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
 import { FC, ReactElement } from 'react';
 
 import { useAuth } from '@/context/AuthContext';
 
+const LongButton = styled(Button)`
+    width: 100%;
+`;
 const RegisterScreen: FC = (): ReactElement => {
     const { register } = useAuth();
 
@@ -34,13 +38,13 @@ const RegisterScreen: FC = (): ReactElement => {
                 />
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button
+            <Form.Item>
+                <LongButton
                     type='primary'
                     htmlType='submit'
                 >
                     注册
-                </Button>
+                </LongButton>
             </Form.Item>
         </Form>
     );
