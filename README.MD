@@ -29,17 +29,18 @@
 │   └── paths.js            // webpack路径配置
 ├── dist                    // 打包输出目录
 ├── public                  // 项目公开目录
+├── text                    // 测试目录
 ├── src                     // src开发目录
 │   ├── assets              // svg图片
 │   ├── mocks               // server，Jwt
 │   ├── components          // 公共组件
+│   │    ├── lib            // Emotion配制的CSS样式组件
 │   ├── routers             // 项目路由配置
 │   ├── views               // 具体业务页面
 │   ├── context             // 全局用户信息
 │   ├── types               // 全局公共类型定义
 │   ├── utils               // 工具库/通用函数
 │   ├── typings.d.ts        // css modules 类型声明文件
-│   ├── index.html          // 入口html页面
 │   ├── index.html          // 入口html页面
 │   └── index.tsx           // 项目入口文件
 ├── .babel.config.js         // babel配置,依赖什么样的插件

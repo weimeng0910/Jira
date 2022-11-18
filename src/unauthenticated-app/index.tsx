@@ -53,7 +53,6 @@ const Container = styled.div`
     display: flex;
     /* 选择column或者column-reverse者时，你的主轴会沿着下面方向延展 — 也就是块排列的方向。 */
     flex-direction: column;
-    /* 为了使我们的盒子居中，通过align-items属性，可以将交叉轴上的 item 对齐 */
     align-items: center;
     /* min-height 属性设置元素的最小高度。 */
     min-height: 100vh;
