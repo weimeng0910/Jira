@@ -1,12 +1,15 @@
 import styled from '@emotion/styled';
-import { Button } from 'antd';
-import { FC } from 'react';
+import { Dropdown, Menu, Button } from 'antd';
 
+//导入jwt解密token中的id
+//import jwt from 'jsonwebtoken';
 import { useAuth } from './context/AuthContext';
 import { ProjectListScreen } from './screens/project-list';
+import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
 import { Row } from '@/components/lib/lib';
 
+//样式定义
 //grid主容器
 const Container = styled.div`
     display: grid;
@@ -23,26 +26,53 @@ const Container = styled.div`
     /*grid-gap: 10rem;*/
 `;
 // grid-area 用来给栅格grid子元素起名字
-const Header = styled(Row)``;
+const Header = styled(Row)`
+    padding: 3.2rem;
+`;
 const HeaderLeft = styled(Row)``;
 
 const HeaderRight = styled.div``;
 const Main = styled.main`
     grid-area: main;
 `;
+//Antd的下拉
+//const menu = (
 
-export const AuthenticatedAPP: FC = () => {
-    const { logout } = useAuth();
+//);
+export const AuthenticatedAPP = () => {
+    const { logout, userData } = useAuth();
+    //let userId = jwt.decode(userData) as string;
+    console.log(userData, 'token123');
+
     return (
         <Container>
             <Header between>
                 <HeaderLeft gap={5}>
-                    <h3>logo</h3>
+                    <Softwarelogo
+                        width='14rem'
+                        color='#3ec785'
+                    />
+
                     <h3>项目</h3>
                     <h3>用户</h3>
                 </HeaderLeft>
                 <HeaderRight>
-                    <Button onClick={logout}>登出</Button>
+                    <Dropdown
+                        overlay={
+                            <Menu>
+                                <Menu.Item key='logout'>
+                                    <Button
+                                        type='link'
+                                        onClick={logout}
+                                    >
+                                        登出
+                                    </Button>
+                                </Menu.Item>
+                            </Menu>
+                        }
+                    >
+                        <Button type='link'>Hi, {userData?.username}</Button>
+                    </Dropdown>
                 </HeaderRight>
             </Header>
 

@@ -26,7 +26,7 @@ export const http = async ({
   data,
   config
 }: any): Promise<any> => {
-  console.log(data, '前瑞API002');
+
 
   method = method.toLowerCase();
   switch (method) {

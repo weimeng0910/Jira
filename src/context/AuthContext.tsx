@@ -8,6 +8,19 @@ import { AuthForm, UserData } from '@/types/user';
 import * as authJira from '@/utils/authJiraProvider';
 import useEffectOnce from '@/utils/hooks/useMount';
 
+// 获得token
+async function getUserByToken() {
+    let user = null;
+    const token = await authJira.getToken();
+    if (token) {
+        const data = await http({ url: 'me', method: 'get', token });
+        console.log(data, '888');
+
+        user = data.user;
+    }
+    return user;
+}
+
 const AuthContext = createContext<
     | {
           userData: UserData | null;
@@ -17,16 +30,6 @@ const AuthContext = createContext<
       }
     | undefined
 >(undefined);
-// 获得token
-async function getUserByToken() {
-    let user = null;
-    const token = await authJira.getToken();
-    if (token) {
-        const data = await http({ url: 'me', method: 'get', token });
-        user = data.user;
-    }
-    return user;
-}
 // context 对象接受一个名为 displayName 的 property，类型为字符串。React DevTools 使用该字符串来确定 context 要显示的内容
 AuthContext.displayName = 'AuthContext'; // "MyDisplayName.Provider" 在 DevTools 中
 
@@ -52,18 +55,25 @@ export const AuthProvider = (props: { children: ReactNode }) => {
         () => authJira.logout().then(() => setUserData(null)),
         [setUserData]
     );
-    const value = useMemo(
-        () => ({ userData, login, register, logout }),
-        [userData, login, logout, register]
-    );
     //加载用户token
     useEffectOnce(() => {
         getUserByToken()
-            .then(setUserData)
+            .then(user => {
+                console.log(user, '666');
+
+                return setUserData(user);
+            })
             .catch(error => {
                 console.log(error);
             });
     });
+    console.log(userData?.username, 'Auth的用户数据');
+
+    const value = useMemo(
+        () => ({ userData, login, register, logout }),
+        [userData, login, logout, register]
+    );
+
     return (
         <AuthContext.Provider
             value={value}

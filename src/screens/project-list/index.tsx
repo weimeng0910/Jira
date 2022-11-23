@@ -1,4 +1,5 @@
 // 外部依赖
+import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
 //导入内部组件
@@ -21,6 +22,10 @@ export interface User {
     id: number | string;
     name: string;
 }
+//定义样式
+const Container = styled.div`
+    padding: 3.2rem;
+`;
 export const ProjectListScreen = () => {
     // 组件状态
     const [param, setParam] = useState<Param>({
@@ -41,8 +46,6 @@ export const ProjectListScreen = () => {
     useEffect(() => {
         const asynProjectsResult = async () => {
             const result = await getProjectsList(cleanObject(debounceParam));
-            console.log(result, 'project');
-
             return setList(result);
         };
         asynProjectsResult();
@@ -66,8 +69,6 @@ export const ProjectListScreen = () => {
         //异步的一个函数，目的是项端写async
         const asynchronousResult = async () => {
             const result = await getUsersList();
-            console.log(result, '请求111');
-
             return setUsers(result);
         };
         asynchronousResult();
@@ -83,7 +84,8 @@ export const ProjectListScreen = () => {
     //});
 
     return (
-        <div>
+        <Container>
+            <h1>项目列表</h1>
             <SearchPanel
                 users={users || []}
                 param={param}
@@ -93,6 +95,6 @@ export const ProjectListScreen = () => {
                 users={users || []}
                 list={list || []}
             />
-        </div>
+        </Container>
     );
 };

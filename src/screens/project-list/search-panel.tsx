@@ -1,6 +1,6 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { Form, Input, Select } from 'antd';
-
-//import { SyntheticEvent } from 'react';
 
 //定义类型
 export interface User {
@@ -20,9 +20,14 @@ interface SearchPanelProps {
 }
 
 const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => (
-    <Form>
+    //layout='inline'是水平排列
+    <Form
+        css={css({ padding: '2rem' })}
+        layout='inline'
+    >
         <Form.Item>
             <Input
+                placeholder='项目名'
                 type='text'
                 value={param.name}
                 onChange={evt =>

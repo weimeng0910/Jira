@@ -2,9 +2,9 @@
 * handlers： 主要为定义 API 逻辑的代码
 */
 import { rest, RestRequest } from 'msw';
-//导入jwt解密token中的id
-import jwt from 'jsonwebtoken';
 
+//导入jwt解密函数来获取token中的id
+import { jwtDecodeGetId } from './core/util';
 // 引入处理数据的文件
 import * as db from './db';
 // 导入开发URL
@@ -13,16 +13,24 @@ import { API_URL, projectDB, userDB } from '../config';
 import { initData } from './initData';
 import { ResponseError, RequestBody, PostRequestParams } from './type/handlersType';
 
-
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 初始化数据
+ */
 // 设置延迟
 // const sleep = t:number => new Promise(resolve => setTimeout(resolve, t));
-//数据初始化
+
 initData();
 
-/*
-* 用户携带token登陆，通过token中的id查找用户是否存在
-*/
 
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ *  用户携带token登陆，通过token中的id查找用户是否存在
+ */
 // 获得用户携带存在localstorega中的token
 export const getToken = (req: RestRequest) => req.headers.get('Authorization')?.replace('Bearer ', '');
 
@@ -31,6 +39,8 @@ export const getToken = (req: RestRequest) => req.headers.get('Authorization')?.
 async function getUser(req: RestRequest) {
   //获得token
   const token = getToken(req);
+
+
   if (!token) {
     const error: ResponseError = new Error('Token是强制性的 ');
     error.status = 401;
@@ -38,11 +48,10 @@ async function getUser(req: RestRequest) {
   }
   // 定义一个变量来接收token中的id
   let userId;
-
   try {
-    // jwt解密ID
-    //userId = Buffer.from(token, 'base64').toString();
-    userId = jwt.decode(token) as string;
+    // jwt函数解密ID，
+    userId = jwtDecodeGetId(token);
+
   } catch {
     // 失败了就捕获
     const error: ResponseError = new Error('令牌无效。 请重新连接');
@@ -59,10 +68,12 @@ async function getUser(req: RestRequest) {
   return user;
 }
 
-/*
-* 处理各种请求把数据返回前端
-*/
-
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ *  处理各种请求把数据返回前端
+ */
 export const handlers = [
 
   // 注册
@@ -99,8 +110,8 @@ export const handlers = [
 
   // 登陆
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
-    console.log(req, '后瑞001');
-    console.log(res.name, '后瑞002');
+    //console.log(req, '后瑞001');
+    //console.log(res.name, '后瑞002');
 
     const body = await req.json() as RequestBody;
 
@@ -108,7 +119,7 @@ export const handlers = [
     const password = body.password as string;
     // 组装数据
     const userFields = { username, password };
-    console.log(userFields, '后瑞003');
+    //console.log(userFields, '后瑞003');
 
     const user = await db.authenticate(userFields);
     return res(ctx.json({ user }));
@@ -119,7 +130,7 @@ export const handlers = [
 
     // 获得前瑞发送的参数
     const personId = req.url.searchParams.get('personId')!;
-    console.log(personId, '后瑞接收参数');
+    //console.log(personId, '后瑞接收参数');
 
     const name = req.url.searchParams.get('name')!;
 
@@ -146,6 +157,8 @@ export const handlers = [
   // 携带前瑞token请求
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
     const user = await getUser(req);
+    console.log(user, '后瑞用户');
+
     const token = getToken(req);
     return res(ctx.json({ user: { ...user, token } }));
   }),

@@ -100,7 +100,7 @@ serviceAxios.interceptors.response.use(
   (response: AxiosResponse) => {
     // 开启 token 认证
     if (response.headers.authorization) {
-      console.log(response.headers.authorization, '后面接收的token');
+      //console.log(response.headers.authorization, '后面接收的token');
 
       localStorage.setItem(authProviderToken, response.headers.authorization);
     } else if (response.data && response.data.token) {

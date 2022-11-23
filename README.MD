@@ -180,11 +180,47 @@ yarn add msw
 
 ### React 中 css-in-js Emotion 安装和使用
 
+1.安装
+
 ```
 yarn add @emotion/react @emotion/styled
 ```
 
-vscode 安装插件，vscode-styled-components
+2.安装插件
+vscode 安装插件，vscode-styled-components 3.使用 css 道具
+emotion 提供一个 css 可以接受嵌套选择器和媒体查询的道具。它可以支持对象或标记的模板文字。
+
+在代码编辑器中打开 App.js 文件并修改它以将<div>s 与 cssprop 一起使用
+
+/\*_ @jsxImportSource @emotion/react _/加上这个注释才可以在 div 中用 css 属性
+
+```
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+function App() {
+  return (
+    <div>
+      <div css={css({
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#eee',
+      })}>
+        This is an example of <code>`css`</code> using an object.
+      </div>
+      <div css={css`
+        margin: 10px;
+        padding: 10px;
+        background-color: #eee;
+      `}>
+        This is an example of <code>`css`</code> using a tagged template literal.
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
 
 ### React 项目中 webpack 加载 svg
 
@@ -196,3 +232,27 @@ yarn add -D @svgr/webpack
 ```
 
 3.安装 VSCode Extension: SVG Gallery
+
+#### 安装 Day.js 处理时间
+
+Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样。
+
+```
+yarn add dayjs
+```
+
+#### 安装 jwt-decode
+
+```
+yarn add jwt-decode
+```
+
+代码示例
+
+```
+// ES6
+import jwt_decode from "jwt-decode";
+decoded = jwt_decode(token)
+console.log(decoded);
+// { name: 'Tom', age: 23, iat: 1584088910, exp: 1584096110 }
+```
