@@ -6,6 +6,13 @@ import { SECRET_KEY, expiresIn } from './config';
 interface SampleClass {
   uid: string
 }
+
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 生成token
+ */
 export const generteToken = (uid: string, scope: number) => {
   const token = jwt.sign(
     {
@@ -20,9 +27,12 @@ export const generteToken = (uid: string, scope: number) => {
   return token;
 };
 
-
-
-
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 解构token中需要的ID
+ */
 export function jwtDecodeGetId(token: string) {
 
   const { uid } = jwt_decode(token) as SampleClass;

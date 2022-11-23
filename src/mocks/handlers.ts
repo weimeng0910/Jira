@@ -39,8 +39,6 @@ export const getToken = (req: RestRequest) => req.headers.get('Authorization')?.
 async function getUser(req: RestRequest) {
   //获得token
   const token = getToken(req);
-
-
   if (!token) {
     const error: ResponseError = new Error('Token是强制性的 ');
     error.status = 401;
