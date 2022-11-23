@@ -1,3 +1,8 @@
+/**
+ * @author meng
+ * @version 1.0
+ *用户登陆后的主界面
+ */
 import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';
 
@@ -35,15 +40,15 @@ const HeaderRight = styled.div``;
 const Main = styled.main`
     grid-area: main;
 `;
-//Antd的下拉
-//const menu = (
-
-//);
+//Antd的menu下拉
+const menuItems = [
+    {
+        key: 'logout',
+        label: '退出登陆'
+    }
+];
 export const AuthenticatedAPP = () => {
     const { logout, userData } = useAuth();
-    //let userId = jwt.decode(userData) as string;
-    console.log(userData, 'token123');
-
     return (
         <Container>
             <Header between>
@@ -59,16 +64,10 @@ export const AuthenticatedAPP = () => {
                 <HeaderRight>
                     <Dropdown
                         overlay={
-                            <Menu>
-                                <Menu.Item key='logout'>
-                                    <Button
-                                        type='link'
-                                        onClick={logout}
-                                    >
-                                        登出
-                                    </Button>
-                                </Menu.Item>
-                            </Menu>
+                            <Menu
+                                items={menuItems}
+                                onClick={logout}
+                            />
                         }
                     >
                         <Button type='link'>Hi, {userData?.username}</Button>

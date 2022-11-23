@@ -1,8 +1,10 @@
-/*
-*  模拟一个后端
-*  本地存储中的数据备份
-*/
-
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 模拟一个后端
+ * 本地存储中的数据备份
+ */
 // 加密
 import CryptoJS from 'crypto-js';
 
@@ -36,23 +38,11 @@ const clean = (user: User) => {
 
 // 检查用户的ID存在
 async function loadUserById(id: string, cleanFields = false) {
-  console.log(id, 'db中传入的id');
-
 
   //调用 loadUsers函数来检查是否存在相同的ID,如果返回true，则搜索停止。
   const users = loadUsers();
-  console.log(users, 'db中的用户数据');
-  const userNew = users.find((item: User) => {
-    console.log(item.id, '008');
-
-    console.log(id, '009');
-
-    return item.id === id;
-
-  });
+  const userNew = users.find((item: User) => item.id === id);
   // 两个 & 符号表示 && 与运算符：
-  console.log(userNew, 'db中的用户');
-
   return cleanFields && userNew ? clean(userNew) : userNew;
 }
 // 保存用户
@@ -168,7 +158,7 @@ async function ScreensProjectsData(storageKey: string, personId?: string, name?:
 
       item.personId === Number.parseInt(personId!, 10) || item.name === name
     );
-    console.log(result, 'data,personid');
+
 
     return result;
   }

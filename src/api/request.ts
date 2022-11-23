@@ -1,4 +1,7 @@
 /**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
  * 网络请求配置,axios二次封装
  */
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
@@ -23,7 +26,14 @@ const BASE_URL = API_URL;
 //默认请求超时时间
 const timeout = 30_000;
 
-// 创建 axios一个实例
+
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 创建 axios一个实例
+ */
+
 const serviceAxios: AxiosInstance = axios.create({
   //url: '/',// `url` 是用于请求的服务器 URL
   timeout,// 请求超时设置
@@ -51,10 +61,15 @@ const serviceAxios: AxiosInstance = axios.create({
   //  }
   //]
 });
+
 /**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
  * http request 拦截器
  * 统一请求拦截===>前端给后端的参数 可配置自定义headers 例如 language、token等
  */
+
 serviceAxios.interceptors.request.use(
 
 
@@ -92,10 +107,15 @@ serviceAxios.interceptors.request.use(
 
   }
 );
+
 /**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
  * http response 拦截器
  * 后台响应数据格式===》后端给前端
  */
+
 serviceAxios.interceptors.response.use(
   (response: AxiosResponse) => {
     // 开启 token 认证
@@ -129,10 +149,6 @@ serviceAxios.interceptors.response.use(
   }
 
 );
-
-
-
-
 
 // 导出至外层，方便统一使用
 export { serviceAxios };

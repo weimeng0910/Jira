@@ -1,5 +1,8 @@
-/*
- *存储全局用户信息
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 存储全局用户信息
  */
 import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
 
@@ -14,8 +17,6 @@ async function getUserByToken() {
     const token = await authJira.getToken();
     if (token) {
         const data = await http({ url: 'me', method: 'get', token });
-        console.log(data, '888');
-
         user = data.user;
     }
     return user;
@@ -58,16 +59,11 @@ export const AuthProvider = (props: { children: ReactNode }) => {
     //加载用户token
     useEffectOnce(() => {
         getUserByToken()
-            .then(user => {
-                console.log(user, '666');
-
-                return setUserData(user);
-            })
+            .then(user => setUserData(user))
             .catch(error => {
                 console.log(error);
             });
     });
-    console.log(userData?.username, 'Auth的用户数据');
 
     const value = useMemo(
         () => ({ userData, login, register, logout }),

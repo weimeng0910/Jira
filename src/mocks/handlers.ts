@@ -1,6 +1,9 @@
-/*
-* handlers： 主要为定义 API 逻辑的代码
-*/
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * handlers： 主要为定义 API 逻辑的代码
+ */
 import { rest, RestRequest } from 'msw';
 
 //导入jwt解密函数来获取token中的id
@@ -108,8 +111,7 @@ export const handlers = [
 
   // 登陆
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
-    //console.log(req, '后瑞001');
-    //console.log(res.name, '后瑞002');
+
 
     const body = await req.json() as RequestBody;
 
@@ -117,7 +119,7 @@ export const handlers = [
     const password = body.password as string;
     // 组装数据
     const userFields = { username, password };
-    //console.log(userFields, '后瑞003');
+
 
     const user = await db.authenticate(userFields);
     return res(ctx.json({ user }));
@@ -155,8 +157,6 @@ export const handlers = [
   // 携带前瑞token请求
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
     const user = await getUser(req);
-    console.log(user, '后瑞用户');
-
     const token = getToken(req);
     return res(ctx.json({ user: { ...user, token } }));
   }),
