@@ -6,9 +6,10 @@
  */
 // 外部依赖
 import styled from '@emotion/styled';
+//导入内部组件
+import { Typography } from 'antd';
 import { useEffect, useState } from 'react';
 
-//导入内部组件
 import List from './list';
 import SearchPanel from './search-panel';
 //导入API请求
@@ -33,6 +34,10 @@ const Container = styled.div`
     padding: 3.2rem;
 `;
 export const ProjectListScreen = () => {
+    //设置loading状态
+    const [isLoading, setIsLoading] = useState(false);
+    //设置错误的状态
+    const [error, setError] = useState<null | Error>(null);
     // 组件状态
     const [param, setParam] = useState<Param>({
         name: '',
@@ -50,8 +55,11 @@ export const ProjectListScreen = () => {
 
     //请求用户数据
     useEffect(() => {
+        setIsLoading(true);
         const asynProjectsResult = async () => {
-            const result = await getProjectsList(cleanObject(debounceParam));
+            const result = await getProjectsList(cleanObject(debounceParam))
+                .catch(setError)
+                .finally(() => setIsLoading(false));
             return setList(result);
         };
         asynProjectsResult();
@@ -97,9 +105,11 @@ export const ProjectListScreen = () => {
                 param={param}
                 setParam={setParam}
             />
+            {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
             <List
+                loading={isLoading}
                 users={users || []}
-                list={list || []}
+                dataSource={list || []}
             />
         </Container>
     );

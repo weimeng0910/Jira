@@ -1,3 +1,9 @@
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 删除对象中的空值的hook
+ */
 //首先写一个方法判断当前值为是undefined或者为null或者为空
 export const isFalsy = (value: number) => value === 0 ? false : !value;
 

@@ -1,4 +1,10 @@
-//以 grid布局，实例展示 emotion 的用法：
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * CSS-IN-JS
+ * 以 grid布局，实例展示 emotion 的用法
+ */
 
 /** @jsxImportSource @emotion/react */
 import styled from '@emotion/styled';

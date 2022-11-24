@@ -1,4 +1,11 @@
-import { Table } from 'antd';
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/24
+ * LIST
+ */
+// 外部依赖
+import { Table, TableProps } from 'antd';
 //import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 
@@ -12,12 +19,11 @@ interface Project {
     organization: string;
     created: number;
 }
-interface ListProps {
-    list: Project[];
+interface ListProps extends TableProps<Project> {
     users: User[];
 }
 
-const List = ({ users, list }: ListProps) => (
+const List = ({ users, ...props }: ListProps) => (
     <Table
         pagination={false}
         columns={[
@@ -48,7 +54,7 @@ const List = ({ users, list }: ListProps) => (
                 )
             }
         ]}
-        dataSource={list}
+        {...props}
         //设置唯一的key
         rowKey={project => project.id}
     />

@@ -1,3 +1,9 @@
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * 注册
+ */
 import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
 import { FC, ReactElement } from 'react';

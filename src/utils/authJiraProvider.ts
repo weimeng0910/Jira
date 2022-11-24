@@ -1,10 +1,13 @@
-/*
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
 * 在真实环境中，如果使用firebase这种第三方，auth服务的话，本文件不需要开发
 * 身份验证和权限认证的文件
-*/
+ */
+// 外部依赖
 import axios from 'axios';
 
-//import { clientApi } from '@/api/index';
 // 导入全局配制，本地存储中的 token 键
 import { API_URL, authProviderToken } from '../config';
 // 导入类型
@@ -12,21 +15,12 @@ import { AuthForm, UserData } from '@/types/user';
 
 //Create a function that generates a token
 async function clientApiJira(endpoint: string, data: AuthForm) {
-  console.log(data, '前瑞001');
 
-
-  //const retult = await clientApi(endpoint, data);
-
-  //console.log(retult.data, '002');
-
-
-  //const retult = await clientApi(endpoint, data);
-  //console.log(retult, '数据111');
   const config = {
     headers: { 'Content-Type': 'application/json' },
 
   };
-  //return retult?.data.userData;
+
   return axios
     .post(`${API_URL}/${endpoint}`, JSON.stringify(data), config)
     .then(response => response.data.user)
