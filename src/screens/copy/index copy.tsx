@@ -1,8 +1,17 @@
-////UI
-//import { Button } from 'antd';
+///**
+// * @author meng
+// * @version 1.0
+// * @date 2022/11/28
+// * 项目列表
+// */
 //// 外部依赖
+//import styled from '@emotion/styled';
+////导入内部组件
+//import { Typography } from 'antd';
 //import { useEffect, useState } from 'react';
 
+//import List from './list';
+//import SearchPanel from './search-panel';
 ////导入API请求
 //import { getUsersList, getProjectsList } from '@/api/index';
 ////导入type
@@ -12,10 +21,6 @@
 //import { useDebounce } from '@/utils/hooks/useDebounce';
 //import useEffectOnce from '@/utils/hooks/useMount';
 
-////导入内部组件
-//import List from '../project-list/list';
-//import SearchPanel from '../project-list/search-panel';
-
 //interface Param {
 //    name: string;
 //    personId: string;
@@ -24,7 +29,15 @@
 //    id: number | string;
 //    name: string;
 //}
+////定义样式
+//const Container = styled.div`
+//    padding: 3.2rem;
+//`;
 //export const ProjectListScreen = () => {
+//    //设置loading状态
+//    const [isLoading, setIsLoading] = useState(false);
+//    //设置错误的状态
+//    const [error, setError] = useState<null | Error>(null);
 //    // 组件状态
 //    const [param, setParam] = useState<Param>({
 //        name: '',
@@ -42,10 +55,11 @@
 
 //    //请求用户数据
 //    useEffect(() => {
+//        setIsLoading(true);
 //        const asynProjectsResult = async () => {
-//            const result = await getProjectsList(cleanObject(debounceParam));
-//            console.log(result, 'project');
-
+//            const result = await getProjectsList(cleanObject(debounceParam))
+//                .catch(setError)
+//                .finally(() => setIsLoading(false));
 //            return setList(result);
 //        };
 //        asynProjectsResult();
@@ -69,8 +83,6 @@
 //        //异步的一个函数，目的是项端写async
 //        const asynchronousResult = async () => {
 //            const result = await getUsersList();
-//            console.log(result, '请求111');
-
 //            return setUsers(result);
 //        };
 //        asynchronousResult();
@@ -86,17 +98,19 @@
 //    //});
 
 //    return (
-//        <div>
+//        <Container>
+//            <h1>项目列表</h1>
 //            <SearchPanel
 //                users={users || []}
 //                param={param}
 //                setParam={setParam}
 //            />
+//            {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
 //            <List
+//                loading={isLoading}
 //                users={users || []}
-//                list={list || []}
+//                dataSource={list || []}
 //            />
-//            <Button type='primary'>Antd 按钮</Button>
-//        </div>
+//        </Container>
 //    );
 //};

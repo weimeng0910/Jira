@@ -5,7 +5,7 @@
  * API解藕，接口配置列表
  * 为了同一个接品多次使用，为了API的统一管理
  */
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 
 import { http } from './http';
 
@@ -26,7 +26,21 @@ export interface IUser {
   name?: string;
   personId?: string | number;
 }
-
+interface Project {
+  id?: number;
+  name: string;
+  personId: number;
+  pin?: boolean;
+  organization?: string;
+  created?: number;
+}
+interface User {
+  id: number | string;
+  name: string;
+  email?: string;
+  title?: string;
+  organization?: string;
+}
 /**
  * @description: 用户登录或者注册
  * @params {String} url
@@ -62,13 +76,8 @@ export const clientApi = async (url: string, params: ILogin): Promise<IResponse>
  * @params {IUser} params
  * @return {Promise}
  */
-//export const getUsersList = (): Promise<AxiosResponse> => http({
-//  url: 'users',
-//  method: 'post'
-//}
-//).then(res => res);
-//正确的写法
-export const getUsersList = async (): Promise<AxiosResponse> => {
+
+export const getUsersList = async (): Promise<User[]> => {
   let resp;
   try {
     resp = await http({
@@ -86,7 +95,7 @@ export const getUsersList = async (): Promise<AxiosResponse> => {
  * @params {IUser} params
  * @return {Promiprojectsse}
  */
-export const getProjectsList = async (params: IUser): Promise<AxiosResponse> => {
+export const getProjectsList = async (params: IUser): Promise<Project[]> => {
   let resp;
   try {
     resp = await http({

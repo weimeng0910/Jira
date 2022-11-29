@@ -11,11 +11,11 @@ import { Form, Input, Select } from 'antd';
 
 //定义类型
 export interface User {
-    id: number;
+    id: number | string;
     name: string;
-    email: string;
-    title: string;
-    organization: string;
+    email?: string;
+    title?: string;
+    organization?: string;
 }
 interface SearchPanelProps {
     param: {

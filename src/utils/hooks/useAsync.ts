@@ -1,109 +1,70 @@
 ///**
 // * @author meng
 // * @version 1.0
-// * @date 2022/11/23
-// * 创建一个自定义挂钩，用于处理所有异步数据获取和更新状态。
+// * @date 2022/11/28
+// * 创建一个自定义hook，用于处理所有异步数据获取和更新状态。
 // */
-//import { useMountedRef } from 'hooks';
-//import { useCallback, useReducer, useState } from 'react';
+import { useState } from 'react';
 
-//interface State<D> {
-//  error: null | Error;
-//  data: D | null;
-//  stat: 'idle' | 'loading' | 'error' | 'success';
-//}
+interface State<T> {
+  error: Error | null;
+  data: T | null;
+  status: 'idle' | 'loading' | 'error' | 'success'
+}
+//默认的state
+const defaultInitialState: State<null> = {
+  status: 'idle',
+  data: null,
+  error: null
+};
+//initialState是传入的state
+export const useAsync = <T>(initialState?: State<T>) => {
 
-//const defaultInitialState: State<null> = {
-//  stat: 'idle',
-//  data: null,
-//  error: null,
-//};
+  const [state, setState] = useState<State<T>>({
 
-//const defaultInitConfig = {
-//  throwOnError: false,
-//};
+    ...defaultInitialState,
 
-//const useSafeDispatch = <T>(dispatch: (...args: T[]) => void) => {
-//  const mountedRef = useMountedRef();
-//  return useCallback(
-//    (...args: T[]) => (mountedRef.current ? dispatch(...args) : void 0),
-//    [dispatch, mountedRef]
-//  );
-//};
+    ...initialState
+  });
+  //定义设置数据的方法
+  const setData = (data: T) => setState({
+    data,
+    status: 'success',
+    error: null
+  });
+  //设置错误的方法，请求完成后发生错误，调用这个方法
+  const setError = (error: Error) => setState({
+    error,
+    status: 'error',
+    data: null
 
-//export const useAsync = <D>(
-//  initialState?: State<D>,
-//  initialConifg?: typeof defaultInitConfig
-//) => {
-//  const config = { ...defaultInitConfig, ...initialConifg };
-//  const [state, dispatch] = useReducer(
-//    (state: State<D>, action: Partial<State<D>>) => ({
-//      ...state,
-//      ...action,
-//    }),
-//    { ...defaultInitialState, ...initialState }
-//  );
-
-//  const safeDispatch = useSafeDispatch(dispatch);
-//  const [retry, setRetry] = useState(() => () => { });
-
-//  const setData = useCallback(
-//    (data: D) =>
-//      safeDispatch({
-//        stat: 'success',
-//        data,
-//        error: null,
-//      }),
-//    [safeDispatch]
-//  );
-
-//  const setError = useCallback(
-//    (error: Error) =>
-//      safeDispatch({
-//        error,
-//        stat: 'error',
-//        data: null,
-//      }),
-//    [safeDispatch]
-//  );
-
-//  // 用来触发异步请求
-//  const run = useCallback(
-//    (promise: Promise<D>, runConfig?: { retry: () => Promise<D> }) => {
-//      if (!promise || !promise.then) {
-//        throw new Error('请传入 promise 类型数组');
-//      }
-//      safeDispatch({ stat: 'loading' });
-
-//      setRetry(() => () => {
-//        if (runConfig?.retry) {
-//          run(runConfig?.retry(), runConfig);
-//        }
-//      });
-//      return promise
-//        .then((data) => {
-//          setData(data);
-//          return data;
-//        })
-//        .catch((error) => {
-//          // catch 会消化异常导致不再抛出
-//          setError(error);
-//          if (config.throwOnError) throw error;
-//          return error;
-//        });
-//    },
-//    [config.throwOnError, setData, setError, safeDispatch]
-//  );
-
-//  return {
-//    isIdle: state.stat === 'idle',
-//    isLoading: state.stat === 'loading',
-//    isError: state.stat === 'error',
-//    isSuccess: state.stat === 'success',
-//    retry,
-//    run,
-//    setData,
-//    setError,
-//    ...state,
-//  };
-//};
+  });
+  //run 用来触发异步请求的方法，设置hook的消费者传入的异步
+  const run = (promise: Promise<T>) => {
+    //如果没有传入promise或者没有then，就表示传入的不是异步函数
+    if (!promise || !promise.then) {
+      throw new Error('请传入promise类型数据');
+    }
+    setState({ ...state, status: 'loading' });
+    return promise
+      .then(data => {
+        setData(data);
+        return data;
+      })
+      // catch 会消化异常导致不再抛出
+      .catch(error => {
+        setError(error);
+        return error;
+      });
+  };
+  return {
+    isIdle: state.status === 'idle',
+    isLoading: state.status === 'loading',
+    isError: state.status === 'error',
+    isSuccess: state.status === 'success',
+    run,
+    setData,
+    setError,
+    ...state
+  };
+};

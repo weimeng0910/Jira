@@ -11,13 +11,13 @@ import dayjs from 'dayjs';
 
 import { User } from '@/screens/project-list/search-panel';
 
-interface Project {
-    id: number;
+export interface Project {
+    id?: number;
     name: string;
     personId: number;
-    pin: boolean;
-    organization: string;
-    created: number;
+    pin?: boolean;
+    organization?: string;
+    created?: number;
 }
 interface ListProps extends TableProps<Project> {
     users: User[];
@@ -56,7 +56,7 @@ const List = ({ users, ...props }: ListProps) => (
         ]}
         {...props}
         //设置唯一的key
-        rowKey={project => project.id}
+        rowKey={project => project.id!}
     />
 );
 
