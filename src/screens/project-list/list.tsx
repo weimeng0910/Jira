@@ -12,12 +12,12 @@ import dayjs from 'dayjs';
 import { User } from '@/screens/project-list/search-panel';
 
 export interface Project {
-    id?: number;
+    id: number;
     name: string;
-    personId: number;
-    pin?: boolean;
+    personId: number | string;
+    pin: boolean;
     organization?: string;
-    created?: number;
+    created: number;
 }
 interface ListProps extends TableProps<Project> {
     users: User[];

@@ -1,10 +1,10 @@
 export interface User {
-  id: number;
+  id: number | string;
   name: string;
-  personId: number;
-  email: string;
-  title: string;
-  organization: string;
+  personId?: number;
+  email?: string;
+  title?: string;
+  organization?: string;
   token?: string;
 }
 export interface AuthForm {

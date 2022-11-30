@@ -8,30 +8,18 @@
 import styled from '@emotion/styled';
 //导入内部组件
 import { Typography } from 'antd';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import List from './list';
-//导入类型
-import { Project } from './list';
 import SearchPanel from './search-panel';
-//导入API请求
-import { getUsersList, getProjectsList } from '@/api/index';
-//导入type
-//import { User } from '@/types/user';
-// 本地依赖
-import { cleanObject } from '@/utils/cleanObject';
-//导入处定义hook,处理异步加载
-import { useAsync } from '@/utils/hooks/useAsync';
+//导入自定义hook
+import { useProjects } from '@/utils/hooks/project';
 import { useDebounce } from '@/utils/hooks/useDebounce';
-import useEffectOnce from '@/utils/hooks/useMount';
+import { useUser } from '@/utils/hooks/users';
 
 interface Param {
     name: string;
     personId: string;
-}
-export interface User {
-    id: number | string;
-    name: string;
 }
 
 //定义样式
@@ -47,27 +35,10 @@ export const ProjectListScreen = () => {
 
     //自定义hook
     const debounceParam = useDebounce<Param>(param, 2000);
-
     //定义请求的工程列表的状态
-    const { run, isLoading, error, data: list } = useAsync<Project[]>();
-    //user用户状态
-    const [users, setUsers] = useState<User[]>([]);
-
-    //请求用户数据
-    useEffect(() => {
-        run(getProjectsList(cleanObject(debounceParam)));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debounceParam]);
-
-    //自定义hook,执行一次useEffect
-    useEffectOnce(() => {
-        //异步的一个函数，目的是项端写async
-        const asynchronousResult = async () => {
-            const result = await getUsersList();
-            return setUsers(result);
-        };
-        asynchronousResult();
-    });
+    const { isLoading, error, data: list } = useProjects(debounceParam);
+    //定义请求的工程列表的状态
+    const { data: users } = useUser();
     return (
         <Container>
             <h1>项目列表</h1>

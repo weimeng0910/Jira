@@ -27,12 +27,12 @@ export interface IUser {
   personId?: string | number;
 }
 interface Project {
-  id?: number;
+  id: number;
   name: string;
-  personId: number;
-  pin?: boolean;
+  personId: number | string;
+  pin: boolean;
   organization?: string;
-  created?: number;
+  created: number;
 }
 interface User {
   id: number | string;
