@@ -48,7 +48,7 @@ interface User {
  * @return {Promise}
  */
 export const clientApi = async (url: string, params: ILogin): Promise<IResponse> => {
-  console.log(params, 'API接收到的params');
+
 
   const config = {
     headers: { 'Content-Type': 'application/json' },

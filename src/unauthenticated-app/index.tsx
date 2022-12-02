@@ -1,11 +1,11 @@
 /**
  * @author meng
  * @version 1.0
- * @date 2022/11/23
+ * @date 2022/12/2
  * 注册和登陆
  */
 import styled from '@emotion/styled';
-import { Button, Card, Divider } from 'antd';
+import { Button, Card, Divider, Typography } from 'antd';
 import { useState, ReactElement } from 'react';
 
 import LoginScreen from './login';
@@ -66,13 +66,21 @@ const Container = styled.div`
 
 export const UnauthenticatedAPP = (): ReactElement => {
     const [isRegister, setIsRegister] = useState(false);
+    const [error, setError] = useState<Error | null>(null);
+
     return (
         <Container>
             <Header />
             <Background />
             <NewCard>
                 <Title>{isRegister ? '请注册' : '请登录'}</Title>
-                {isRegister ? <RegisterScreen /> : <LoginScreen />}
+
+                {error ? <Typography.Text type='danger'>{error.message}</Typography.Text> : null}
+                {isRegister ? (
+                    <RegisterScreen onError={setError} />
+                ) : (
+                    <LoginScreen onError={setError} />
+                )}
                 <Divider />
                 <Button
                     onClick={() => setIsRegister(!isRegister)}

@@ -6,18 +6,25 @@
  */
 import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
-import { FC, ReactElement } from 'react';
 
 import { useAuth } from '@/context/AuthContext';
 
 const LongButton = styled(Button)`
     width: 100%;
 `;
-const LoginScreen: FC = (): ReactElement => {
+const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
     const { login } = useAuth();
 
-    const handlSubmit = (values: { username: string; password: string }) => {
-        login(values);
+    const handlSubmit = async (values: { username: string; password: string }) => {
+        console.log(values.username, '前瑞输入的用户名01');
+
+        try {
+            await login(values);
+        } catch (error) {
+            console.log((error as Error).message, '@2');
+
+            onError(error as Error);
+        }
     };
     return (
         <Form onFinish={handlSubmit}>

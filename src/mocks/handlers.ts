@@ -120,6 +120,7 @@ export const handlers = [
     // 组装数据
     const userFields = { username, password };
 
+    console.log(username, '后瑞接收到的用户名03');
 
     const user = await db.authenticate(userFields);
     return res(ctx.json({ user }));
@@ -130,8 +131,6 @@ export const handlers = [
 
     // 获得前瑞发送的参数
     const personId = req.url.searchParams.get('personId')!;
-    //console.log(personId, '后瑞接收参数');
-
     const name = req.url.searchParams.get('name')!;
 
     //调用写入数据的函数

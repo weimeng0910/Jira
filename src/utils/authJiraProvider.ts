@@ -24,10 +24,17 @@ async function clientApiJira(endpoint: string, data: AuthForm) {
   return axios
     .post(`${API_URL}/${endpoint}`, JSON.stringify(data), config)
     .then(response => response.data.user)
+
     .catch(error => {
       if (error.response) {
-        throw error.response.data.user;
+        //这时用throw前瑞页面接不到错误，只会打印错误
+        //在 promise 回调中，你都可以使用throw，throw不会触发捕获. 但是，如果您处于任何其他异步回调中，则必须使用reject.
+        //throw error.response.data.user;
+
+        // eslint-disable-next-line promise/no-return-wrap, unicorn/no-useless-promise-resolve-reject
+        return Promise.reject(error.response.data);
       }
+      return -1;
     });
 };
 // Gets Token.
@@ -46,6 +53,8 @@ function storeToken(userData: UserData) {
 // 获得登陆后的用户名和密码生成token令牌
 async function login(params: AuthForm) {
   const { username, password } = params;
+  console.log(username, 'auth的用户名02');
+
   return clientApiJira('login', { username, password }).then(storeToken);
 }
 //const login = (data: AuthForm) => axios.post(`${API_URL}/login`, JSON.stringify(data), {

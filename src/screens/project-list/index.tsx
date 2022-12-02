@@ -32,13 +32,13 @@ export const ProjectListScreen = () => {
         name: '',
         personId: ''
     });
-
-    //自定义hook
     const debounceParam = useDebounce<Param>(param, 2000);
+    //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态
     const { isLoading, error, data: list } = useProjects(debounceParam);
     //定义请求的工程列表的状态
     const { data: users } = useUser();
+
     return (
         <Container>
             <h1>项目列表</h1>

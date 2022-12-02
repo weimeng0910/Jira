@@ -59,6 +59,8 @@ async function saveUser(user: User) {
 // 检查用户名和密码是否存在
 const validateUser = (params: RequestBody) => {
   const { username, password } = params;
+  console.log(username, 'db中检查用户名的函数05');
+
   if (!username) {
     const error: ResponseError = new Error('用户名是必须的');
     error.status = 400;
@@ -120,12 +122,19 @@ async function createUser(data: { username: string, password: string }) {
 // 客户登陆时返回用户的信息,生成token
 async function authenticate(params: RequestBody) {
   const { username, password } = params;
+  console.log(username, 'DB中的用户名04');
+
   // 检查用户是否为空
   validateUser({ username, password });
   // 根据用户名，生成唯一ID
   const id = hashcode(username);
   // 根据ID读取相关用户数据
   const user = (await loadUserById(id)) as User;
+  if (!user) {
+    const error: ResponseError = new Error(`请注册，因为 '${username}' 不存在 `);
+    error.status = 500;
+    throw error;
+  }
   //定义令牌
   const token = generteToken(id, 2);
   if (user.passwordHash === hashcode(password)) {
