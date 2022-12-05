@@ -12,10 +12,25 @@ import { useAuth } from '@/context/AuthContext';
 const LongButton = styled(Button)`
     width: 100%;
 `;
-const RegisterScreen = ({ onError }: { onError: (error: Error) => void }) => {
+interface OnError {
+    onError: (error: Error) => void;
+}
+
+const RegisterScreen = ({ onError }: OnError) => {
     const { register } = useAuth();
 
-    const handlSubmit = async (values: { username: string; password: string }) => {
+    const handlSubmit = async ({
+        cpassword,
+        ...values
+    }: {
+        username: string;
+        password: string;
+        cpassword: string;
+    }) => {
+        if (cpassword !== values.password) {
+            onError(new Error('请确认两次输入的密码相同'));
+            return;
+        }
         try {
             await register(values);
         } catch (error) {
@@ -42,8 +57,19 @@ const RegisterScreen = ({ onError }: { onError: (error: Error) => void }) => {
             >
                 <Input
                     placeholder='密码'
-                    type='text'
+                    type='password'
                     id='password'
+                />
+            </Form.Item>
+            <Form.Item
+                label='Cpassword'
+                name='cpassword'
+                rules={[{ required: true, message: 'Please confirm your password!' }]}
+            >
+                <Input
+                    placeholder='确认密码'
+                    type='password'
+                    id='cpassword'
                 />
             </Form.Item>
 

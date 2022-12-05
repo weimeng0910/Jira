@@ -23,7 +23,8 @@ import { ResponseError, RequestBody, PostRequestParams } from './type/handlersTy
  * 初始化数据
  */
 // 设置延迟
-// const sleep = t:number => new Promise(resolve => setTimeout(resolve, t));
+// eslint-disable-next-line no-new, @typescript-eslint/no-implied-eval
+//const sleep = (t: number) => { new Promise((resolve: any) => { setTimeout(resolve, t); }); };
 
 initData();
 
@@ -120,10 +121,12 @@ export const handlers = [
     // 组装数据
     const userFields = { username, password };
 
-    console.log(username, '后瑞接收到的用户名03');
-
     const user = await db.authenticate(userFields);
-    return res(ctx.json({ user }));
+
+    return res(
+      //延迟两秒返回数据
+      ctx.delay(2000),
+      ctx.json({ user }));
   }),
 
   // 响应get请求获得项目数据

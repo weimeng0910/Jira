@@ -53,7 +53,7 @@ function storeToken(userData: UserData) {
 // 获得登陆后的用户名和密码生成token令牌
 async function login(params: AuthForm) {
   const { username, password } = params;
-  console.log(username, 'auth的用户名02');
+
 
   return clientApiJira('login', { username, password }).then(storeToken);
 }

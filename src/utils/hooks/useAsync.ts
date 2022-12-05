@@ -54,10 +54,12 @@ export const useAsync = <T>(initialState?: State<T>) => {
         setData(data);
         return data;
       })
-      // catch 会消化异常导致不再抛出
+      // catch 会消化异常导致不再抛出，如果不主动抛出，外面是接收不到异常的
       .catch(error => {
         setError(error);
-        return error;
+        //return error;
+        // eslint-disable-next-line promise/no-return-wrap, unicorn/no-useless-promise-resolve-reject
+        return Promise.reject(error);
       });
   };
   return {

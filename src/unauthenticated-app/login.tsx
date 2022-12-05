@@ -8,18 +8,19 @@ import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
 
 import { useAuth } from '@/context/AuthContext';
+import { useAsync } from '@/utils/hooks/useAsync';
 
 const LongButton = styled(Button)`
     width: 100%;
 `;
 const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
     const { login } = useAuth();
-
+    //定义loading
+    const { run, isLoading } = useAsync();
     const handlSubmit = async (values: { username: string; password: string }) => {
-        console.log(values.username, '前瑞输入的用户名01');
-
         try {
-            await login(values);
+            //await login(values);
+            await run(login(values));
         } catch (error) {
             console.log((error as Error).message, '@2');
 
@@ -53,6 +54,7 @@ const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
 
             <Form.Item>
                 <LongButton
+                    loading={isLoading}
                     type='primary'
                     htmlType='submit'
                 >
