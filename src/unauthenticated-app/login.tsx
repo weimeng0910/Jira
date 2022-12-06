@@ -16,13 +16,13 @@ const LongButton = styled(Button)`
 const LoginScreen = ({ onError }: { onError: (error: Error) => void }) => {
     const { login } = useAuth();
     //定义loading
-    const { run, isLoading } = useAsync();
+    const { run, isLoading } = useAsync(undefined, { throwOnError: true });
     const handlSubmit = async (values: { username: string; password: string }) => {
         try {
             //await login(values);
             await run(login(values));
         } catch (error) {
-            console.log((error as Error).message, '@2');
+            // console.log((error as Error).message, '@2');
 
             onError(error as Error);
         }

@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import { Form, Input, Button } from 'antd';
 
 import { useAuth } from '@/context/AuthContext';
+import { useAsync } from '@/utils/hooks/useAsync';
 
 const LongButton = styled(Button)`
     width: 100%;
@@ -18,7 +19,7 @@ interface OnError {
 
 const RegisterScreen = ({ onError }: OnError) => {
     const { register } = useAuth();
-
+    const { run, isLoading } = useAsync(undefined, { throwOnError: true });
     const handlSubmit = async ({
         cpassword,
         ...values
@@ -32,7 +33,7 @@ const RegisterScreen = ({ onError }: OnError) => {
             return;
         }
         try {
-            await register(values);
+            await run(register(values));
         } catch (error) {
             onError(error as Error);
         }
@@ -75,6 +76,7 @@ const RegisterScreen = ({ onError }: OnError) => {
 
             <Form.Item>
                 <LongButton
+                    loading={isLoading}
                     type='primary'
                     htmlType='submit'
                 >

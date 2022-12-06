@@ -141,7 +141,12 @@ export const handlers = [
 
 
     if (projectData) {
-      return res(ctx.status(200), ctx.json(projectData));
+      return res(
+        //延迟两秒返回数据
+        ctx.delay(2000),
+        ctx.status(200),
+        ctx.json(projectData)
+      );
     }
     return res(ctx.status(500));
 

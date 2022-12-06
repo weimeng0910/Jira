@@ -20,9 +20,16 @@ const defaultInitialState: State<null> = {
   data: null,
   error: null
 };
+//抛出异常成为可选，error的配置
+const defaultInitConfig = {
+  throwOnError: false,
+};
 //initialState是传入的state，优先级高于莫认的状态
-export const useAsync = <T>(initialState?: State<T>) => {
-
+export const useAsync = <T>(
+  initialState?: State<T>,
+  initialConifg?: typeof defaultInitConfig
+) => {
+  const config = { ...defaultInitConfig, ...initialConifg };
   const [state, setState] = useState<State<T>>({
 
     ...defaultInitialState,
@@ -57,9 +64,11 @@ export const useAsync = <T>(initialState?: State<T>) => {
       // catch 会消化异常导致不再抛出，如果不主动抛出，外面是接收不到异常的
       .catch(error => {
         setError(error);
-        //return error;
-        // eslint-disable-next-line promise/no-return-wrap, unicorn/no-useless-promise-resolve-reject
-        return Promise.reject(error);
+
+        if (config.throwOnError)
+          // eslint-disable-next-line promise/no-return-wrap, unicorn/no-useless-promise-resolve-reject
+          return Promise.reject(error);
+        return error;
       });
   };
   return {
