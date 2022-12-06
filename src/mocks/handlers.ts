@@ -125,7 +125,7 @@ export const handlers = [
 
     return res(
       //延迟两秒返回数据
-      ctx.delay(2000),
+      ctx.delay(5000 * 60),
       ctx.json({ user }));
   }),
 
@@ -138,8 +138,6 @@ export const handlers = [
 
     //调用写入数据的函数
     const projectData = await db.ScreensProjectsData(projectDB, personId, name);
-
-
     if (projectData) {
       return res(
         //延迟两秒返回数据
@@ -165,6 +163,13 @@ export const handlers = [
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
     const user = await getUser(req);
     const token = getToken(req);
-    return res(ctx.json({ user: { ...user, token } }));
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+
+      ctx.json({ user: { ...user, token } })
+    );
+
   }),
+
 ];

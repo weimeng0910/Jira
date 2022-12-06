@@ -20,7 +20,7 @@ import React, { Component } from 'react';
 type Props = React.PropsWithChildren<{ fallbackRender: FallbackRender }>;
 type FallbackRender = (props: { error: Error | null }) => React.ReactElement;
 // eslint-disable-next-line react/prefer-stateless-function
-export class ErroryBoundary extends Component<Props, { error: Error | null }> {
+export class ErrorBoundary extends Component<Props, { error: Error | null }> {
     state = { error: null };
 
     // 当子组件抛出异常，这里会接收到并且调用

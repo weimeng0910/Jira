@@ -4,11 +4,13 @@
  * @date 2022/11/23
  * 存储全局用户信息
  */
-import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
+import { useCallback, useContext, createContext, useMemo, ReactNode } from 'react';
 
 import { http } from '@/api/http';
+import { FullPageErrorFallback, FullPageLoading } from '@/components/lib/lib';
 import { AuthForm, UserData } from '@/types/user';
 import * as authJira from '@/utils/authJiraProvider';
+import { useAsync } from '@/utils/hooks/useAsync';
 import useEffectOnce from '@/utils/hooks/useMount';
 
 // 获得token
@@ -36,8 +38,16 @@ AuthContext.displayName = 'AuthContext'; // "MyDisplayName.Provider" 在 DevTool
 
 export const AuthProvider = (props: { children: ReactNode }) => {
     // 定义状态
-    const [userData, setUserData] = useState<UserData | null>(null);
-
+    //const [userData, setUserData] = useState<UserData | null>(null);
+    const {
+        run,
+        isLoading,
+        data: userData,
+        error,
+        isIdle,
+        isError,
+        setData: setUserData
+    } = useAsync<UserData | null>();
     // point free 消除user => setUserData(user)中的user参数
     // const login = (form: AuthForm) => authJira.login(form).then(user => setUserData(user));
 
@@ -58,18 +68,26 @@ export const AuthProvider = (props: { children: ReactNode }) => {
     );
     //加载用户token
     useEffectOnce(() => {
-        getUserByToken()
-            .then(user => setUserData(user))
-            .catch(error => {
-                console.log(error);
-            });
+        run(getUserByToken())
+            .then(setUserData)
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+            .catch(error => error);
+        //getUserByToken()
+        //    .then(user => setUserData(user))
+        //    .catch(error => {
+        //        console.log(error);
+        //    });
     });
-
     const value = useMemo(
         () => ({ userData, login, register, logout }),
         [userData, login, logout, register]
     );
-
+    if (isIdle || isLoading) {
+        return <FullPageLoading />;
+    }
+    if (isError) {
+        return <FullPageErrorFallback error={error} />;
+    }
     return (
         <AuthContext.Provider
             value={value}
