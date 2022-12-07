@@ -125,7 +125,7 @@ export const handlers = [
 
     return res(
       //延迟两秒返回数据
-      ctx.delay(5000 * 60),
+      //ctx.delay(5000 * 60),
       ctx.json({ user }));
   }),
 
@@ -141,7 +141,7 @@ export const handlers = [
     if (projectData) {
       return res(
         //延迟两秒返回数据
-        ctx.delay(2000),
+        //ctx.delay(2000),
         ctx.status(200),
         ctx.json(projectData)
       );

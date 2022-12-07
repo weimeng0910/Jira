@@ -49,10 +49,9 @@ const menuItems = [
 ];
 export const AuthenticatedAPP = () => {
     const { logout, userData } = useAuth();
-    const value: any = undefined;
+
     return (
         <Container>
-            {value.notExist}
             <Header between>
                 <HeaderLeft gap={5}>
                     <Softwarelogo

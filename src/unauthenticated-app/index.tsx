@@ -13,6 +13,7 @@ import RegisterScreen from './register';
 import left from '@/assets/left.svg';
 import logo from '@/assets/logo.svg';
 import right from '@/assets/right.svg';
+import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 
 export const LongButton = styled(Button)`
     width: 100%;
@@ -67,18 +68,11 @@ const Container = styled.div`
 export const UnauthenticatedAPP = (): ReactElement => {
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState<Error | null>(null);
-
+    useDocumentTitle('请注册登陆以继续');
     return (
         <Container>
             <Header />
             <Background />
-            <Button
-                onClick={() => {
-                    throw new Error('点击抛出异常');
-                }}
-            >
-                抛出异常
-            </Button>
             <NewCard>
                 <Title>{isRegister ? '请注册' : '请登录'}</Title>
 

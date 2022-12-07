@@ -256,3 +256,34 @@ decoded = jwt_decode(token)
 console.log(decoded);
 // { name: 'Tom', age: 23, iat: 1584088910, exp: 1584096110 }
 ```
+
+#### 安装 react-helmet
+
+文档头部的所有更改,这个包可以在 React 中更改头部
+
+```
+yarn add react-helmet
+
+```
+
+Example
+
+```
+import React from "react";
+import {Helmet} from "react-helmet";
+
+class Application extends React.Component {
+  render () {
+    return (
+        <div className="application">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>My Title</title>
+                <link rel="canonical" href="http://mysite.com/example" />
+            </Helmet>
+            ...
+        </div>
+    );
+  }
+};
+```

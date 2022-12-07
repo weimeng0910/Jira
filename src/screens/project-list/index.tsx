@@ -15,6 +15,7 @@ import SearchPanel from './search-panel';
 //导入自定义hook
 import { useProjects } from '@/utils/hooks/project';
 import { useDebounce } from '@/utils/hooks/useDebounce';
+import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 import { useUser } from '@/utils/hooks/users';
 
 interface Param {
@@ -38,7 +39,7 @@ export const ProjectListScreen = () => {
     const { isLoading, error, data: list } = useProjects(debounceParam);
     //定义请求的工程列表的状态
     const { data: users } = useUser();
-
+    useDocumentTitle('项目列表', false);
     return (
         <Container>
             <h1>项目列表</h1>
