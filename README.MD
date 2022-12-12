@@ -266,24 +266,11 @@ yarn add react-helmet
 
 ```
 
-Example
+#### 安装 react-router,react-router-dom
+
+说明：react-router 已经更新到 6.4,但因为项目中只用来做纯粹的路由组件，所以使用 6.3.0
 
 ```
-import React from "react";
-import {Helmet} from "react-helmet";
+yarn add react-router@6.3.0 react-router-dom@6.3.0
 
-class Application extends React.Component {
-  render () {
-    return (
-        <div className="application">
-            <Helmet>
-                <meta charSet="utf-8" />
-                <title>My Title</title>
-                <link rel="canonical" href="http://mysite.com/example" />
-            </Helmet>
-            ...
-        </div>
-    );
-  }
-};
 ```

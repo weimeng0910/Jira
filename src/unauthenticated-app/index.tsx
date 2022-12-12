@@ -15,6 +15,10 @@ import logo from '@/assets/logo.svg';
 import right from '@/assets/right.svg';
 import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 
+/**
+ * css-in-js
+ * 样式布局定义
+ */
 export const LongButton = styled(Button)`
     width: 100%;
 `;

@@ -5,10 +5,13 @@
  */
 import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';
+import { Navigate, Routes, Route } from 'react-router';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 //导入jwt解密token中的id
 //import jwt from 'jsonwebtoken';
 import { useAuth } from './context/AuthContext';
+import { ProjectScreen } from './screens/project';
 import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
@@ -47,38 +50,56 @@ const menuItems = [
         label: '退出登陆'
     }
 ];
-export const AuthenticatedAPP = () => {
+//抽离Header
+const PageHeader = () => {
     const { logout, userData } = useAuth();
-
     return (
-        <Container>
-            <Header between>
-                <HeaderLeft gap={5}>
-                    <Softwarelogo
-                        width='14rem'
-                        color='#3ec785'
-                    />
+        <Header between>
+            <HeaderLeft gap={5}>
+                <Softwarelogo
+                    width='14rem'
+                    color='#3ec785'
+                />
 
-                    <h3>项目</h3>
-                    <h3>用户</h3>
-                </HeaderLeft>
-                <HeaderRight>
-                    <Dropdown
-                        overlay={
-                            <Menu
-                                items={menuItems}
-                                onClick={logout}
-                            />
-                        }
-                    >
-                        <Button type='link'>Hi, {userData?.username}</Button>
-                    </Dropdown>
-                </HeaderRight>
-            </Header>
-
-            <Main>
-                <ProjectListScreen />
-            </Main>
-        </Container>
+                <h3>项目</h3>
+                <h3>用户</h3>
+            </HeaderLeft>
+            <HeaderRight>
+                <Dropdown
+                    overlay={
+                        <Menu
+                            items={menuItems}
+                            onClick={logout}
+                        />
+                    }
+                >
+                    <Button type='link'>Hi, {userData?.username}</Button>
+                </Dropdown>
+            </HeaderRight>
+        </Header>
     );
 };
+export const AuthenticatedAPP = () => (
+    <Container>
+        <Router>
+            <PageHeader />
+            <Main>
+                <Routes>
+                    <Route
+                        path='/project'
+                        element={<ProjectListScreen />}
+                    />
+                    <Route
+                        path={'/project/:projectId/*'}
+                        element={<ProjectScreen />}
+                    />
+                    {/* 默认路由 */}
+                    <Route
+                        path='/'
+                        element={<Navigate to='/project' />}
+                    />
+                </Routes>
+            </Main>
+        </Router>
+    </Container>
+);
