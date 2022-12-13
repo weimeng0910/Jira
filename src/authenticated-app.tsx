@@ -16,6 +16,7 @@ import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
 import { Row } from '@/components/lib/lib';
+import resetRoute from '@/utils';
 
 //样式定义
 //grid主容器
@@ -56,11 +57,15 @@ const PageHeader = () => {
     return (
         <Header between>
             <HeaderLeft gap={5}>
-                <Softwarelogo
-                    width='14rem'
-                    color='#3ec785'
-                />
-
+                <Button
+                    type='link'
+                    onClick={resetRoute}
+                >
+                    <Softwarelogo
+                        width='14rem'
+                        color='#3ec785'
+                    />
+                </Button>
                 <h3>项目</h3>
                 <h3>用户</h3>
             </HeaderLeft>
@@ -86,11 +91,11 @@ export const AuthenticatedAPP = () => (
             <Main>
                 <Routes>
                     <Route
-                        path='/project'
+                        path='project'
                         element={<ProjectListScreen />}
                     />
                     <Route
-                        path={'/project/:projectId/*'}
+                        path={'project/:projectId/*'}
                         element={<ProjectScreen />}
                     />
                     {/* 默认路由 */}

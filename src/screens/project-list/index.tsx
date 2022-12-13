@@ -4,7 +4,6 @@
  * @date 2022/11/28
  * 项目列表
  */
-// 外部依赖
 import styled from '@emotion/styled';
 //导入内部组件
 import { Typography } from 'antd';
