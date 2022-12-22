@@ -36,7 +36,9 @@ const List = ({ users, ...props }: ListProps) => (
                 //dataIndex: 'name',
                 //localeCompare排序中文字符
                 sorter: (a, b) => a.name.localeCompare(b.name),
-                render: (_value, project) => <Link to={String(project.id)}>{project.name}</Link>
+                render: (_value, project) => (
+                    <Link to={`/projects/${String(project.id)}`}>{project.name}</Link>
+                )
             },
             {
                 title: '部门',

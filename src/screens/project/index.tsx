@@ -3,12 +3,13 @@
  * @version 1.0
  *project二级路由页面
  */
-import { Routes, Route, Navigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
 
 import { DisplayBoardScreen } from '../diplayBoard';
 import { EpicScreen } from '../epic';
 
+// 用来作为 404 页面的组件
+const NotFound = () => <div>路径错误</div>;
 export const ProjectScreen = () => (
     <div>
         <h1>ProjectScreen</h1>
@@ -16,16 +17,21 @@ export const ProjectScreen = () => (
         <Link to='epic'>任务组</Link>
         <Routes>
             <Route
-                path='/displayBoard'
+                path='/'
+                element={<Navigate to={`${window.location.pathname}/displayBoard`} />}
+            />
+            <Route
+                path='displayBoard'
                 element={<DisplayBoardScreen />}
             />
             <Route
-                path='/epic'
+                path='epic'
                 element={<EpicScreen />}
             />
+
             <Route
-                path='/'
-                element={<Navigate to={`${window.location.pathname}/displayBoard`} />}
+                path='*'
+                element={<NotFound />}
             />
         </Routes>
     </div>

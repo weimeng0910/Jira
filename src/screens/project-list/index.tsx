@@ -9,6 +9,7 @@ import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { useState } from 'react';
 
+//import { Outlet } from 'react-router-dom';
 import List from './list';
 import SearchPanel from './search-panel';
 //导入自定义hook
@@ -42,11 +43,13 @@ export const ProjectListScreen = () => {
     return (
         <Container>
             <h1>项目列表</h1>
+
             <SearchPanel
                 users={users || []}
                 param={param}
                 setParam={setParam}
             />
+
             {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
             <List
                 loading={isLoading}

@@ -5,17 +5,15 @@
  */
 import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';
-import { Navigate, Routes, Route } from 'react-router';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
-//导入jwt解密token中的id
-//import jwt from 'jsonwebtoken';
 import { useAuth } from './context/AuthContext';
 import { ProjectScreen } from './screens/project';
 import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
 import { Row } from '@/components/lib/lib';
+import ErrrorPage from '@/router/Errorpage';
 import resetRoute from '@/utils';
 
 //样式定义
@@ -84,24 +82,36 @@ const PageHeader = () => {
         </Header>
     );
 };
+//路由
 export const AuthenticatedAPP = () => (
     <Container>
         <Router>
             <PageHeader />
             <Main>
                 <Routes>
+                    {/*默认路由 */}
                     <Route
-                        path='project'
+                        index
                         element={<ProjectListScreen />}
                     />
                     <Route
-                        path={'project/:projectId/*'}
+                        path='/projects'
+                        element={<ProjectListScreen />}
+                    />
+                    <Route
+                        path='projects/:projectId/*'
                         element={<ProjectScreen />}
                     />
-                    {/* 默认路由 */}
+
+                    {/* 重定向到首页*/}
                     <Route
                         path='/'
-                        element={<Navigate to='/project' />}
+                        element={<Navigate to='/projects' />}
+                    />
+                    {/* 错误路径 ,*是全部的意思，以上路由都没匹配到执行*/}
+                    <Route
+                        path='*'
+                        element={<ErrrorPage />}
                     />
                 </Routes>
             </Main>

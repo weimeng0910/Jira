@@ -33,7 +33,8 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
       // 输出目录
       path: path.resolve(__dirname, '../dist'),
       // 打包前清空输出目录
-      clean: true
+      clean: true,
+      publicPath: '/'
     },
     module: {
       rules: [
@@ -185,6 +186,7 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
 
       ]
     },
+
     performance: {
       hints: false
     },
