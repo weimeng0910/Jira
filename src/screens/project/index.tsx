@@ -16,6 +16,7 @@ export const ProjectScreen = () => (
         <Link to='displayBoard'>看板</Link>
         <Link to='epic'>任务组</Link>
         <Routes>
+            {/*默认路由 */}
             <Route
                 path='/'
                 element={<Navigate to={`${window.location.pathname}/displayBoard`} />}

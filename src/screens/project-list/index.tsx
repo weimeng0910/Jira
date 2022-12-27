@@ -4,24 +4,25 @@
  * @date 2022/11/28
  * 项目列表
  */
-import styled from '@emotion/styled';
 //导入内部组件
+import styled from '@emotion/styled';
 import { Typography } from 'antd';
 import { useState } from 'react';
 
-//import { Outlet } from 'react-router-dom';
 import List from './list';
 import SearchPanel from './search-panel';
+//import { Outlet } from 'react-router-dom';
 //导入自定义hook
 import { useProjects } from '@/utils/hooks/project';
 import { useDebounce } from '@/utils/hooks/useDebounce';
 import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
+import { useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
 import { useUser } from '@/utils/hooks/users';
 
-interface Param {
-    name: string;
-    personId: string;
-}
+//interface Param {
+//    name: string;
+//    personId: string;
+//}
 
 //定义样式
 const Container = styled.div`
@@ -29,17 +30,21 @@ const Container = styled.div`
 `;
 export const ProjectListScreen = () => {
     // 组件状态
-    const [param, setParam] = useState<Param>({
+    const [, setParam] = useState({
         name: '',
         personId: ''
     });
-    const debounceParam = useDebounce<Param>(param, 2000);
+    // 基本类型，组件状态可以入在依赖里，非组件状态的对象，绝不可以入在依赖里
+    const [param] = useUrlQueryParam(['name', 'personId']);
+    const debounceParam = useDebounce(param, 2000);
     //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态
     const { isLoading, error, data: list } = useProjects(debounceParam);
     //定义请求的工程列表的状态
     const { data: users } = useUser();
     useDocumentTitle('项目列表', false);
+    //console.log(useUrlQueryParam(['name', 'personId']));
+    //const test = useUrlQueryParam(['name','personId']);
     return (
         <Container>
             <h1>项目列表</h1>
@@ -59,3 +64,4 @@ export const ProjectListScreen = () => {
         </Container>
     );
 };
+ProjectListScreen.whyDidYouRender = true;

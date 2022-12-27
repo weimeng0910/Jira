@@ -274,3 +274,11 @@ yarn add react-helmet
 yarn add react-router@6.3.0 react-router-dom@6.3.0
 
 ```
+
+### 使用 Why Did You Render 调试 React 性能问题
+
+当我们启用了 why render 插件开发的时候，如果组件里有不必要的 re-render 问题时，控制台里会有相关的信息提示（不管是页面加载的时候还是交互的时候都可能会有提示）
+
+```
+yarn add --dev @welldone-software/why-did-you-render
+```

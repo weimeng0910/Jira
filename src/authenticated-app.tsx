@@ -13,7 +13,8 @@ import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
 import { Row } from '@/components/lib/lib';
-import ErrrorPage from '@/router/Errorpage';
+//import ErrrorPage from '@/router/Errorpage';
+//导入logo跳转回根路由的方法
 import resetRoute from '@/utils';
 
 //样式定义
@@ -82,6 +83,7 @@ const PageHeader = () => {
         </Header>
     );
 };
+
 //路由
 export const AuthenticatedAPP = () => (
     <Container>
@@ -109,10 +111,10 @@ export const AuthenticatedAPP = () => (
                         element={<Navigate to='/projects' />}
                     />
                     {/* 错误路径 ,*是全部的意思，以上路由都没匹配到执行*/}
-                    <Route
+                    {/*<Route
                         path='*'
                         element={<ErrrorPage />}
-                    />
+                    />*/}
                 </Routes>
             </Main>
         </Router>

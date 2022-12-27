@@ -19,8 +19,10 @@
     "precommit": "lint-staged",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx",
     "json-server": "json-server __json_server_mock__/db.json --wahtch --port 30001 --middlewares ./__json_server_mock__/middleware.js",
-    "preinstall": "npx npm-force-resolutions"
+    "preinstall": "npx npm-force-resolutions",
+    "wr": "npm run dev --WHY_RENDER"
   },
+  "proxy": "http://localhost:3001",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -51,6 +53,7 @@
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "@umijs/fabric": "^3.0.0",
+    "@welldone-software/why-did-you-render": "^7.0.1",
     "astroturf": "^1.0.1",
     "autoprefixer": "^10.4.8",
     "axios": "^0.27.2",
