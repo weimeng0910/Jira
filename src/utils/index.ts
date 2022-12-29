@@ -2,7 +2,7 @@
 /**
  * @author meng
  * @version 1.0
- *logo跳转函数
+ * @file logo跳转函数
  */
 export default function resetRoute() {
   window.location.href = window.location.origin;

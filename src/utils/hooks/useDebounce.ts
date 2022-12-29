@@ -1,3 +1,10 @@
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/28
+ * @file 创建一个自定义hook，用于处理react 事件池。
+ * @file useDebounce 的原理和防抖动函数实现的原理是一样的
+ */
 import { useEffect, useState } from 'react';
 
 export const useDebounce = <T>(value: T, delay?: number): T => {

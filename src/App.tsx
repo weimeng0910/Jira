@@ -1,7 +1,7 @@
 /**
  * @author meng
  * @version 1.0
- * APP
+ * @file APP
  */
 import { FC } from 'react';
 

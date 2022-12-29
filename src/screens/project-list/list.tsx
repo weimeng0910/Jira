@@ -2,7 +2,7 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/24
- * LIST
+ * @file LIST组件
  */
 // 外部依赖
 import { Table, TableProps } from 'antd';

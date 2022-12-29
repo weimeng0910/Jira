@@ -1,4 +1,9 @@
-
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/28
+ * @file 创建一个自定义hook，用于处理页面title。
+ */
 import { useEffect, useRef } from 'react';
 
 export const useDocumentTitle = (title: string, keepOnUmount = true) => {

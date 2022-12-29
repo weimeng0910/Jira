@@ -2,12 +2,11 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/28
- * 项目列表
+ * @file 项目列表
  */
 //导入内部组件
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
-import { useState } from 'react';
 
 import List from './list';
 import SearchPanel from './search-panel';
@@ -30,12 +29,13 @@ const Container = styled.div`
 `;
 export const ProjectListScreen = () => {
     // 组件状态
-    const [, setParam] = useState({
-        name: '',
-        personId: ''
-    });
+    //const [, setParam] = useState({
+    //    name: '',
+    //    personId: ''
+    //});
     // 基本类型，组件状态可以入在依赖里，非组件状态的对象，绝不可以入在依赖里
-    const [param] = useUrlQueryParam(['name', 'personId']);
+    const [param, setParam] = useUrlQueryParam(['name', 'personId']);
+
     const debounceParam = useDebounce(param, 2000);
     //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态

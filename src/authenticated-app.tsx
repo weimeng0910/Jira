@@ -1,7 +1,7 @@
 /**
  * @author meng
  * @version 1.0
- *用户登陆后的主界面
+ *@file 用户登陆后的主界面
  */
 import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';

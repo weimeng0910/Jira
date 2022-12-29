@@ -2,7 +2,7 @@
  * @author meng
  * @version 1.0
  * @date 2022/12/23
- * @description 返回页面url中，指定銉的参数值
+ * @file 检查react中重复render
  */
 /// <reference types="@welldone-software/why-did-you-render" />
 import React from 'react';

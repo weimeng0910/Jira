@@ -2,7 +2,7 @@
  * @author meng
  * @version 1.0
  * @date 2022/12/2
- * 注册和登陆
+ * @file 注册和登陆
  */
 import styled from '@emotion/styled';
 import { Button, Card, Divider, Typography } from 'antd';

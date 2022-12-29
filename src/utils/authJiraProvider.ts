@@ -2,8 +2,8 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/23
-* 在真实环境中，如果使用firebase这种第三方，auth服务的话，本文件不需要开发
-* 身份验证和权限认证的文件
+* @file 在真实环境中，如果使用firebase这种第三方，auth服务的话，本文件不需要开发
+* @file 身份验证和权限认证的文件
  */
 // 外部依赖
 import axios from 'axios';

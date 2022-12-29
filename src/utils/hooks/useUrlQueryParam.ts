@@ -2,11 +2,14 @@
  * @author meng
  * @version 1.0
  * @date 2022/12/23
- * 返回页面url中，指定銉的参数值
- * 获取Url中的参数并返回一个对象，例如：{name:meng,age:18}的hook
+ * @file 自定义hook，获取url中的参数
+ * @file 获取Url中的参数并返回一个对象，例如：{name:meng,age:18}的hook
  */
 import { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+//import { useSearchParams } from 'react-router-dom';
+import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
+
+import { cleanObject } from '../cleanObject';
 
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   /**
@@ -15,7 +18,7 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
    * @note reduce方法在这里，先给第一个值为空对象，然后遍历数组，把获取的key和值（searchParams.get (key)）放入这个对象中返回
    * @param { * } -- keys:string 传入数组类型为字符串
    */
-  const [searchParams, setSearchParam] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   //console.log(searchParams.get('name'));
 
   return [
@@ -27,6 +30,13 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
         {} as { [key in K]: string }),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [searchParams]),
-    setSearchParam
+    (params: Partial<{ [key in K]: unknown }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParams),
+        ...params,
+      }) as URLSearchParamsInit;
+      return setSearchParams(o);
+    }
+    //setSearchParams
   ] as const;
 };

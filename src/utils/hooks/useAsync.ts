@@ -2,8 +2,8 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/28
- * 创建一个自定义hook，用于处理所有异步数据获取和更新状态。
- * 防止组件乱七八糟地使用useState调用以跟踪异步函数的状态
+ * @file 创建一个自定义hook，用于处理所有异步数据获取和更新状态。
+ * @file 防止组件乱七八糟地使用useState调用以跟踪异步函数的状态
  */
 import { useState } from 'react';
 
