@@ -43,8 +43,7 @@ export const ProjectListScreen = () => {
     //定义请求的工程列表的状态
     const { data: users } = useUser();
     useDocumentTitle('项目列表', false);
-    //console.log(useUrlQueryParam(['name', 'personId']));
-    //const test = useUrlQueryParam(['name','personId']);
+
     return (
         <Container>
             <h1>项目列表</h1>
