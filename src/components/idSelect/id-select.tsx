@@ -9,14 +9,17 @@ import { ComponentProps } from 'react';
 
 import { Raw } from '@/types/index';
 
+//定义一个类型，通过ComponentProps来，获得antd组件Select中的所有属性的类型
 type SelectProps = ComponentProps<typeof Select>;
 
+//定义透传过来的Props的类型，通过继承SelectProps中的属性，并通过Omit来过滤掉下面三个属性
 interface IdSelectProps extends Omit<SelectProps, 'value' | 'onChange' | 'options'> {
-    value?: Raw | null | undefined;
-    onChange?: (value?: number) => void;
-    defaultOptionName?: string;
-    options?: { name: string; id: number }[];
+    value?: Raw | null | undefined; //接受的value的值的范围，传入这四种类型都可以
+    onChange?: (value?: number) => void; //所有传入的值，返回时都转换成number往外传
+    defaultOptionName?: string; //做为默认值，空值存在，例如没有选择时就默认这个值
+    options?: { name: string; id: number }[]; //select组件中的options属性，传入的是一个数组，来决定options的数量
 }
+//定义转换传入value值的函数，当value为其它值时返回0，否则转换成数字并返回
 const toNumber = (value: unknown) => (Number.isNaN(Number(value)) ? 0 : Number(value));
 /**
  * value 可以传入多种类型的值
@@ -26,6 +29,7 @@ const toNumber = (value: unknown) => (Number.isNaN(Number(value)) ? 0 : Number(v
  * @param props
  */
 export const IdSelect = (props: IdSelectProps) => {
+    //从传入的props中解构相关属性
     const { value, onChange, defaultOptionName, options, ...restProps } = props;
     return (
         <Select

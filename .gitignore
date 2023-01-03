@@ -10,7 +10,7 @@ yarn-debug.log*
 yarn-error.log*
 selenium-debug.log
 # 运行时数据
-tsconfig.tsbuildinfo
+*.tsbuildinfo
 pids
 *.pid
 *.pid.lock
@@ -29,4 +29,4 @@ pids
 *.njsproj
 *.sln
 *.map
-*.tsbuildinfo
+
