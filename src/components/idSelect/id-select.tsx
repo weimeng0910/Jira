@@ -33,6 +33,8 @@ export const IdSelect = (props: IdSelectProps) => {
     const { value, onChange, defaultOptionName, options, ...restProps } = props;
     return (
         <Select
+            //当数据没有返回时，这里需要判断，否则会显示ID的数字
+            //当数据加载时就显示相应的值，否则就为0显示负责人
             value={options?.length ? toNumber(value) : 0}
             // eslint-disable-next-line @typescript-eslint/no-shadow
             onChange={value => onChange?.(toNumber(value) || undefined)}

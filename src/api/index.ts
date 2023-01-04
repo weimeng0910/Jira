@@ -29,17 +29,19 @@ export interface IUser {
 interface Project {
   id: number;
   name: string;
-  personId: number | string;
+  personId: number;
   pin: boolean;
   organization?: string;
   created: number;
 }
 interface User {
-  id: number | string;
+  id: number;
   name: string;
-  email?: string;
-  title?: string;
-  organization?: string;
+  personId: number;
+  email: string;
+  title: string;
+  organization: string;
+  token: string;
 }
 /**
  * @description: 用户登录或者注册

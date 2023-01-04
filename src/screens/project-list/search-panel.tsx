@@ -7,26 +7,31 @@
 
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { Form, Input, Select } from 'antd';
+import { Form, Input } from 'antd';
+
+// eslint-disable-next-line import/no-cycle
+import { Project } from './list';
+// eslint-disable-next-line import/no-cycle
+import { UserSelect } from '@/components/userSelect/user-select';
 
 //定义类型
 export interface User {
-    id: number | string;
+    id: number;
     name: string;
-    email?: string;
-    title?: string;
-    organization?: string;
+    personId: number;
+    email: string;
+    title: string;
+    organization: string;
+    token: string;
 }
 interface SearchPanelProps {
-    param: {
-        name: string;
-        personId: string;
-    };
-    users: User[];
+    //通过utiltype和list组件中的类型保持一致
+    param: Partial<Pick<Project, 'name' | 'personId'>>;
+
     setParam: (param: SearchPanelProps['param']) => void;
 }
 
-const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => (
+const SearchPanel = ({ param, setParam }: SearchPanelProps) => (
     //layout='inline'是水平排列
     <Form
         css={css({ padding: '2rem' })}
@@ -46,7 +51,8 @@ const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => (
             />
         </Form.Item>
         <Form.Item>
-            <Select
+            <UserSelect
+                defaultOptionName='负责人'
                 value={param.personId}
                 onChange={value =>
                     setParam({
@@ -54,18 +60,7 @@ const SearchPanel = ({ param, setParam, users }: SearchPanelProps) => (
                         personId: value
                     })
                 }
-            >
-                <Select.Option value=''>负责人</Select.Option>
-                {/* 遍历读取用户列表数据 */}
-                {users.map(user => (
-                    <Select.Option
-                        key={user.id}
-                        value={user.id}
-                    >
-                        {user.name}
-                    </Select.Option>
-                ))}
-            </Select>
+            />
         </Form.Item>
     </Form>
 );

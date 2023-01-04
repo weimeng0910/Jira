@@ -10,12 +10,13 @@ import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
+// eslint-disable-next-line import/no-cycle
 import { User } from '@/screens/project-list/search-panel';
 
 export interface Project {
     id: number;
     name: string;
-    personId: number | string;
+    personId: number;
     pin: boolean;
     organization?: string;
     created: number;
