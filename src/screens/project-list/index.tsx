@@ -4,14 +4,12 @@
  * @date 2022/11/28
  * @file 项目列表
  */
-//导入内部组件
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
 
 import List from './list';
 import SearchPanel from './search-panel';
 import { useProjectSearchParam } from './util';
-//import { Outlet } from 'react-router-dom';
 //导入自定义hook
 import { useProjects } from '@/utils/hooks/project';
 import { useDebounce } from '@/utils/hooks/useDebounce';

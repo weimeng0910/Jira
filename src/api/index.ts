@@ -7,6 +7,7 @@
  */
 import { AxiosRequestConfig } from 'axios';
 
+import { Project, User } from '@/types/user';
 import { http } from './http';
 
 // 返回res.data的interface
@@ -26,23 +27,7 @@ export interface IUser {
   name?: string;
   personId?: number;
 }
-interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization?: string;
-  created: number;
-}
-interface User {
-  id: number;
-  name: string;
-  personId: number;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
+
 /**
  * @description: 用户登录或者注册
  * @params {String} url

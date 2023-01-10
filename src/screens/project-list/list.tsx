@@ -11,19 +11,10 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
 import { Pin } from '@/components/pin/pin';
-// eslint-disable-next-line import/no-cycle
-import { User } from '@/screens/project-list/search-panel';
-// eslint-disable-next-line import/no-cycle
+//定义类型
+import { Project, User } from '@/types/user';
 import { useEditProject } from '@/utils/hooks/project';
 
-export interface Project {
-    id: number;
-    name: string;
-    personId: number;
-    pin: boolean;
-    organization?: string;
-    created: number;
-}
 //这个类型包含了TableProps中的所有属性，和users这个属性
 interface ListProps extends TableProps<Project> {
     users: User[];

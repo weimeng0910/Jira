@@ -1,11 +1,19 @@
 export interface User {
-  id: number | string;
+  id: number;
   name: string;
-  personId?: number;
-  email?: string;
-  title?: string;
+  personId: number;
+  email: string;
+  title: string;
+  organization: string;
+  token: string;
+}
+export interface Project {
+  id: number;
+  name: string;
+  personId: number;
+  pin: boolean;
   organization?: string;
-  token?: string;
+  created: number;
 }
 export interface AuthForm {
   username: string;

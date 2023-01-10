@@ -7,7 +7,6 @@
 import { ComponentProps } from 'react';
 
 import { IdSelect } from '@/components/idSelect/id-select';
-// eslint-disable-next-line import/no-cycle
 import { useUser } from '@/utils/hooks/users';
 
 export const UserSelect = (props: ComponentProps<typeof IdSelect>) => {

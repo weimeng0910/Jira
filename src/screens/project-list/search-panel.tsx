@@ -9,21 +9,10 @@
 import { css } from '@emotion/react';
 import { Form, Input } from 'antd';
 
-// eslint-disable-next-line import/no-cycle
-import { Project } from './list';
-// eslint-disable-next-line import/no-cycle
 import { UserSelect } from '@/components/userSelect/user-select';
-
 //定义类型
-export interface User {
-    id: number;
-    name: string;
-    personId: number;
-    email: string;
-    title: string;
-    organization: string;
-    token: string;
-}
+import { Project } from '@/types/user';
+
 interface SearchPanelProps {
     //通过utiltype和list组件中的类型保持一致
     param: Partial<Pick<Project, 'name' | 'personId'>>;

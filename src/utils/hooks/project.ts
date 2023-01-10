@@ -9,13 +9,18 @@ import { useEffect } from 'react';
 import { cleanObject } from '@/utils/cleanObject';
 //导入处定义hook,处理异步加载
 import { useAsync } from '@/utils/hooks/useAsync';
-//导入类型
-// eslint-disable-next-line import/no-cycle
-import { Project } from '@/screens/project-list/list';
 //导入API请求
 import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
 
+interface Project {
+  id: number;
+  name: string;
+  personId: number;
+  pin: boolean;
+  organization?: string;
+  created: number;
+}
 export const useProjects = (param?: Partial<Project>) => {
   //定义请求的工程列表的状态
   const { run, ...result } = useAsync<Project[]>();
