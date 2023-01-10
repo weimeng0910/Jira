@@ -10,9 +10,11 @@ import { cleanObject } from '@/utils/cleanObject';
 //导入处定义hook,处理异步加载
 import { useAsync } from '@/utils/hooks/useAsync';
 //导入类型
+// eslint-disable-next-line import/no-cycle
 import { Project } from '@/screens/project-list/list';
 //导入API请求
 import { getProjectsList } from '@/api/index';
+import { http } from '@/api/http';
 
 export const useProjects = (param?: Partial<Project>) => {
   //定义请求的工程列表的状态
@@ -22,10 +24,56 @@ export const useProjects = (param?: Partial<Project>) => {
    * @function
    * 请求数据
    * */
-
+  const fetchProjects = () => getProjectsList(cleanObject(param || {}));
   useEffect(() => {
-    run(getProjectsList(cleanObject(param || {})));
+    run(fetchProjects(), {
+
+      retry: fetchProjects
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [param]);
   return result;
+};
+
+/**
+   * @function
+   * 编辑project
+   * */
+
+export const useEditProject = () => {
+  const { run, ...asyncResult } = useAsync();
+
+  const mutate = (params: Partial<Project>) => {
+    const result = run(http({
+      url: `projects/${params.id}`,
+      data: params,
+      method: 'put'
+    }));
+    return result;
+  };
+  return {
+    mutate,
+    ...asyncResult
+  };
+};
+/**
+   * @function
+   * 增加project
+   * */
+
+export const useAddProject = () => {
+  const { run, ...asyncResult } = useAsync();
+
+  const mutate = (params: Partial<Project>) => {
+
+    run(http({
+      url: `projects/${params.id}`,
+      data: params,
+      method: 'post'
+    }));
+  };
+  return {
+    mutate,
+    ...asyncResult//useAsync中的其它属性，例如isLoding
+  };
 };

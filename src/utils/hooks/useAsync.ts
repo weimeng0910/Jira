@@ -36,6 +36,8 @@ export const useAsync = <T>(
 
     ...initialState
   });
+  //定义retry的状态,useState直接传入函数的含义是：惰性初始化；要用state保存函数，不能直接传入函数
+  const [retry, setRetry] = useState(() => () => { });
   //定义设置数据的方法，调用这个方法时候，说明请求成功，返回数据data
   const setData = (data: T) => setState({
     data,
@@ -50,11 +52,17 @@ export const useAsync = <T>(
 
   });
   //run 用来触发异步请求的方法，设置hook的消费者传入的异步
-  const run = (promise: Promise<T>) => {
+  const run = async (promise: Promise<T>, runConfig?: { retry: () => Promise<T> }) => {
     //如果没有传入promise或者没有then，就表示传入的不是异步函数
     if (!promise || !promise.then) {
       throw new Error('请传入promise类型数据');
     }
+    //设置retry状态
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     setState({ ...state, status: 'loading' });
     return promise
       .then(data => {
@@ -71,6 +79,7 @@ export const useAsync = <T>(
         return error;
       });
   };
+
   return {
     isIdle: state.status === 'idle',
     isLoading: state.status === 'loading',
@@ -79,6 +88,8 @@ export const useAsync = <T>(
     run,
     setData,
     setError,
+    //retry被调用时，重新运行run函数，让state被刷新，重新驱动页面刷新
+    retry,
     ...state
   };
 };

@@ -12,17 +12,7 @@ import { serviceAxios } from './request';
  * @param {Object} config   请求的配置
  * @return {Promise}   返回一个promise对象，axios请求数据返回值
  */
-//interface Todo {
-//  title: string;
-//  description: string;
-//  completed: boolean;
-//}
 
-//type TodoPreview = Pick<Todo, "title" | "completed">;
-//interface PostRequestParams {
-//  name: string,
-//  personId: string,
-//}
 // 封装 GET POST 请求并导出
 export const http = async ({
   method,

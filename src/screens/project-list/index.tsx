@@ -33,7 +33,7 @@ export const ProjectListScreen = () => {
     const debounceParam = useDebounce(param, 2000);
     //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态
-    const { isLoading, error, data: list } = useProjects(debounceParam);
+    const { isLoading, error, data: list, retry } = useProjects(debounceParam);
     //定义请求的工程列表的状态
     const { data: users } = useUser();
 
@@ -48,6 +48,7 @@ export const ProjectListScreen = () => {
 
             {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
             <List
+                refresh={retry}
                 loading={isLoading}
                 users={users || []}
                 dataSource={list || []}

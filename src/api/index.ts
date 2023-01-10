@@ -24,7 +24,7 @@ export interface ILogin {
 }
 export interface IUser {
   name?: string;
-  personId?: string | number;
+  personId?: number;
 }
 interface Project {
   id: number;
@@ -95,7 +95,7 @@ export const getUsersList = async (): Promise<User[]> => {
 /**
  * @description: 获取项目列表
  * @params {IUser} params
- * @return {Promiprojectsse}
+ * @return {Promise}
  */
 export const getProjectsList = async (params: IUser): Promise<Project[]> => {
   let resp;
@@ -112,4 +112,23 @@ export const getProjectsList = async (params: IUser): Promise<Project[]> => {
   }
   return resp;
 };
+/**
+ * @description: 获取项目列表
+ * @params {IUser} params
+ * @return {Promise}
+ */
+export const getProjectsPin = async (params: IUser): Promise<Project[]> => {
+  let resp;
+  try {
+    resp = await http({
+      url: `projects/${params.personId}`,
+      data: params,
+      method: 'put'
+    });
+  } catch (error) {
 
+    console.log(error);
+
+  }
+  return resp;
+};

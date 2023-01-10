@@ -17,29 +17,27 @@ import { initData } from './initData';
 import { ResponseError, RequestBody, PostRequestParams } from './type/handlersType';
 
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
  * 初始化数据
  */
-// 设置延迟
-// eslint-disable-next-line no-new, @typescript-eslint/no-implied-eval
-//const sleep = (t: number) => { new Promise((resolve: any) => { setTimeout(resolve, t); }); };
 
 initData();
 
 
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
- *  用户携带token登陆，通过token中的id查找用户是否存在
+ *  @function getToken
+ *  @param req
+ *  @description 获得用户携带存在localstorega中的token
  */
-// 获得用户携带存在localstorega中的token
+
 export const getToken = (req: RestRequest) => req.headers.get('Authorization')?.replace('Bearer ', '');
 
-//通过请求头中携带的token，并解密其中的id来检查用户是否存在
-// async ,返回的都是Promise对象
+/**
+ *  @function getUser
+ *  @param req
+ *  @description 通过请求头中携带的token，并解密其中的id来检查用户是否存在
+ *  @async async ,返回的都是Promise对象
+ */
+
 async function getUser(req: RestRequest) {
   //获得token
   const token = getToken(req);
@@ -70,15 +68,17 @@ async function getUser(req: RestRequest) {
   return user;
 }
 
+
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
- *  处理各种请求把数据返回前端
+ * @todo 处理各种请求把数据返回前端
  */
 export const handlers = [
 
-  // 注册
+
+  /**
+   * @todo 注册
+   * @returns data
+   * */
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/register`, async (req, res, ctx) => {
 
     // 获取到url 中的参数
@@ -110,7 +110,9 @@ export const handlers = [
     return res(ctx.json({ user }));
   }),
 
-  // 登陆
+  /**
+   * @todo 登陆
+   * */
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
 
 
@@ -129,15 +131,18 @@ export const handlers = [
       ctx.json({ user }));
   }),
 
-  // 响应get请求获得项目数据
+  /**
+   * @todo 响应get请求获得项目数据
+   * */
+
   rest.get<RequestBody, PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
 
     // 获得前瑞发送的参数
     const personId = req.url.searchParams.get('personId')!;
     const name = req.url.searchParams.get('name')!;
-
+    //const { personId,name } = req.params;
     //调用写入数据的函数
-    const projectData = await db.ScreensProjectsData(projectDB, personId, name);
+    const projectData = await db.ScreensProjectsData(projectDB, personId as string, name as string);
     if (projectData) {
       return res(
         //延迟两秒返回数据
@@ -149,7 +154,11 @@ export const handlers = [
     return res(ctx.status(500));
 
   }),
-  // 响应post请求用户列表数据
+
+  /**
+   * @todo 响应post请求用户列表数据
+   * */
+
   rest.post<RequestBody>(`${API_URL}/users`, async (_req, res, ctx) => {
     //调用写入数据的函数
     const userData = await db.ScreensUserData(userDB);
@@ -159,7 +168,11 @@ export const handlers = [
     return res(ctx.status(200), ctx.json(userData));
 
   }),
-  // 携带前瑞token请求
+
+  /**
+   * @todo 携带前瑞token请求
+   * */
+
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
     const user = await getUser(req);
     const token = getToken(req);
@@ -171,5 +184,18 @@ export const handlers = [
     );
 
   }),
+  /**
+     * @todo 响应put请求
+     * */
+  rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
 
+    const projectData = await db.changeProjectsDataPin(projectDB, id as string);
+
+
+    return res(ctx.json({ projectData }));
+
+
+  }),
 ];

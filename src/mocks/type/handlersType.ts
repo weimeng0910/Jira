@@ -24,7 +24,9 @@ export interface Project {
   id: number,
   name: string,
   organization: string,
-  personId: number | string
+  personId: number,
+  pin: boolean
+
 
 }
 export interface UserData {
