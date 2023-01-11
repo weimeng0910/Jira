@@ -12,15 +12,9 @@ import { useAsync } from '@/utils/hooks/useAsync';
 //导入API请求
 import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
+//导入类型
+import { Project } from '@/types/user';
 
-interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization?: string;
-  created: number;
-}
 export const useProjects = (param?: Partial<Project>) => {
   //定义请求的工程列表的状态
   const { run, ...result } = useAsync<Project[]>();

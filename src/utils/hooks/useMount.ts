@@ -1,3 +1,9 @@
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2023/01/11
+ * @file 创建一个自定义hook，用于处理只触发一次挂载。
+ */
 import { EffectCallback, useEffect } from 'react';
 
 function useEffectOnce(effect: EffectCallback) {

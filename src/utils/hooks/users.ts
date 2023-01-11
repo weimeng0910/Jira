@@ -8,16 +8,9 @@ import useEffectOnce from '@/utils/hooks/useMount';
 import { useAsync } from './useAsync';
 //导入API请求
 import { getUsersList } from '@/api/index';
+//导入类型
+import { User } from '@/types/user';
 
-interface User {
-  id: number;
-  name: string;
-  personId: number;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
 export const useUser = () => {
   const { run, ...result } = useAsync<User[]>();
   //请求数据

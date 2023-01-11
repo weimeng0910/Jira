@@ -7,6 +7,8 @@
  */
 import { useState } from 'react';
 
+import { useMountedRef } from './useMountedRef';
+
 //定义一个类型，返回的值可能是 value error status status prop 是：“idle”，“pending”，“success”，“error”。
 interface State<T> {
   error: Error | null;
@@ -36,6 +38,7 @@ export const useAsync = <T>(
 
     ...initialState
   });
+  const mountedRef = useMountedRef();
   //定义retry的状态,useState直接传入函数的含义是：惰性初始化；要用state保存函数，不能直接传入函数
   const [retry, setRetry] = useState(() => () => { });
   //定义设置数据的方法，调用这个方法时候，说明请求成功，返回数据data
@@ -66,7 +69,9 @@ export const useAsync = <T>(
     setState({ ...state, status: 'loading' });
     return promise
       .then(data => {
-        setData(data);
+        //如果页面挂载则设置数据
+        if (mountedRef.current)
+          setData(data);
         return data;
       })
       // catch 会消化异常导致不再抛出，如果不主动抛出，外面是接收不到异常的

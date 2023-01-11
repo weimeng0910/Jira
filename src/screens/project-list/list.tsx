@@ -24,6 +24,7 @@ interface ListProps extends TableProps<Project> {
 //父组件传过来的{ users, ...props }这个props,里面包含了所有的TableProps
 //还有users这个数据，先把users取出来，把loading等其它属性放在...props中
 const List = ({ users, ...props }: ListProps) => {
+    //这个纯函数mutate解构出来，可以在jsx中调用纯函数
     const { mutate } = useEditProject();
     //函数currying柯理化
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh);
