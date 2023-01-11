@@ -5,7 +5,7 @@
  * @file 创建一个自定义hook，用于处理所有异步数据获取和更新状态。
  * @file 防止组件乱七八糟地使用useState调用以跟踪异步函数的状态
  */
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { useMountedRef } from './useMountedRef';
 
@@ -42,20 +42,20 @@ export const useAsync = <T>(
   //定义retry的状态,useState直接传入函数的含义是：惰性初始化；要用state保存函数，不能直接传入函数
   const [retry, setRetry] = useState(() => () => { });
   //定义设置数据的方法，调用这个方法时候，说明请求成功，返回数据data
-  const setData = (data: T) => setState({
+  const setData = useCallback((data: T) => setState({
     data,
     status: 'success',
     error: null
-  });
+  }), []);
   //设置错误的方法，请求完成后发生错误，调用这个方法
-  const setError = (error: Error) => setState({
+  const setError = useCallback((error: Error) => setState({
     error,
     status: 'error',
     data: null
 
-  });
+  }), []);
   //run 用来触发异步请求的方法，设置hook的消费者传入的异步
-  const run = async (promise: Promise<T>, runConfig?: { retry: () => Promise<T> }) => {
+  const run = useCallback(async (promise: Promise<T>, runConfig?: { retry: () => Promise<T> }) => {
     //如果没有传入promise或者没有then，就表示传入的不是异步函数
     if (!promise || !promise.then) {
       throw new Error('请传入promise类型数据');
@@ -66,11 +66,11 @@ export const useAsync = <T>(
         run(runConfig?.retry(), runConfig);
       }
     });
-    setState({ ...state, status: 'loading' });
+    setState(prevState => ({ ...prevState, status: 'loading' }));
     return promise
       .then(data => {
         //如果页面挂载则设置数据
-        if (mountedRef.current)
+        if (mountedRef())
           setData(data);
         return data;
       })
@@ -83,7 +83,7 @@ export const useAsync = <T>(
           return Promise.reject(error);
         return error;
       });
-  };
+  }, [config.throwOnError, mountedRef, setData, setError]);
 
   return {
     isIdle: state.status === 'idle',

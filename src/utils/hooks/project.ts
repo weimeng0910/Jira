@@ -4,7 +4,7 @@
  * @date 2022/11/30
  * @file 获取工程列表的自定义hook
  */
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 import { cleanObject } from '@/utils/cleanObject';
 //导入处定义hook,处理异步加载
@@ -23,14 +23,15 @@ export const useProjects = (param?: Partial<Project>) => {
    * @function
    * 请求数据
    * */
-  const fetchProjects = () => getProjectsList(cleanObject(param || {}));
+  const fetchProjects = useCallback(() => getProjectsList(cleanObject(param || {})), [param]);
   useEffect(() => {
     run(fetchProjects(), {
 
       retry: fetchProjects
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [param]);
+
+    //非状态类型和基本类型是不可以放在依赖中，会造成无限循环
+  }, [param, run, fetchProjects]);
   return result;
 };
 
