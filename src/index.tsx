@@ -7,7 +7,7 @@ import { mocker } from '@/mocks/browser';
 
 // 开发环境开启mock服务
 if (process.env.NODE_ENV === 'development') {
-    // const { mocker } = require('mocks/browser');
+    //const { mocker } = require('./mocks/browser');
     mocker.start({
         // 对于没有 mock 的接口直接通过，避免异常
         onUnhandledRequest: 'bypass'

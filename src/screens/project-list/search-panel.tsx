@@ -1,68 +1,57 @@
-import { ChangeEvent } from 'react';
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/24
+ * @file  SEARCH组件
+ */
 
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+import { Form, Input } from 'antd';
+
+import { UserSelect } from '@/components/userSelect/user-select';
 //定义类型
-export interface User {
-    id: number;
-    name: string;
-    email: string;
-    title: string;
-    organization: string;
-}
+import { Project } from '@/types/user';
+
 interface SearchPanelProps {
-    param: {
-        name: string;
-        personId: string;
-    };
-    users: User[];
+    //通过utiltype和list组件中的类型保持一致
+    param: Partial<Pick<Project, 'name' | 'personId'>>;
+
     setParam: (param: SearchPanelProps['param']) => void;
 }
 
-export default function SearchPanel({ param, setParam, users }: SearchPanelProps) {
-    //input输入框触发函数
-    //要在 React 中键入元素的 onChange 事件，
-    //请将其类型设置为 React.ChangeEvent<HTMLInputElement>。
-    //该ChangeEvent类型具有target 引用元素的属性。元素的值可以在 上访问 event.target.value。
-    function handleChangeInput(evt: ChangeEvent<HTMLInputElement>) {
-        console.log(evt.target.value);
-        //Object.assign()基本用法： Object.assign方法用来将源对象（source）的所有可枚举属性，
-        //复制到目标对象（target）。 它至少需要两个对象作为参数，第一个参数是目标对象，后面的参数都是源对象
-        //  setParam(Object.assign({},param,{name:evt.target.value}))
-        setParam({
-            ...param, //解构对象
-            name: evt.target.value //重新为对象中的属性赋值
-        });
-    }
-    //handleChangeSelect
-    const handleChangeSelect = (evt: ChangeEvent<HTMLSelectElement>) => {
-        setParam({
-            ...param,
-            personId: evt.target.value
-        });
-    };
-    return (
-        <form>
-            <div>
-                <input
-                    type='text'
-                    value={param.name}
-                    onChange={handleChangeInput}
-                />
-                <select
-                    value={param.personId}
-                    onChange={handleChangeSelect}
-                >
-                    <option value=''>负责人</option>
-                    {/* 遍历读取用户列表数据 */}
-                    {users.map(user => (
-                        <option
-                            key={user.id}
-                            value={user.id}
-                        >
-                            {user.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-        </form>
-    );
-}
+const SearchPanel = ({ param, setParam }: SearchPanelProps) => (
+    //layout='inline'是水平排列
+    <Form
+        css={css({ padding: '2rem' })}
+        layout='inline'
+    >
+        <Form.Item>
+            <Input
+                placeholder='项目名'
+                type='text'
+                value={param.name}
+                onChange={evt =>
+                    setParam({
+                        ...param,
+                        name: evt.target.value
+                    })
+                }
+            />
+        </Form.Item>
+        <Form.Item>
+            <UserSelect
+                defaultOptionName='负责人'
+                value={param.personId}
+                onChange={value =>
+                    setParam({
+                        ...param,
+                        personId: value
+                    })
+                }
+            />
+        </Form.Item>
+    </Form>
+);
+
+export default SearchPanel;

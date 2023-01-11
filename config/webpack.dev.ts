@@ -51,7 +51,7 @@ const devserver = new WebpackDevServer({
   // 设置端口号
   port: port,
   //open: true,
-  //historyApiFallback: true,
+  historyApiFallback: true,
 }, webpack(config)
 );
 devserver.start().then(() => {

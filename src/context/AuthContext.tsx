@@ -1,28 +1,53 @@
-/*
- *存储全局用户信息
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * @file 存储全局用户信息
  */
-import { useContext, createContext, useState, useMemo, useCallback, ReactNode } from 'react';
+import { useCallback, useContext, createContext, useMemo, ReactNode } from 'react';
 
-import { AuthForm, User } from '@/types/user';
+import { http } from '@/api/http';
+import { FullPageErrorFallback, FullPageLoading } from '@/components/lib/lib';
+import { AuthForm, UserData } from '@/types/user';
 import * as authJira from '@/utils/authJiraProvider';
+import { useAsync } from '@/utils/hooks/useAsync';
+import useEffectOnce from '@/utils/hooks/useMount';
+
+// 获得token
+async function getUserByToken() {
+    let user = null;
+    const token = await authJira.getToken();
+    if (token) {
+        const data = await http({ url: 'me', method: 'get', token });
+        user = data.user;
+    }
+    return user;
+}
 
 const AuthContext = createContext<
     | {
-          userData: User | null;
+          userData: UserData | null;
           login: (from: AuthForm) => Promise<void>;
           register: (from: AuthForm) => Promise<void>;
           logout: () => Promise<void>;
       }
     | undefined
 >(undefined);
-
 // context 对象接受一个名为 displayName 的 property，类型为字符串。React DevTools 使用该字符串来确定 context 要显示的内容
 AuthContext.displayName = 'AuthContext'; // "MyDisplayName.Provider" 在 DevTools 中
 
 export const AuthProvider = (props: { children: ReactNode }) => {
     // 定义状态
-    const [userData, setUserData] = useState<User | null>(null);
-
+    //const [userData, setUserData] = useState<UserData | null>(null);
+    const {
+        run,
+        isLoading,
+        data: userData,
+        error,
+        isIdle,
+        isError,
+        setData: setUserData
+    } = useAsync<UserData | null>();
     // point free 消除user => setUserData(user)中的user参数
     // const login = (form: AuthForm) => authJira.login(form).then(user => setUserData(user));
 
@@ -41,10 +66,28 @@ export const AuthProvider = (props: { children: ReactNode }) => {
         () => authJira.logout().then(() => setUserData(null)),
         [setUserData]
     );
+    //加载用户token
+    useEffectOnce(() => {
+        run(getUserByToken())
+            .then(setUserData)
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+            .catch(error => error);
+        //getUserByToken()
+        //    .then(user => setUserData(user))
+        //    .catch(error => {
+        //        console.log(error);
+        //    });
+    });
     const value = useMemo(
         () => ({ userData, login, register, logout }),
         [userData, login, logout, register]
     );
+    if (isIdle || isLoading) {
+        return <FullPageLoading />;
+    }
+    if (isError) {
+        return <FullPageErrorFallback error={error} />;
+    }
     return (
         <AuthContext.Provider
             value={value}

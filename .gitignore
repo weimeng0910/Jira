@@ -12,6 +12,10 @@ selenium-debug.log
 # 输出数据
 *.tsbuildinfo
 # 运行时数据
+<<<<<<< HEAD
+=======
+*.tsbuildinfo
+>>>>>>> meng
 pids
 *.pid
 *.pid.lock
@@ -30,5 +34,9 @@ pids
 *.njsproj
 *.sln
 *.map
+<<<<<<< HEAD
 # ESLint 缓存
 .eslintcache
+=======
+
+>>>>>>> meng
