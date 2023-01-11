@@ -33,7 +33,8 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
       // 输出目录
       path: path.resolve(__dirname, '../dist'),
       // 打包前清空输出目录
-      clean: true
+      clean: true,
+      publicPath: '/'
     },
     module: {
       rules: [
@@ -106,6 +107,11 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
               loader: 'less-loader',
               options: {
                 lessOptions: {
+                  exclude: /node_modules/,
+                  // modifyVars: theme, // 自定义主题的
+                  modifyVars: {
+                    '@primary-color': '#1DA57A'
+                  },
                   javascriptEnabled: true,
                 }
 
@@ -144,11 +150,23 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
           ]
         },
 
+        {
+          test: /\.svg$/,
+          oneOf: [
+            {
+              dependency: { not: ['url'] }, // exclude new URL calls
+              use: ['@svgr/webpack', 'new-url-loader'],
+            },
+            {
+              type: 'asset', // export a data URI or emit a separate file
+            },
+          ],
+        },
 
         // 图片文件引入
         {
-          test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf)$/i,
-          type: 'asset/resource',
+          test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|otf|svg)$/i,
+          type: 'asset',
           generator: {
             filename: 'img/[hash][ext][query]'
           },
@@ -163,9 +181,12 @@ export const CommonConfig = (mode: "development" | "production"): Configuration 
         {
           test: /\.txt/,
           type: 'asset/source'
-        }
+        },
+
+
       ]
     },
+
     performance: {
       hints: false
     },

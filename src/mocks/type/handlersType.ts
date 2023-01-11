@@ -10,6 +10,7 @@ export interface RequestBody {
 }
 //Request parameters
 export interface PostRequestParams {
+  name: string,
   personId: string,
 }
 export interface User {
@@ -23,6 +24,14 @@ export interface Project {
   id: number,
   name: string,
   organization: string,
-  personId: number | string
+  personId: number,
+  pin: boolean
+
+
+}
+export interface UserData {
+
+  id: number | string,
+  name: string,
 
 }

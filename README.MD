@@ -82,16 +82,18 @@
 │   └── paths.js            // webpack路径配置
 ├── dist                    // 打包输出目录
 ├── public                  // 项目公开目录
+├── text                    // 测试目录
 ├── src                     // src开发目录
+│   ├── assets              // svg图片
 │   ├── mocks               // server，Jwt
 │   ├── components          // 公共组件
+│   │    ├── lib            // Emotion配制的CSS样式组件
 │   ├── routers             // 项目路由配置
 │   ├── views               // 具体业务页面
 │   ├── context             // 全局用户信息
 │   ├── types               // 全局公共类型定义
 │   ├── utils               // 工具库/通用函数
 │   ├── typings.d.ts        // css modules 类型声明文件
-│   ├── index.html          // 入口html页面
 │   ├── index.html          // 入口html页面
 │   └── index.tsx           // 项目入口文件
 ├── .babel.config.js         // babel配置,依赖什么样的插件
@@ -230,4 +232,109 @@ yarn add antd
 
 ```
 yarn add msw
+```
+
+### React 中 css-in-js Emotion 安装和使用
+
+1.安装
+
+```
+yarn add @emotion/react @emotion/styled
+```
+
+2.安装插件
+vscode 安装插件，vscode-styled-components 3.使用 css 道具
+emotion 提供一个 css 可以接受嵌套选择器和媒体查询的道具。它可以支持对象或标记的模板文字。
+
+在代码编辑器中打开 App.js 文件并修改它以将<div>s 与 cssprop 一起使用
+
+/\*_ @jsxImportSource @emotion/react _/加上这个注释才可以在 div 中用 css 属性
+
+```
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
+
+function App() {
+  return (
+    <div>
+      <div css={css({
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#eee',
+      })}>
+        This is an example of <code>`css`</code> using an object.
+      </div>
+      <div css={css`
+        margin: 10px;
+        padding: 10px;
+        background-color: #eee;
+      `}>
+        This is an example of <code>`css`</code> using a tagged template literal.
+      </div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+### React 项目中 webpack 加载 svg
+
+1.使用 SVG 作为组件
+
+```
+yarn add  new-url-loader -D
+yarn add -D @svgr/webpack
+```
+
+3.安装 VSCode Extension: SVG Gallery
+
+#### 安装 Day.js 处理时间
+
+Day.js 是一个轻量的处理时间和日期的 JavaScript 库，和 Moment.js 的 API 设计保持完全一样。
+
+```
+yarn add dayjs
+```
+
+#### 安装 jwt-decode
+
+```
+yarn add jwt-decode
+```
+
+代码示例
+
+```
+// ES6
+import jwt_decode from "jwt-decode";
+decoded = jwt_decode(token)
+console.log(decoded);
+// { name: 'Tom', age: 23, iat: 1584088910, exp: 1584096110 }
+```
+
+#### 安装 react-helmet
+
+文档头部的所有更改,这个包可以在 React 中更改头部
+
+```
+yarn add react-helmet
+
+```
+
+#### 安装 react-router,react-router-dom
+
+说明：react-router 已经更新到 6.4,但因为项目中只用来做纯粹的路由组件，所以使用 6.3.0
+
+```
+yarn add react-router@6.3.0 react-router-dom@6.3.0
+
+```
+
+### 使用 Why Did You Render 调试 React 性能问题
+
+当我们启用了 why render 插件开发的时候，如果组件里有不必要的 re-render 问题时，控制台里会有相关的信息提示（不管是页面加载的时候还是交互的时候都可能会有提示）
+
+```
+yarn add --dev @welldone-software/why-did-you-render
 ```

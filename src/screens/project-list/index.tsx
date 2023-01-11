@@ -1,75 +1,57 @@
-//导入qs和UI
-import { Button } from 'antd';
-// 外部依赖
-import axios from 'axios';
-import qs from 'qs';
-import { FC, useEffect, useState } from 'react';
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/28
+ * @file 项目列表
+ */
+import styled from '@emotion/styled';
+import { Typography } from 'antd';
 
-//导入内部组件
 import List from './list';
 import SearchPanel from './search-panel';
-import { API_URL } from '@/config';
-//导入样式文件
-//import '@/css/style.css';
-// 本地依赖
-import { cleanObject } from '@/utils/cleanObject';
-import useDebounce from '@/utils/hooks/useDebounce';
-import { useMount } from '@/utils/hooks/useMount';
+import { useProjectSearchParam } from './util';
+//导入自定义hook
+import { useProjects } from '@/utils/hooks/project';
+import { useDebounce } from '@/utils/hooks/useDebounce';
+import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
+import { useUser } from '@/utils/hooks/users';
 
-// import { useHttp } from '@/utils/http';
-
-export const ProjectListScreen: FC = () => {
-    // 组件状态
-    const [param, setParam] = useState({
-        name: '',
-        personId: ''
-    });
-
-    //自定义hook
+//定义样式
+const Container = styled.div`
+    padding: 3.2rem;
+`;
+export const ProjectListScreen = () => {
+    //设置页面标题
+    useDocumentTitle('项目列表', false);
+    // 基本类型，组件状态可以入在依赖里，非组件状态的对象，绝不可以入在依赖里
+    //const [param, setParam] = useUrlQueryParam(['name', 'personId']);
+    //const projectParam = { ...param, personId: Number(param.personId) || undefined };
+    //从获取url中参数的hook中解构param参数
+    const [param, setParam] = useProjectSearchParam();
     const debounceParam = useDebounce(param, 2000);
-
+    //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态
-    const [list, setList] = useState([]);
+    const { isLoading, error, data: list, retry } = useProjects(debounceParam);
+    //定义请求的工程列表的状态
+    const { data: users } = useUser();
 
-    //user用户状态
-    const [users, setUsers] = useState([]);
-    // 导入自定义http请求
-    //请求用户数据
-    useEffect(() => {
-        // eslint-disable-next-line promise/catch-or-return
-        axios
-            .get(`${API_URL}/projects?${qs.stringify(cleanObject(debounceParam))}`)
-            .then(async response => {
-                // eslint-disable-next-line promise/always-return
-                if (response) {
-                    //console.log(response.data, 'w2');
-                    setList(await response.data);
-                }
-            });
-    }, [debounceParam]); //当用户点击下拉，param就会变化触发请求下拉数据
-
-    //自定义hook
-    useMount(() => {
-        // eslint-disable-next-line promise/catch-or-return
-        axios.post(`${API_URL}/users`).then(async response => {
-            // eslint-disable-next-line promise/always-return
-            if (response) {
-                setUsers(await response.data);
-            }
-        });
-    });
     return (
-        <div>
+        <Container>
+            <h1>项目列表</h1>
+
             <SearchPanel
-                users={users}
-                param={debounceParam}
+                param={param}
                 setParam={setParam}
             />
+
+            {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
             <List
-                users={users}
-                list={list}
+                refresh={retry}
+                loading={isLoading}
+                users={users || []}
+                dataSource={list || []}
             />
-            <Button type='primary'>Antd 按钮</Button>
-        </div>
+        </Container>
     );
 };
+ProjectListScreen.whyDidYouRender = true;

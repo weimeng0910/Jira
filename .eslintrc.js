@@ -126,9 +126,28 @@ module.exports = {
         //],
         'import/order': [
             'error',
+
             {
-                groups: [['builtin', 'external']],
+                groups: [['unknown', 'builtin', 'external']],
+                //pathGroups: [
+                //    {
+                //        pattern: 'unknown',
+                //        group: 'unknown',
+                //        position: 'before'
+                //    },
+                //    {
+                //        pattern: '@/**',
+                //        group: 'external',
+                //        position: 'after'
+                //    }
+                //],
+                //pathGroupsExcludedImportTypes: [],
                 'newlines-between': 'always'
+                //alphabetize: {
+                //    order: 'asc',
+                //    caseInsensitive: true
+                //},
+                //warnOnUnassignedImports: false
             }
         ],
 

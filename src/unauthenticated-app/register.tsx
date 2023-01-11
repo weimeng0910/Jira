@@ -1,43 +1,89 @@
-import { Button } from 'antd';
-import { FormEvent, FC, ReactElement } from 'react';
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/23
+ * @file 注册
+ */
+import styled from '@emotion/styled';
+import { Form, Input, Button } from 'antd';
 
 import { useAuth } from '@/context/AuthContext';
+import { useAsync } from '@/utils/hooks/useAsync';
 
-const RegisterScreen: FC = (): ReactElement => {
+const LongButton = styled(Button)`
+    width: 100%;
+`;
+interface OnError {
+    onError: (error: Error) => void;
+}
+
+const RegisterScreen = ({ onError }: OnError) => {
     const { register } = useAuth();
-
-    const handlSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const username = (event.currentTarget.elements[0] as HTMLInputElement).value;
-        const password = (event.currentTarget.elements[1] as HTMLInputElement).value;
-        register({ username, password });
+    const { run, isLoading } = useAsync(undefined, { throwOnError: true });
+    const handlSubmit = async ({
+        cpassword,
+        ...values
+    }: {
+        username: string;
+        password: string;
+        cpassword: string;
+    }) => {
+        if (cpassword !== values.password) {
+            onError(new Error('请确认两次输入的密码相同'));
+            return;
+        }
+        try {
+            await run(register(values));
+        } catch (error) {
+            onError(error as Error);
+        }
     };
     return (
-        <form onSubmit={handlSubmit}>
-            <div style={{ marginLeft: '200px', padding: '20px' }}>
-                <label htmlFor='username'>用户名</label>
-                <input
-                    type='name'
+        <Form onFinish={handlSubmit}>
+            <Form.Item
+                label='Username'
+                name='username'
+                rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+                <Input
+                    placeholder='用户名'
+                    type='text'
                     id='username'
                 />
-            </div>
-            <div style={{ marginLeft: '200px', padding: '20px' }}>
-                <label htmlFor='password'>密码</label>
-                <input
+            </Form.Item>
+            <Form.Item
+                label='Password'
+                name='password'
+                rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+                <Input
+                    placeholder='密码'
                     type='password'
                     id='password'
                 />
-            </div>
-            <div>
-                <Button
+            </Form.Item>
+            <Form.Item
+                label='Cpassword'
+                name='cpassword'
+                rules={[{ required: true, message: 'Please confirm your password!' }]}
+            >
+                <Input
+                    placeholder='确认密码'
+                    type='password'
+                    id='cpassword'
+                />
+            </Form.Item>
+
+            <Form.Item>
+                <LongButton
+                    loading={isLoading}
                     type='primary'
                     htmlType='submit'
-                    style={{ marginLeft: '300px' }}
                 >
                     注册
-                </Button>
-            </div>
-        </form>
+                </LongButton>
+            </Form.Item>
+        </Form>
     );
 };
 export default RegisterScreen;

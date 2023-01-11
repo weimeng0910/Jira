@@ -1,3 +1,9 @@
+/**
+ * @author meng
+ * @version 1.0
+ * @date 2022/11/24
+ * Test
+ */
 import { Button } from 'antd';
 <<<<<<< HEAD
 =======
@@ -6,7 +12,7 @@ import { FC } from 'react';
 >>>>>>> meng
 
 import { useArray } from '@/utils/hooks/useArray';
-import { useMount } from '@/utils/hooks/useMount';
+import useEffectOnce from '@/utils/hooks/useMount';
 
 <<<<<<< HEAD
 export const TsReactTest = () => {
@@ -26,7 +32,7 @@ export const TsReactTest: FC = () => {
 
     const { value, clear, removeIndex, add } = useArray(persons);
 
-    useMount(() => {
+    useEffectOnce(() => {
         console.log(value);
 <<<<<<< HEAD
 =======

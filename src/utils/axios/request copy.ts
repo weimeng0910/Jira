@@ -1,76 +1,34 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import qs from 'qs';
+/**
+ * 网络请求配置,axios二次封装
+ */
 
+import axios, { AxiosRequestConfig, AxiosRequestHeaders, AxiosError } from 'axios';
+import { message } from 'antd';
+
+import { API_URL } from '@/config';
 import { showMessage } from './status';
-// 导入全局配制
-import { API_URL, authProviderToken } from '@/config';
+//基础URL，axios将会自动拼接在url前
 
-// 用接口类型进行typeScript的类型覆盖，解决axios版本不同产生的config未定义问题
-interface Params {
-  username: string,
-  password: string
-}
-interface YXRequestConfig extends AxiosRequestConfig {
-  interceptors?: YXRequestConfig,
-  headers?: any
-}
+const baseURL = API_URL;
 
-// 数据返回的接口
-export interface IResponse {
-  code: number | string;
-  data: any;
-  msg: string;
-}
+//默认请求超时时间
+const timeout = 30_000;
 
-enum RequestEnums {
-  TIMEOUT = 20_000,
-  OVERDUE = 600, // 登录失效
-  FAIL = 999, // 请求失败
-  SUCCESS = 200, // 请求成功
-}
-
-// 全局请求拦截
-const axiosInstance: AxiosInstance = axios.create({
-  // 默认地址
-  baseURL: API_URL as string,
-  // 设置超时时间
-  timeout: RequestEnums.TIMEOUT as number,
-  // 跨域时候允许携带凭证
-  withCredentials: true,
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'
-  },
-  transformRequest: [
-    function (data) {
-      //由于使用的 form-data传数据所以要格式化
-      delete data.Authorization;
-      data = qs.stringify(data);
-      return data;
-    }
-  ]
+//创建axios实例
+const service = axios.create({
+  timeout,
+  baseURL,
 });
 
-// axios实例拦截响应，因为我们接口的数据都在res.data下，所以我们直接返回res.data
-/**
-     * 响应拦截器
-     * 服务器换返回信息 -> [拦截统一处理] -> 客户端JS获取到信息
-*/
-axiosInstance.interceptors.response.use(
-  (response: AxiosResponse) => {
-    // const { data, config } = response; // 解构
-    if (response.headers.authorization) {
-      localStorage.setItem(authProviderToken, response.headers.authorization);
-    } else if (response.data && response.data.token) {
-      localStorage.setItem(authProviderToken, response.data.token);
-    }
-
-    if (response.status === 200) {
-      return response;
-    }
-    showMessage(response.status);
-    return response;
-
+//统一请求拦截 可配置自定义headers 例如 language、token等
+service.interceptors.request.use(
+  (config: AxiosRequestConfig) => {
+    //配置自定义请求头
+    const customHeaders: AxiosRequestHeaders = {
+      language: 'zh-cn'
+    };
+    config.headers = customHeaders;
+    return config;
   },
   // 请求失败
   (error: AxiosError) => {
@@ -85,36 +43,84 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// axios实例拦截请求
-/**
-    * 请求拦截器
-    * 客户端发送请求 -> [请求拦截器] -> 服务器
-    * token校验(JWT) : 接受服务器返回的token,存储到localStorage/本地储存当中
- */
+//axios返回格式
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface axiosTypes<T> {
+  data: T;
+  status: number;
+  statusText: string;
+}
 
-axiosInstance.interceptors.request.use(
-  (config: YXRequestConfig) => {
-    const token = localStorage.getItem(authProviderToken) || '';
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  // eslint-disable-next-line promise/no-promise-in-callback
-  (error: AxiosError) => Promise.reject(error)
-);
+//后台响应数据格式
+//###该接口用于规定后台返回的数据格式，意为必须携带code、msg以及result
+//###而result的数据格式 由外部提供。如此即可根据不同需求，定制不同的数据格式
 
-/**
- * @description: 用户登录
- * @params {ILogin} params
- * @return {Promise}
- */
-export const Login = (params: Params): Promise<IResponse> => axiosInstance.post(`${API_URL}/login`, params).then(res => res.data);
+// eslint-disable-next-line @typescript-eslint/naming-convention
+interface responseTypes<T> {
+  code: number,
+  msg: string,
+  result: T
+}
 
-/**
- * @description: 通过id获取用户
- * @params {IUser} params
- * @return {Promise}
- */
-//export const getUserInfo = (params: IUser): Promise<IResponse> => axiosInstance.post('user/getInfo', params).then(res => res.data);
-export default axiosInstance;
+//核心处理代码 将返回一个promise 调用then将可获取响应的业务数据
+const requestHandler = <T>(method: 'get' | 'post' | 'put' | 'delete', url: string, params: object = {}, config: AxiosRequestConfig = {}): Promise<T> => {
+  let response: Promise<axiosTypes<responseTypes<T>>>;
+  // eslint-disable-next-line default-case
+  switch (method) {
+    case 'get':
+      response = service.get(url, { params: { ...params }, ...config });
+      break;
+    case 'post':
+      response = service.post(url, { ...params }, { ...config });
+      break;
+    case 'put':
+      response = service.put(url, { ...params }, { ...config });
+      break;
+    case 'delete':
+      response = service.delete(url, { params: { ...params }, ...config });
+      break;
+  }
+
+  return new Promise<T>((resolve, reject) => {
+    response.then(res => {
+      //业务代码 可根据需求自行处理
+
+      const { data } = res;
+      // eslint-disable-next-line promise/always-return
+      if (data.code !== 200) {
+
+        //特定状态码 处理特定的需求
+        if (data.code === 401) {
+          message.warn('您的账号已登出或超时，即将登出...');
+          console.log('登录异常，执行登出...');
+        }
+
+        const e = JSON.stringify(data);
+        message.warn(`请求错误：${e}`);
+        console.log(`请求错误：${e}`);
+        //数据请求错误 使用reject将错误返回
+        reject(data);
+      } else {
+        //数据请求正确 使用resolve将结果返回
+        resolve(data.result);
+      }
+
+    }).catch(error => {
+      const e = JSON.stringify(error);
+      message.warn(`网络错误：${e}`);
+      console.log(`网络错误：${e}`);
+      reject(error);
+    });
+  });
+};
+
+// 使用 request 统一调用，包括封装的get、post、put、delete等方法
+const request = {
+  get: <T>(url: string, params?: object, config?: AxiosRequestConfig) => requestHandler<T>('get', url, params, config),
+  post: <T>(url: string, params?: object, config?: AxiosRequestConfig) => requestHandler<T>('post', url, params, config),
+  put: <T>(url: string, params?: object, config?: AxiosRequestConfig) => requestHandler<T>('put', url, params, config),
+  delete: <T>(url: string, params?: object, config?: AxiosRequestConfig) => requestHandler<T>('delete', url, params, config)
+};
+
+// 导出至外层，方便统一使用
+export { request };
