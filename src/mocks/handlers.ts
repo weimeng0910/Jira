@@ -146,7 +146,7 @@ export const handlers = [
     if (projectData) {
       return res(
         //延迟两秒返回数据
-        ctx.delay(6000),
+        //ctx.delay(6000),
         ctx.status(200),
         ctx.json(projectData)
       );

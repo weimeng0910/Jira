@@ -1,9 +1,9 @@
 /**
  * @author meng
  * @version 1.0
- *@file 用户登陆后的主界面
+ * @file 用户登陆后的主界面
  */
-import styled from '@emotion/styled';
+//import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -12,37 +12,10 @@ import { ProjectScreen } from './screens/project';
 import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
 //导入样式文件
-import { Row } from '@/components/lib/lib';
-//import ErrrorPage from '@/router/Errorpage';
+import { Container, Header, HeaderLeft, HeaderRight, Main } from '@/css/authenticatedApp';
 //导入logo跳转回根路由的方法
 import resetRoute from '@/utils';
 
-//样式定义
-//grid主容器
-const Container = styled.div`
-    display: grid;
-    /*grid-template-rows: 6rem calc(100vh-6rem) auto;*/
-    /* hand高6rem,footer高6rem,中间设置1fr,让尺寸自适应减去的 */
-    grid-template-rows: 6rem 1fr;
-    /* 栅格的列 */
-    /*grid-template-columns: 20rem 1fr 20rem;*/
-    grid-template-areas:
-        'header '
-        ' main ';
-    height: 100vh;
-    /* 各单位之间的距离 */
-    /*grid-gap: 10rem;*/
-`;
-// grid-area 用来给栅格grid子元素起名字
-const Header = styled(Row)`
-    padding: 3.2rem;
-`;
-const HeaderLeft = styled(Row)``;
-
-const HeaderRight = styled.div``;
-const Main = styled.main`
-    grid-area: main;
-`;
 //Antd的menu下拉
 const menuItems = [
     {

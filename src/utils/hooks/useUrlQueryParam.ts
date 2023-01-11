@@ -18,7 +18,6 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     * @param { keys } -- keys:string 传入数组类型为字符串
     */
   const [searchParams, setSearchParams] = useSearchParams();
-  //console.log(searchParams.get('name'));
 
   return [
     //因这这里返回的对象每次都不一样，所以要用useMemo解决依赖循环问题
