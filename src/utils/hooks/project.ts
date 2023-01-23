@@ -24,6 +24,7 @@ export const useProjects = (param?: Partial<Project>) => {
    * 请求数据
    * */
   const fetchProjects = useCallback(() => getProjectsList(cleanObject(param || {})), [param]);
+
   useEffect(() => {
     run(fetchProjects(), {
 

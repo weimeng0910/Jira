@@ -5,11 +5,12 @@
  * @file LIST组件
  */
 // 外部依赖
-import { Table, TableProps } from 'antd';
+import { Menu, Table, TableProps, Dropdown } from 'antd';
 //import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
+import { ButtonNoPadding } from '@/components/lib/lib';
 import { Pin } from '@/components/pin/pin';
 //定义类型
 import { Project, User } from '@/types/user';
@@ -19,6 +20,7 @@ import { useEditProject } from '@/utils/hooks/project';
 interface ListProps extends TableProps<Project> {
     users: User[];
     refresh?: () => void;
+    setProjectModalOpen: (isOpen: boolean) => void;
 }
 //type PropsType = Omit<ListProps,'users'>//...props的类型
 //父组件传过来的{ users, ...props }这个props,里面包含了所有的TableProps
@@ -76,6 +78,26 @@ const List = ({ users, ...props }: ListProps) => {
                         <span>
                             {project.created ? dayjs(project.created).format('YYYY-MM-DD') : '未知'}
                         </span>
+                    )
+                },
+                {
+                    render: () => (
+                        <Dropdown
+                            overlay={
+                                <Menu>
+                                    <Menu.Item key='edit'>
+                                        <ButtonNoPadding
+                                            type='link'
+                                            onClick={() => props.setProjectModalOpen(true)}
+                                        >
+                                            编辑
+                                        </ButtonNoPadding>
+                                    </Menu.Item>
+                                </Menu>
+                            }
+                        >
+                            <ButtonNoPadding type='link'>...</ButtonNoPadding>
+                        </Dropdown>
                     )
                 }
             ]}

@@ -7,7 +7,16 @@ import styled from '@emotion/styled';
 
 //导入样式文件
 import { Row } from '@/components/lib/lib';
-//样式定义
+/**
+ * grid和flex应用场景
+ * 1.要考虑是一维布局还是二维布局
+ * 一般来说，一维布局用flex，二维布局用grid
+ * 2.是从内容出发还是从布局出发？
+ * 从内容出发：你先有一组内容 (数量一般不固定)，然后希望他们均匀的分布在容器中，由内容自已的大小决定占据的空间
+ * 从布局出发：先规划网格，然后再把元素往里填充
+ * 从内容出发用flex
+ * 从布局出发用grid
+*/
 //grid主容器
 export const Container = styled.div`
     display: grid;
