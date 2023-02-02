@@ -5,11 +5,15 @@
  * 存储全局用户信息
  */
 import { ReactNode } from 'react';
+import { Provider } from 'react-redux';
 
 import { AuthProvider } from './AuthContext';
+import { store } from '@/store';
 
 const AppProviders = ({ children }: { children: ReactNode }) => (
-    <AuthProvider>{children}</AuthProvider>
+    <Provider store={store}>
+        <AuthProvider>{children}</AuthProvider>
+    </Provider>
 );
 
 export { AppProviders };

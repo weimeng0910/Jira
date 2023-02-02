@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { Popover, Typography, List, Divider } from 'antd';
+import { useDispatch } from 'react-redux';
 
 import { ButtonNoPadding } from '@/components/lib/lib';
+import { projectListActions } from '@/screens/project-list/project-list.slie';
 //定义类型
 import { Project } from '@/types/user';
 import { useProjects } from '@/utils/hooks/project';
@@ -10,7 +12,9 @@ import { useProjects } from '@/utils/hooks/project';
 const ContentContainer = styled.div`
     min-width: 30rem;
 `;
-export const ProjectPopover = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+export const ProjectPopover = () => {
+    //引入redux的钩子useDispatch,获得store中的状态
+    const dispatch = useDispatch();
     //获取projects数据
     const { data: projects } = useProjects();
     //获得pin收藏项目数据
@@ -30,7 +34,7 @@ export const ProjectPopover = (props: { setProjectModalOpen: (isOpen: boolean) =
             <Divider />
             <ButtonNoPadding
                 type='link'
-                onClick={() => props.setProjectModalOpen(true)}
+                onClick={() => dispatch(projectListActions.openProjectModal())}
             >
                 创建项目
             </ButtonNoPadding>

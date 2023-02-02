@@ -5,7 +5,6 @@
  */
 //import styled from '@emotion/styled';
 import { Dropdown, Menu, Button } from 'antd';
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import { ButtonNoPadding } from './components/lib/lib';
@@ -44,7 +43,7 @@ const User = () => {
     );
 };
 //抽离Header
-const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => (
+const PageHeader = () => (
     <Header between>
         <HeaderLeft gap={5}>
             <ButtonNoPadding
@@ -56,7 +55,7 @@ const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) =
                     color='#3ec785'
                 />
             </ButtonNoPadding>
-            <ProjectPopover setProjectModalOpen={props.setProjectModalOpen} />
+            <ProjectPopover />
             <span>用户</span>
         </HeaderLeft>
         <HeaderRight>
@@ -66,51 +65,40 @@ const PageHeader = (props: { setProjectModalOpen: (isOpen: boolean) => void }) =
 );
 
 //路由
-export const AuthenticatedAPP = () => {
-    //是否打开Modal
-    const [projectModalOpen, setProjectModalOpen] = useState(false);
-    return (
-        <Container>
-            <Router>
-                <PageHeader setProjectModalOpen={setProjectModalOpen} />
+export const AuthenticatedAPP = () => (
+    <Container>
+        <Router>
+            <PageHeader />
 
-                <Main>
-                    <Routes>
-                        {/*默认路由 */}
-                        <Route
-                            index
-                            element={
-                                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
-                            }
-                        />
-                        <Route
-                            path='/projects'
-                            element={
-                                <ProjectListScreen setProjectModalOpen={setProjectModalOpen} />
-                            }
-                        />
-                        <Route
-                            path='projects/:projectId/*'
-                            element={<ProjectScreen />}
-                        />
+            <Main>
+                <Routes>
+                    {/*默认路由 */}
+                    <Route
+                        index
+                        element={<ProjectListScreen />}
+                    />
+                    <Route
+                        path='/projects'
+                        element={<ProjectListScreen />}
+                    />
+                    <Route
+                        path='projects/:projectId/*'
+                        element={<ProjectScreen />}
+                    />
 
-                        {/* 重定向到首页*/}
-                        <Route
-                            path='/'
-                            element={<Navigate to='/projects' />}
-                        />
-                        {/* 错误路径 ,*是全部的意思，以上路由都没匹配到执行*/}
-                        {/*<Route
+                    {/* 重定向到首页*/}
+                    <Route
+                        path='/'
+                        element={<Navigate to='/projects' />}
+                    />
+                    {/* 错误路径 ,*是全部的意思，以上路由都没匹配到执行*/}
+                    {/*<Route
                         path='*'
                         element={<ErrrorPage />}
                     />*/}
-                    </Routes>
-                </Main>
-            </Router>
-            <ProjectModal
-                projectModalOpen={projectModalOpen}
-                onClose={() => setProjectModalOpen(false)}
-            />
-        </Container>
-    );
-};
+                </Routes>
+            </Main>
+        </Router>
+        <ProjectModal />
+    </Container>
+);
