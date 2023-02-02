@@ -13,14 +13,14 @@ import { projectListSlice } from '@/screens/project-list/project-list.slie';
  * 创建reducers,将 Slice Reducers 添加到这里
  */
 export const rootReducer = {
-    projectList: projectListSlice.reducer
+  projectList: projectListSlice.reducer
 };
 
 /**
  * 创建一个 Redux 商店
  */
 export const store = configureStore({
-    reducer: rootReducer
+  reducer: rootReducer
 });
 
 /**
