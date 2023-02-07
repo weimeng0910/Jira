@@ -3,6 +3,7 @@
  * @version 1.0
  * @date 2023/1/4
  * @file 获取项目列表搜索的参数，从url参数param获取
+ * 返回页面url中，指定键的参数值
  */
 import { useMemo } from 'react';
 

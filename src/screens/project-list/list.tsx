@@ -5,6 +5,7 @@
  * @file LIST组件
  */
 import { Menu, Table, TableProps, Dropdown } from 'antd';
+//处理时间的库
 import dayjs from 'dayjs';
 //import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
@@ -36,19 +37,6 @@ const List = ({ users, ...props }: ListProps) => {
     //函数currying柯理化
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh);
     //定义antd中menu组件中的items
-    //const menu = (
-    //    <Menu
-    //    >
-    //        <Menu.Item key={nanoid()}>
-    //            <ButtonNoPadding
-    //                type='link'
-    //                onClick={open}
-    //            >
-    //                编辑
-    //            </ButtonNoPadding>
-    //        </Menu.Item>
-    //    </Menu>
-    //);
     const menu = (
         <Menu
             items={[

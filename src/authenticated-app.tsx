@@ -74,10 +74,10 @@ export const AuthenticatedAPP = () => (
             <Main>
                 <Routes>
                     {/*默认路由 */}
-                    <Route
+                    {/*<Route
                         index
                         element={<ProjectListScreen />}
-                    />
+                    />*/}
                     <Route
                         path='/projects'
                         element={<ProjectListScreen />}
