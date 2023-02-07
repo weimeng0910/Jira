@@ -9,7 +9,7 @@ import { Typography, Button } from 'antd';
 
 import List from './list';
 import SearchPanel from './search-panel';
-import { useProjectSearchParam } from './util';
+import { useProjectSearchParam, useProjectModal } from './util';
 import { Row } from '@/components/lib/lib';
 //导入自定义hook
 import { useProjects } from '@/utils/hooks/project';
@@ -21,7 +21,9 @@ import { useUser } from '@/utils/hooks/users';
 const Container = styled.div`
     padding: 3.2rem;
 `;
-export const ProjectListScreen = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+export const ProjectListScreen = () => {
+    //url获取状态
+    const { open } = useProjectModal();
     //设置页面标题
     useDocumentTitle('项目列表', false);
     // 基本类型，组件状态可以入在依赖里，非组件状态的对象，绝不可以入在依赖里
@@ -40,7 +42,7 @@ export const ProjectListScreen = (props: { setProjectModalOpen: (isOpen: boolean
         <Container>
             <Row between>
                 <h1>项目列表</h1>
-                <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button>
+                <Button onClick={open}>创建项目</Button>
             </Row>
 
             <SearchPanel
@@ -50,7 +52,6 @@ export const ProjectListScreen = (props: { setProjectModalOpen: (isOpen: boolean
 
             {error ? <Typography.Text type='danger'>{error?.message}</Typography.Text> : null}
             <List
-                setProjectModalOpen={props.setProjectModalOpen}
                 refresh={retry}
                 loading={isLoading}
                 users={users || []}

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Popover, Typography, List, Divider } from 'antd';
 
 import { ButtonNoPadding } from '@/components/lib/lib';
+import { useProjectModal } from '@/screens/project-list/util';
 //定义类型
 import { Project } from '@/types/user';
 import { useProjects } from '@/utils/hooks/project';
@@ -10,7 +11,9 @@ import { useProjects } from '@/utils/hooks/project';
 const ContentContainer = styled.div`
     min-width: 30rem;
 `;
-export const ProjectPopover = (props: { setProjectModalOpen: (isOpen: boolean) => void }) => {
+export const ProjectPopover = () => {
+    //url获取状态
+    const { projectModalOpen } = useProjectModal();
     //获取projects数据
     const { data: projects } = useProjects();
     //获得pin收藏项目数据
@@ -30,7 +33,7 @@ export const ProjectPopover = (props: { setProjectModalOpen: (isOpen: boolean) =
             <Divider />
             <ButtonNoPadding
                 type='link'
-                onClick={() => props.setProjectModalOpen(true)}
+                onClick={() => projectModalOpen}
             >
                 创建项目
             </ButtonNoPadding>

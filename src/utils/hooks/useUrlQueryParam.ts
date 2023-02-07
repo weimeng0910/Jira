@@ -39,5 +39,5 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       return setSearchParams(o);
     }
     //setSearchParams
-  ] as const;
+  ] as const;//as const 返回的是一个元组，这样在导入时可以像原生state一样解构时随意起变量名，例如const[xxx,setxxx]=useState()
 };

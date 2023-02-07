@@ -4,12 +4,12 @@
  * @date 2022/11/24
  * @file LIST组件
  */
-// 外部依赖
 import { Menu, Table, TableProps, Dropdown } from 'antd';
-//import { nanoid } from 'nanoid';
 import dayjs from 'dayjs';
+//import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
 
+import { useProjectModal } from './util';
 import { ButtonNoPadding } from '@/components/lib/lib';
 import { Pin } from '@/components/pin/pin';
 //定义类型
@@ -20,16 +20,52 @@ import { useEditProject } from '@/utils/hooks/project';
 interface ListProps extends TableProps<Project> {
     users: User[];
     refresh?: () => void;
-    setProjectModalOpen: (isOpen: boolean) => void;
 }
-//type PropsType = Omit<ListProps,'users'>//...props的类型
-//父组件传过来的{ users, ...props }这个props,里面包含了所有的TableProps
-//还有users这个数据，先把users取出来，把loading等其它属性放在...props中
+
+/**
+ * @function LIST组件
+ * type PropsType = Omit<ListProps,'users'>//...props的类型
+ * 父组件传过来的{ users, ...props }这个props,里面包含了所有的TableProps
+ * 还有users这个数据，先把users取出来，把loading等其它属性放在...props中
+ */
 const List = ({ users, ...props }: ListProps) => {
+    //url获取状态
+    const { open } = useProjectModal();
     //这个纯函数mutate解构出来，可以在jsx中调用纯函数
     const { mutate } = useEditProject();
     //函数currying柯理化
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh);
+    //定义antd中menu组件中的items
+    //const menu = (
+    //    <Menu
+    //    >
+    //        <Menu.Item key={nanoid()}>
+    //            <ButtonNoPadding
+    //                type='link'
+    //                onClick={open}
+    //            >
+    //                编辑
+    //            </ButtonNoPadding>
+    //        </Menu.Item>
+    //    </Menu>
+    //);
+    const menu = (
+        <Menu
+            items={[
+                {
+                    key: '1',
+                    label: (
+                        <ButtonNoPadding
+                            type='link'
+                            onClick={open}
+                        >
+                            编辑
+                        </ButtonNoPadding>
+                    )
+                }
+            ]}
+        />
+    );
     return (
         <Table
             pagination={false}
@@ -82,20 +118,7 @@ const List = ({ users, ...props }: ListProps) => {
                 },
                 {
                     render: () => (
-                        <Dropdown
-                            overlay={
-                                <Menu>
-                                    <Menu.Item key='edit'>
-                                        <ButtonNoPadding
-                                            type='link'
-                                            onClick={() => props.setProjectModalOpen(true)}
-                                        >
-                                            编辑
-                                        </ButtonNoPadding>
-                                    </Menu.Item>
-                                </Menu>
-                            }
-                        >
+                        <Dropdown overlay={menu}>
                             <ButtonNoPadding type='link'>...</ButtonNoPadding>
                         </Dropdown>
                     )
