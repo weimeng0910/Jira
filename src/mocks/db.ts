@@ -221,7 +221,7 @@ async function ScreensProjectsData(storageKey: string, personId?: string, name?:
   if (personId || name) {
     const result = projectsData.filter((item: Project) =>
 
-      item.personId === Number.parseInt(personId!, 10) || item.name === name
+      item.personId === Number.parseInt(personId!, 10) || item.name.match(name!)
     );
 
     return result;
