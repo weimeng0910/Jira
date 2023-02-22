@@ -147,9 +147,10 @@
     "ra-data-graphql": "^4.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-query": "^3.39.3",
     "react-router": "6.3.0",
     "react-router-dom": "6.3.0",
-    "react-scripts": "^5.1.0-next.14",
+    "react-scripts": "4.0.3",
     "ts-import-plugin": "^2.0.0",
     "walletconnect": "^1.7.8",
     "yarn": "^1.22.19"

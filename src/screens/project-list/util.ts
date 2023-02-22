@@ -8,6 +8,7 @@
 import { useMemo } from 'react';
 
 import { useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
+import { useProject } from '@/utils/hooks/project';
 
 export const useProjectSearchParam = () => {
 
@@ -29,17 +30,46 @@ export const useProjectSearchParam = () => {
  * 向需要使用这个状态的地方提供全局状态
  */
 export const useProjectModal = () => {
-  //获取url参数
+
+  //获取url参数,来判断是否是创建
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
+
     'projectCreate'
+
   ]);
+
+  //获取url中id参数，来判断是否是编辑
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
+
+    'editingProjectId'
+
+  ]);
+
+  //获取根据id获取project方法
+  const { data: editingProject, isLoading } = useProject(
+
+    Number(editingProjectId)
+
+  );
+
+
+  //根据id编辑project数据
+  const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
   //open方法
   const open = () => setProjectCreate({ projectCreate: true });
-  const close = () => setProjectCreate({ projectCreate: false });
+  //关闭的方法
+  const close = () => {
+    setProjectCreate({ projectCreate: undefined });
+    setEditingProjectId({ editingProjectId: undefined });
+  };
+
   return {
-    projectModalOpen: projectCreate === 'true',
+    projectModalOpen: projectCreate === 'true' || Boolean(editingProject),
     open,
-    close
+    close,
+    startEdit,
+    isLoading,
+    editingProject
   };
   //return [
   //  projectCreate === 'true',//因为从url中读取的数据都是字符串

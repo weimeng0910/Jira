@@ -213,23 +213,45 @@ const loadScreensData = (storageKey: string) => {
  *  @param storageKey
  *  @description 根据传入参数响应数据
  */
-async function ScreensProjectsData(storageKey: string, personId?: string, name?: string) {
+
+async function ScreensProjectsData(storageKey: string, query: { personId: string, name: string }) {
 
   // 加载localStorage里的项目数据
   const projectsData = loadScreensData(storageKey);
+  //定义一个空数组
+  const projectList = [];
   //localStorage是string|null,personId传入的是strin，所以只需要if(personId)
-  if (personId || name) {
-    const result = projectsData.filter((item: Project) =>
+  if (query.personId) {
+    // eslint-disable-next-line unicorn/prefer-array-find
+    const result = projectsData.filter((item: Project) => item.personId === Number(query.personId!));
+    projectList.push(result[0]);
 
-      item.personId === Number.parseInt(personId!, 10) || item.name.match(name!)
-    );
 
-    return result;
+
+
+  } if (query.name) {
+    // eslint-disable-next-line unicorn/prefer-array-find
+    const result = projectsData.filter((item: Project) => item.name.includes(query.name!));
+    projectList.push(result[0]);
   }
 
-  return projectsData;
+
+  //定义一个空对象
+  const obj: { [key: string]: boolean; } = {};
+  const list = projectList.reduce<Project[]>((item, next) => {
+    if (!obj[next.personId]) {
+      item.push(next);
+      obj[next.personId] = true;
+    }
+    return item;
+  }, []);
+
+  console.log(list, '005');
+  return list.length > 0 ? list : projectsData;
 
 };
+
+
 /**
  *  @function changeProjectsDataPin
  *  @param storageKey
@@ -243,6 +265,8 @@ async function changeProjectsDataPin(storageKey: string, id: string) {
   //通过ID查找对应的数据
   const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10));
   //改变pin的boolean
+  console.log(project, '003');
+
   project.pin = !project.pin;
   //组装数据
   const newProjectsData = [...projectsData, ...project];

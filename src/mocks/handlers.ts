@@ -138,11 +138,17 @@ export const handlers = [
   rest.get<RequestBody, PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
 
     // 获得前瑞发送的参数
+
+
     const personId = req.url.searchParams.get('personId')!;
+
     const name = req.url.searchParams.get('name')!;
+    //组装数据
+    const query = { personId, name };
+
     //const { personId,name } = req.params;
     //调用写入数据的函数
-    const projectData = await db.ScreensProjectsData(projectDB, personId as string, name as string);
+    const projectData = await db.ScreensProjectsData(projectDB, query);
     if (projectData) {
       return res(
         //延迟两秒返回数据
@@ -190,6 +196,7 @@ export const handlers = [
   rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
+    console.log(id, '002');
 
     const projectData = await db.changeProjectsDataPin(projectDB, id as string);
 

@@ -34,26 +34,43 @@ const FullPage = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
+/**
+ * @function 加载loading的组件
+ */
 export const FullPageLoading = () => (
     <FullPage>
         <Spin size='large' />
     </FullPage>
 );
-// 类型守卫
+
+/**
+ * 类型守卫-判断传入的值是否存在message属性时候，并且value is Error是类型保护
+ * 例如，message属性是Error对象
+ */
+
 const isError = (value: any): value is Error => value?.message;
 
+/**
+ * @function 判断error是否属于真正的Error
+ */
 export const ErrorBox = ({ error }: { error: unknown }) => {
     if (isError(error)) {
+        //typescript如果是unknow类型是不可以读取任何属性，所以在这里要用isError来判断，类型守卫
         return <Typography.Text type='danger'>{error?.message}</Typography.Text>;
     }
     return null;
 };
+/**
+ * @function 页面错误回退
+ */
 export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
     <FullPage>
         <ErrorBox error={error} />
     </FullPage>
 );
+/**
+ * @cssinjs 消除Button的pading
+ */
 export const ButtonNoPadding = styled(Button)`
     padding: 0;
 `;

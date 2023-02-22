@@ -1,9 +1,3 @@
-/**
- * @author meng
- * @version 1.0
- * @date 2022/11/24
- 封装 GET POST DELETE PUT
- */
 import { serviceAxios } from './request';
 /**
  * @param {String} method  请求的方法：get,post,delete,put

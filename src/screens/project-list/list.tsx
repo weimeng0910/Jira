@@ -5,6 +5,7 @@
  * @file LIST组件
  */
 import { Menu, Table, TableProps, Dropdown } from 'antd';
+import type { MenuProps } from 'antd';
 //处理时间的库
 import dayjs from 'dayjs';
 //import { nanoid } from 'nanoid';
@@ -20,7 +21,7 @@ import { useEditProject } from '@/utils/hooks/project';
 //这个类型包含了TableProps中的所有属性，和users这个属性
 interface ListProps extends TableProps<Project> {
     users: User[];
-    refresh?: () => void;
+    //refresh?: () => void;
 }
 
 /**
@@ -31,29 +32,33 @@ interface ListProps extends TableProps<Project> {
  */
 const List = ({ users, ...props }: ListProps) => {
     //url获取状态
-    const { open } = useProjectModal();
+    const { startEdit } = useProjectModal();
     //这个纯函数mutate解构出来，可以在jsx中调用纯函数
     const { mutate } = useEditProject();
     //函数currying柯理化
-    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin }).then(props.refresh);
+    const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+
     //定义antd中menu组件中的items
-    const menu = (
-        <Menu
-            items={[
-                {
-                    key: '1',
-                    label: (
-                        <ButtonNoPadding
-                            type='link'
-                            onClick={open}
-                        >
-                            编辑
-                        </ButtonNoPadding>
-                    )
-                }
-            ]}
-        />
-    );
+
+    const Constants = () => {
+        const EDIT = 'edit';
+        const DELETE = 'delete';
+        return {
+            EDIT,
+            DELETE
+        };
+    };
+    const menuItems: MenuProps['items'] = [
+        {
+            key: 'edit',
+            label: <ButtonNoPadding type='link'>编辑</ButtonNoPadding>
+        },
+        {
+            key: 'delete',
+            label: <ButtonNoPadding type='link'>删除</ButtonNoPadding>
+        }
+    ];
+
     return (
         <Table
             pagination={false}
@@ -105,8 +110,25 @@ const List = ({ users, ...props }: ListProps) => {
                     )
                 },
                 {
-                    render: () => (
-                        <Dropdown overlay={menu}>
+                    render: (_value, project) => (
+                        <Dropdown
+                            overlay={
+                                <Menu
+                                    onClick={e => {
+                                        // eslint-disable-next-line default-case
+                                        switch (e.key) {
+                                            case Constants().EDIT:
+                                                startEdit(project.id);
+                                                break;
+                                            case Constants().DELETE:
+                                                break;
+                                        }
+                                    }}
+                                    items={menuItems}
+                                />
+                            }
+                            trigger={['click']}
+                        >
                             <ButtonNoPadding type='link'>...</ButtonNoPadding>
                         </Dropdown>
                     )
