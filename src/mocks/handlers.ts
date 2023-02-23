@@ -146,7 +146,6 @@ export const handlers = [
     //组装数据
     const query = { personId, name };
 
-    //const { personId,name } = req.params;
     //调用写入数据的函数
     const projectData = await db.ScreensProjectsData(projectDB, query);
     if (projectData) {

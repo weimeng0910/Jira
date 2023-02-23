@@ -213,40 +213,47 @@ const loadScreensData = (storageKey: string) => {
  *  @param storageKey
  *  @description 根据传入参数响应数据
  */
+//去重函数抽像
+//function ArrayDeduplication<T>(arr: T[], uniId: number): T[] {
+
+//  const hash: { [key: string]: boolean; } = {};
+//  return arr.reduce((accum: T[], item) => {
+//    if (!hash[item[uniId]]) {
+//      accum.push(item);
+//      hash[item[uniId]] = false;
+//    }
+//    return accum;
+//  }, []);
+//}
 
 async function ScreensProjectsData(storageKey: string, query: { personId: string, name: string }) {
-
   // 加载localStorage里的项目数据
   const projectsData = loadScreensData(storageKey);
   //定义一个空数组
-  const projectList = [];
+  const projectList: Project[] = [];
   //localStorage是string|null,personId传入的是strin，所以只需要if(personId)
   if (query.personId) {
-    // eslint-disable-next-line unicorn/prefer-array-find
     const result = projectsData.filter((item: Project) => item.personId === Number(query.personId!));
-    projectList.push(result[0]);
-
-
-
+    result.map((item: Project) => projectList.push(item));
 
   } if (query.name) {
-    // eslint-disable-next-line unicorn/prefer-array-find
     const result = projectsData.filter((item: Project) => item.name.includes(query.name!));
-    projectList.push(result[0]);
+    result.map((item: Project) => projectList.push(item));
   }
+  /**
+   * 得到的数据去重
+   */
 
-
-  //定义一个空对象
-  const obj: { [key: string]: boolean; } = {};
+  //const list = ArrayDeduplication(projectList, Number(query.personId!));
+  const obj: { [key: string]: boolean; } = {};//定义一个空对象
+  //通过reduce来给数组去重
   const list = projectList.reduce<Project[]>((item, next) => {
-    if (!obj[next.personId]) {
+    if (!obj[next.id]) {
       item.push(next);
-      obj[next.personId] = true;
+      obj[next.id] = true;
     }
     return item;
   }, []);
-
-  console.log(list, '005');
   return list.length > 0 ? list : projectsData;
 
 };
