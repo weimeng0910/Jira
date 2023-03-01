@@ -194,7 +194,6 @@ async function authenticate(params: RequestBody) {
 }
 
 /**
- *  screensProjectsData
  *  @function loadScreensData
  *  @param storageKey
  *  @description 加载存在 localStorage里的项目数据
@@ -269,20 +268,28 @@ async function projectsUpdata(storageKey: string, id: string, updates: Partial<P
 
   // 加载localStorage里的项目数据
   const projectsData: Project[] = loadScreensData(storageKey);
-  //通过ID查找对应的数据
-  const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
-  //改变pin的boolean
+  console.log(id, '数据id');
   if ('pin' in updates) {
+    //通过ID查找对应的数据
+    const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
+    //改变pin的boolean
     project.pin = !project.pin;
-  }else return project;
+  } if (updates) {
+    console.log(updates, 'push');
 
+    const result = projectsData.filter((item: Project) => item.id !== Number.parseInt(id!, 10));
+    console.log(result, '过滤后');
 
-  console.log(project, '0003');
+    const newResult = [...result, updates];
+    console.log(newResult, '过滤后的新数组');
+    return window.localStorage.setItem(storageKey, JSON.stringify(newResult));
+
+  }
   //重新写入数据
-  const dataResuslt = window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
-  return dataResuslt;
+  return window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
 }
-/*sl*
+
+/**
  *  @function ScreensUserData
  *  @param storageKey
  *  @description 加载项目管理用户数据
@@ -291,14 +298,17 @@ async function ScreensUserData(storageKey: string) {
 
   // 加载localStorage里的项目数据
   const userData = loadScreensData(storageKey);
-  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
-  //if (userId) {
-  //  const result = userData.find((item: UserData) => item.id === userId);
-  //  return result;
-  //}
   return userData;
 
 }
+
+
+/**
+ *  @function ScreensProjectData
+ *  @param storageKey
+ *  @description 加载查找到的项目数据
+ */
+
 async function ScreensProjectData(storageKey: string, id: string) {
 
   // 加载localStorage里的项目数据
@@ -308,5 +318,6 @@ async function ScreensProjectData(storageKey: string, id: string) {
   return project;
 
 }
+
 // 导出注册方法createUser，登陆方法authenticate
 export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, projectsUpdata, ScreensProjectData };

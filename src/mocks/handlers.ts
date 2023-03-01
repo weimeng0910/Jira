@@ -208,7 +208,7 @@ export const handlers = [
     const updates: Partial<Project> = await req.json();
     console.log(id, '001245');
 
-    console.log(updates, '0001');
+    //console.log(updates, '0001');
 
 
     const projectData = await db.projectsUpdata(projectDB, id as string, updates);
