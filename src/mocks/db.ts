@@ -268,22 +268,18 @@ async function projectsUpdata(storageKey: string, id: string, updates: Partial<P
 
   // 加载localStorage里的项目数据
   const projectsData: Project[] = loadScreensData(storageKey);
-  console.log(id, '数据id');
-  if ('pin' in updates) {
+
+  if ('name' in updates) {
     //通过ID查找对应的数据
+    const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
+
+    projectsData[projectsData.indexOf(project)] = { ...project, ...updates };
+
+  } else {
+    console.log(updates, 'push');
     const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
     //改变pin的boolean
     project.pin = !project.pin;
-  } if (updates) {
-    console.log(updates, 'push');
-
-    const result = projectsData.filter((item: Project) => item.id !== Number.parseInt(id!, 10));
-    console.log(result, '过滤后');
-
-    const newResult = [...result, updates];
-    console.log(newResult, '过滤后的新数组');
-    return window.localStorage.setItem(storageKey, JSON.stringify(newResult));
-
   }
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
