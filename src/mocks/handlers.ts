@@ -22,7 +22,16 @@ import { ResponseError, RequestBody, PostRequestParams } from './type/handlersTy
 
 initData();
 
+interface Project {
+  creted: number,
+  id: number,
+  name: string,
+  organization: string,
+  personId: number,
+  pin: boolean
 
+
+}
 /**
  *  @function getToken
  *  @param req
@@ -140,9 +149,9 @@ export const handlers = [
     // 获得前瑞发送的参数
 
 
-    const personId = req.url.searchParams.get('personId')!;
+    const personId: string = req.url.searchParams.get('personId')!;
 
-    const name = req.url.searchParams.get('name')!;
+    const name: string = req.url.searchParams.get('name')!;
     //组装数据
     const query = { personId, name };
 
@@ -190,17 +199,39 @@ export const handlers = [
 
   }),
   /**
-     * @todo 响应put请求
-     * */
+   * @todo 响应put请求
+   * */
+
   rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
-    console.log(id, '002');
+    const updates: Partial<Project> = await req.json();
+    console.log(id, '001245');
 
-    const projectData = await db.changeProjectsDataPin(projectDB, id as string);
+    console.log(updates, '0001');
+
+
+    const projectData = await db.projectsUpdata(projectDB, id as string, updates);
 
 
     return res(ctx.json({ projectData }));
+
+
+  }),
+  /**
+   * @todo 根据id请求project
+   * */
+
+  rest.get<RequestBody>(`${API_URL}/project/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+
+    //console.log(id, '001');
+
+    const projectData = await db.ScreensProjectData(projectDB, id as string);
+
+
+    return res(ctx.json(projectData));
 
 
   }),

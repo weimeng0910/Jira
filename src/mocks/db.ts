@@ -260,25 +260,26 @@ async function ScreensProjectsData(storageKey: string, query: { personId: string
 
 
 /**
- *  @function changeProjectsDataPin
+ *  @function projectsUpdata
  *  @param storageKey
  *  @description 根据传入参数响应数据
  */
 
-async function changeProjectsDataPin(storageKey: string, id: string) {
+async function projectsUpdata(storageKey: string, id: string, updates: Partial<Project>) {
 
   // 加载localStorage里的项目数据
-  const projectsData = loadScreensData(storageKey);
+  const projectsData: Project[] = loadScreensData(storageKey);
   //通过ID查找对应的数据
-  const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10));
+  const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
   //改变pin的boolean
-  console.log(project, '003');
+  if ('pin' in updates) {
+    project.pin = !project.pin;
+  }else return project;
 
-  project.pin = !project.pin;
-  //组装数据
-  const newProjectsData = [...projectsData, ...project];
-  //todo 写入windos.localStorage
-  const dataResuslt = window.localStorage.setItem(storageKey, JSON.stringify(newProjectsData));
+
+  console.log(project, '0003');
+  //重新写入数据
+  const dataResuslt = window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
   return dataResuslt;
 }
 /*sl*
@@ -298,5 +299,14 @@ async function ScreensUserData(storageKey: string) {
   return userData;
 
 }
+async function ScreensProjectData(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const projectsData: Project[] = loadScreensData(storageKey);
+  //通过ID查找对应的数据
+  const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
+  return project;
+
+}
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, changeProjectsDataPin };
+export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, projectsUpdata, ScreensProjectData };

@@ -37,6 +37,8 @@ const List = ({ users, ...props }: ListProps) => {
     const { mutate } = useEditProject();
     //函数currying柯理化
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
+    //编辑project
+    const editProject = (id: number) => startEdit(id);
 
     //定义antd中menu组件中的items
 
@@ -118,7 +120,7 @@ const List = ({ users, ...props }: ListProps) => {
                                         // eslint-disable-next-line default-case
                                         switch (e.key) {
                                             case Constants().EDIT:
-                                                startEdit(project.id);
+                                                editProject(project.id);
                                                 break;
                                             case Constants().DELETE:
                                                 break;

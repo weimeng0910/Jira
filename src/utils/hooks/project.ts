@@ -83,9 +83,9 @@ export const useProject = (id?: number) => {
   const result = useQuery<Project>(['project', { id }], () =>
 
     http({
-      url: `projects/${id}`,
-      data: id,
-      method: 'put'
+      url: `project/${id}`,
+      //data:,
+      method: 'get'
     }),
     {
       //第三个参数处理传入的id为undefined时不触发获取，当ID有值时触发获取数据
