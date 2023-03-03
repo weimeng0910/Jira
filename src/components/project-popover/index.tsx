@@ -13,7 +13,7 @@ const ContentContainer = styled.div`
 `;
 export const ProjectPopover = () => {
     //url获取状态
-    const { projectModalOpen } = useProjectModal();
+    const { open } = useProjectModal();
     //获取projects数据
     const { data: projects } = useProjects();
     //获得pin收藏项目数据
@@ -33,7 +33,7 @@ export const ProjectPopover = () => {
             <Divider />
             <ButtonNoPadding
                 type='link'
-                onClick={() => projectModalOpen}
+                onClick={() => open()}
             >
                 创建项目
             </ButtonNoPadding>

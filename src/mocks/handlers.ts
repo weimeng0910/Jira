@@ -5,6 +5,8 @@
  * handlers： 主要为定义 API 逻辑的代码
  */
 import { rest, RestRequest } from 'msw';
+import qs from 'qs';
+import { customAlphabet } from 'nanoid/non-secure';
 
 //导入jwt解密函数来获取token中的id
 import { jwtDecodeGetId } from './core/util';
@@ -14,7 +16,9 @@ import * as db from './db';
 import { API_URL, projectDB, userDB } from '../config';
 // 导入数据
 import { initData } from './initData';
-import { ResponseError, RequestBody, PostRequestParams } from './type/handlersType';
+import { ResponseError, RequestBody, PostRequestParams, Project } from './type/handlersType';
+
+
 
 /**
  * 初始化数据
@@ -22,16 +26,6 @@ import { ResponseError, RequestBody, PostRequestParams } from './type/handlersTy
 
 initData();
 
-interface Project {
-  creted: number,
-  id: number,
-  name: string,
-  organization: string,
-  personId: number,
-  pin: boolean
-
-
-}
 /**
  *  @function getToken
  *  @param req
@@ -87,7 +81,7 @@ export const handlers = [
   /**
    * @todo 注册
    * @returns data
-   * */
+   */
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/register`, async (req, res, ctx) => {
 
     // 获取到url 中的参数
@@ -121,7 +115,7 @@ export const handlers = [
 
   /**
    * @todo 登陆
-   * */
+   */
   rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
 
 
@@ -141,10 +135,43 @@ export const handlers = [
   }),
 
   /**
-   * @todo 响应get请求获得项目数据
-   * */
+   * @todo 响应post请求用户列表数据
+   */
 
-  rest.get<RequestBody, PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
+  rest.post<RequestBody>(`${API_URL}/users`, async (_req, res, ctx) => {
+    //调用写入数据的函数
+    const userData = await db.ScreensUserData(userDB);
+    if (userData) {
+      return res(ctx.status(200), ctx.json(userData));
+    }
+    return res(ctx.status(200), ctx.json(userData));
+
+  }),
+
+  /**
+   * @todo 携带前瑞token请求
+   */
+
+  rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
+    const user = await getUser(req);
+    const token = getToken(req);
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+
+      ctx.json({ user: { ...user, token } })
+    );
+
+  }),
+
+  /**
+   * 响应各种项目数据请求
+   *
+   *
+   * @todo 响应get请求获得项目数据
+   */
+
+  rest.get<PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
 
     // 获得前瑞发送的参数
 
@@ -168,47 +195,46 @@ export const handlers = [
     return res(ctx.status(500));
 
   }),
-
   /**
-   * @todo 响应post请求用户列表数据
-   * */
+   * @todo 响应post请求获得项目数据
+   */
 
-  rest.post<RequestBody>(`${API_URL}/users`, async (_req, res, ctx) => {
+  rest.post<Partial<Project>>(`${API_URL}/projects`, async (req, res, ctx) => {
+
+    // 获得前瑞发送的参数,
+
+    const body = await req.json();
+    const addProject = qs.parse(body);
+    //const { name, organization, personId } = addProject;
+    //类型守卫
+    const name: string = typeof addProject.name === 'string' ? addProject.name : '';
+    const organization: string = typeof addProject.organization === 'string' ? addProject.organization : '';
+    const personId: string = typeof addProject.personId === 'string' ? addProject.personId : '';
+    const nanoid = customAlphabet('1234567890', 10);
+    //组装数据
+    const addProjectItem = { creted: Date.now(), id: Number(nanoid()), name, organization, personId: Number(personId), pin: false };
+
+    console.log(addProjectItem, 'add001');
+
+
     //调用写入数据的函数
-    const userData = await db.ScreensUserData(userDB);
-    if (userData) {
-      return res(ctx.status(200), ctx.json(userData));
-    }
-    return res(ctx.status(200), ctx.json(userData));
+    const projectData = await db.addProjectsData(projectDB, addProjectItem);
 
-  }),
+    return res(ctx.json({ projectData }));
 
-  /**
-   * @todo 携带前瑞token请求
-   * */
 
-  rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
-    const user = await getUser(req);
-    const token = getToken(req);
-    return res(
-      //延迟
-      //ctx.delay(1000 * 60),
-
-      ctx.json({ user: { ...user, token } })
-    );
 
   }),
   /**
-   * @todo 响应put请求
-   * */
+  * @todo 响应put请求
+  */
 
   rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
     const updates: Partial<Project> = await req.json();
-    console.log(id, '001245');
 
-    //console.log(updates, '0001');
+
 
 
     const projectData = await db.projectsUpdata(projectDB, id as string, updates);
@@ -220,7 +246,7 @@ export const handlers = [
   }),
   /**
    * @todo 根据id请求project
-   * */
+   */
 
   rest.get<RequestBody>(`${API_URL}/project/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数

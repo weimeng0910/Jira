@@ -63,9 +63,17 @@ export const useProjectModal = () => {
   //open方法
   const open = () => setProjectCreate({ projectCreate: true });
   //关闭的方法
+  //const close = () => setProjectCreate({ projectCreate: undefined });
   const close = () => {
+
+    //setProjectCreate({ projectCreate: undefined });
+
     setProjectCreate({ projectCreate: undefined });
+    console.log(projectCreate, '关闭执行001');
     setEditingProjectId({ editingProjectId: undefined });
+
+
+
   };
 
   return {

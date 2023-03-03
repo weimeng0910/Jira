@@ -15,7 +15,7 @@ import { UserSelect } from '@/components/userSelect/user-select';
 import { useAddProject, useEditProject } from '@/utils/hooks/project';
 
 const Container = styled.div`
-    height: 80vh;
+    /*height: 80vh;*/
     display: flex;
     flex-direction: column;
     justify-content: center;

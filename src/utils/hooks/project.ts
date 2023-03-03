@@ -64,7 +64,7 @@ export const useAddProject = () => {
   const mutate = useMutation((params: Partial<Project>) =>
 
     http({
-      url: `projects/${params.id}`,
+      url: 'projects',
       data: params,
       method: 'post'
     }),

@@ -284,7 +284,22 @@ async function projectsUpdata(storageKey: string, id: string, updates: Partial<P
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
 }
+/**
+ *  @function addProjectsData
+ *  @param storageKey
+ *  @description 根据传入的project增加数据
+ */
 
+async function addProjectsData(storageKey: string, project: Project) {
+
+  // 加载localStorage里的项目数据
+  const projectsData: Project[] = loadScreensData(storageKey);
+  const projectsList = [...projectsData, project];
+  console.log(projectsList, '数据001');
+
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(projectsList));
+}
 /**
  *  @function ScreensUserData
  *  @param storageKey
@@ -316,4 +331,4 @@ async function ScreensProjectData(storageKey: string, id: string) {
 }
 
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, projectsUpdata, ScreensProjectData };
+export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, projectsUpdata, ScreensProjectData, addProjectsData };

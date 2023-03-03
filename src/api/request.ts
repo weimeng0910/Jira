@@ -43,7 +43,7 @@ const serviceAxios: AxiosInstance = axios.create({
   headers: {
 
     Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'// 传参方式表单
+    'Content-Type': 'application/json'// 传参方式表单
   },
 
   // `transformRequest` 允许在向服务器发送前，修改请求数据
