@@ -61,7 +61,7 @@ export const useAddProject = () => {
 
   const queryClient = useQueryClient();
 
-  const mutate = useMutation((params: Partial<Project>) =>
+  return useMutation((params: Partial<Project>) =>
 
     http({
       url: 'projects',
@@ -69,10 +69,11 @@ export const useAddProject = () => {
       method: 'post'
     }),
     {
+
       onSuccess: () => queryClient.invalidateQueries('projects')
     }
   );
-  return mutate;
+
 };
 
 /**

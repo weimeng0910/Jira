@@ -20,7 +20,7 @@ export interface User {
   token?: string | ''
 }
 export interface Project {
-  creted: number,
+  created: number,
   id: number,
   name: string,
   organization: string,

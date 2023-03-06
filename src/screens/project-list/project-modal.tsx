@@ -28,7 +28,6 @@ const Container = styled.div`
 export const ProjectModal = () => {
     //解构打开，关闭，添加编辑和loading的方法，从自定义hook useProjectModal中
     const { projectModalOpen, close, editingProject, isLoading } = useProjectModal();
-
     //根据获取的editingProject来判断是编辑还是添加状态
     const useMutateProject = editingProject ? useEditProject : useAddProject;
 
@@ -41,6 +40,7 @@ export const ProjectModal = () => {
         // eslint-disable-next-line promise/catch-or-return, promise/always-return
         mutateAsync({ ...editingProject, ...values }).then(() => {
             form.resetFields(); //表单重置状态和值的方法
+
             close();
         });
     };
@@ -48,7 +48,7 @@ export const ProjectModal = () => {
         form.resetFields();
         close();
     };
-    //根据传入的editingProject来显示title
+    //根据传入的editingProject来显示title;
     const title = editingProject ? '编辑项目' : '创建项目';
 
     useEffect(() => {

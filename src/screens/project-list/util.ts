@@ -7,14 +7,17 @@
  */
 import { useMemo } from 'react';
 
-import { useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
+import { useSetUrlSearchParam, useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
 import { useProject } from '@/utils/hooks/project';
 
 export const useProjectSearchParam = () => {
-
+  //要搜索的数据
+  //返回新的对角，造成地址改变后不断渲染
+  //用这个方法来设置路由地址跟随输入框变化
+  //服务器返回string类型
   const [param, setParam] = useUrlQueryParam(['name', 'personId']);
   return [
-
+    //采用useMemo解决重复调用的问题
     useMemo(() => ({
       ...param,
       personId: Number(param.personId) || undefined,
@@ -26,10 +29,10 @@ export const useProjectSearchParam = () => {
   //编译器将使用其默认类型推断行为，这可能会导致更广泛或更一般的类型。
 };
 
-//export const useProjectsQueryKey = () => {
-//  const [params] = useProjectsSearchParams();
-//  return ["projects", params];
-//};
+export const useProjectsQueryKey = () => {
+  const [params] = useProjectSearchParam();
+  return ['projects', params];
+};
 /**
  * @hook 从url参数param获取状态，这个hook在这里扮演全局状态管理器的作用，可以取代redux和context的作用
  * 向需要使用这个状态的地方提供全局状态
@@ -38,18 +41,15 @@ export const useProjectModal = () => {
 
   //获取url参数,来判断是否是创建
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParam([
-
-    'projectCreate'
-
+    'projectCreate',
   ]);
-
-  //获取url中id参数，来判断是否是编辑
+  //判断当前是不是在编辑，解构出当前编辑项目的id
   const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParam([
-
-    'editingProjectId'
-
+    'editingProjectId',
   ]);
 
+
+  const setUrlParams = useSetUrlSearchParam();
   //获取根据id获取project方法
   const { data: editingProject, isLoading } = useProject(
 
@@ -58,24 +58,13 @@ export const useProjectModal = () => {
   );
 
 
-  //根据id编辑project数据
-  const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
   //open方法
   const open = () => setProjectCreate({ projectCreate: true });
   //关闭的方法
-  //const close = () => setProjectCreate({ projectCreate: undefined });
-  const close = () => {
+  const close = () => setUrlParams({ projectCreate: undefined, editingProjectId: undefined });
 
-    //setProjectCreate({ projectCreate: undefined });
-
-    setProjectCreate({ projectCreate: undefined });
-    console.log(projectCreate, '关闭执行001');
-    setEditingProjectId({ editingProjectId: undefined });
-
-
-
-  };
-
+  //根据id编辑project数据
+  const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
   return {
     projectModalOpen: projectCreate === 'true' || Boolean(editingProject),
     open,

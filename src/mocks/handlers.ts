@@ -212,7 +212,7 @@ export const handlers = [
     const personId: string = typeof addProject.personId === 'string' ? addProject.personId : '';
     const nanoid = customAlphabet('1234567890', 10);
     //组装数据
-    const addProjectItem = { creted: Date.now(), id: Number(nanoid()), name, organization, personId: Number(personId), pin: false };
+    const addProjectItem = { created: Date.now(), id: Number(nanoid()), name, organization, personId: Number(personId), pin: false };
 
     console.log(addProjectItem, 'add001');
 
