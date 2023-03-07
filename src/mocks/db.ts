@@ -295,7 +295,6 @@ async function addProjectsData(storageKey: string, project: Project) {
   // 加载localStorage里的项目数据
   const projectsData: Project[] = loadScreensData(storageKey);
   const projectsList = [...projectsData, project];
-  console.log(projectsList, '数据001');
 
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(projectsList));
@@ -313,7 +312,26 @@ async function ScreensUserData(storageKey: string) {
 
 }
 
+/**
+ *  @function  projectDetele
+ *  @param storageKey
+ *  @description 根据传入参数响应数据
+ */
 
+
+async function projectDetele(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const projectsData: Project[] = loadScreensData(storageKey);
+  let projectList: Project[] = [];
+  if (id) {
+    //通过ID查找对应的数据
+    projectList = projectsData.filter((item: Project) => item.id !== Number.parseInt(id!, 10))!;
+
+  }
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(projectList));
+}
 /**
  *  @function ScreensProjectData
  *  @param storageKey
@@ -331,4 +349,14 @@ async function ScreensProjectData(storageKey: string, id: string) {
 }
 
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, projectsUpdata, ScreensProjectData, addProjectsData };
+export {
+  createUser,
+  authenticate,
+  loadUserById,
+  ScreensProjectsData,
+  ScreensUserData,
+  projectsUpdata,
+  ScreensProjectData,
+  addProjectsData,
+  projectDetele
+};

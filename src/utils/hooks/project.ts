@@ -75,7 +75,32 @@ export const useAddProject = () => {
   );
 
 };
+/**
+* @function
+* useDeleteProject
+*/
 
+export const useDeleteProject = () => {
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+
+    ({ id }: { id: number }) =>
+
+      http({
+        url: `projects/${id}`,
+        method: 'delete'
+      }),
+
+    {
+      onSuccess: () => queryClient.invalidateQueries('projects')
+    }
+  );
+
+  return mutation;
+
+};
 /**
 * @function 通过ID获取project的详情数据
 */

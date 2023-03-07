@@ -232,12 +232,31 @@ export const handlers = [
   rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
+
     const updates: Partial<Project> = await req.json();
 
-
-
-
     const projectData = await db.projectsUpdata(projectDB, id as string, updates);
+
+
+    return res(ctx.json({ projectData }));
+
+
+  }),
+
+  /**
+  * @todo 响应delete请求
+  */
+
+  rest.delete<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+
+    if (id) {
+      console.log(id, 'dele001');
+
+    }
+
+    const projectData = await db.projectDetele(projectDB, id as string);
 
 
     return res(ctx.json({ projectData }));

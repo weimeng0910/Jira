@@ -2,9 +2,9 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/24
- * @file LIST组件
+ * @file 创建了List 组件展示项目列表
  */
-import { Menu, Table, TableProps, Dropdown } from 'antd';
+import { Menu, Table, TableProps, Dropdown, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 //处理时间的库
 import dayjs from 'dayjs';
@@ -16,7 +16,7 @@ import { ButtonNoPadding } from '@/components/lib/lib';
 import { Pin } from '@/components/pin/pin';
 //定义类型
 import { Project, User } from '@/types/user';
-import { useEditProject } from '@/utils/hooks/project';
+import { useEditProject, useDeleteProject } from '@/utils/hooks/project';
 
 //这个类型包含了TableProps中的所有属性，和users这个属性
 interface ListProps extends TableProps<Project> {
@@ -39,7 +39,20 @@ const List = ({ users, ...props }: ListProps) => {
     const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
     //编辑project
     const editProject = (id: number) => startEdit(id);
+    //删除project
+    const { mutate: deleteProject } = useDeleteProject();
+    const confirmDeleteProject = (id: number) => {
+        Modal.confirm({
+            title: '确定删除这个项目吗?',
+            content: '点击确定删除',
+            okText: '确定',
+            onOk() {
+                console.log(id, '前瑞删除id');
 
+                deleteProject({ id });
+            }
+        });
+    };
     //定义antd中menu组件中的items
 
     const Constants = () => {
@@ -123,6 +136,7 @@ const List = ({ users, ...props }: ListProps) => {
                                                 editProject(project.id);
                                                 break;
                                             case Constants().DELETE:
+                                                confirmDeleteProject(project.id);
                                                 break;
                                         }
                                     }}
