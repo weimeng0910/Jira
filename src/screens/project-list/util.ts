@@ -8,6 +8,7 @@
 import { useMemo } from 'react';
 
 import { useSetUrlSearchParam, useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
+// eslint-disable-next-line import/no-cycle
 import { useProject } from '@/utils/hooks/project';
 
 export const useProjectSearchParam = () => {

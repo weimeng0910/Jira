@@ -13,6 +13,8 @@ import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
 //导入类型
 import { Project } from '@/types/user';
+// eslint-disable-next-line import/no-cycle
+import { useProjectSearchParam } from '@/screens/project-list/util';
 
 /**
 * @function
@@ -33,7 +35,9 @@ export const useProjects = (param?: Partial<Project>) =>
 export const useEditProject = () => {
 
   const queryClient = useQueryClient();
-
+  const [searchParams] = useProjectSearchParam();
+  //定义对应的缓存数据的key
+  const queryKey = ['projects', searchParams];
   const mutation = useMutation(
 
     (params: Partial<Project>) =>
@@ -45,7 +49,22 @@ export const useEditProject = () => {
       }),
 
     {
-      onSuccess: () => queryClient.invalidateQueries('projects')
+      //queryClient.invalidateQueries： 在提交成功/失败之后都进行重新查询更新状态
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
+      async onMutate(target) {
+        //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
+        const previousItems = queryClient.getQueryData(queryKey);
+        //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？,queryClient.setQueryData：设置值
+        queryClient.setQueryData(queryKey, (old?: Project[]) => old?.map(project => project.id === target.id ? { ...project, ...target } : project) || []);
+        return { previousItems };
+      },
+      //出现错误后回滚
+      onError(error: Error, newItem, context) {
+        console.log(error, newItem);
+
+        queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems);
+      }
+
     }
   );
 
@@ -60,7 +79,9 @@ export const useEditProject = () => {
 export const useAddProject = () => {
 
   const queryClient = useQueryClient();
-
+  const [searchParams] = useProjectSearchParam();
+  //定义对应的缓存数据的key
+  const queryKey = ['projects', searchParams];
   return useMutation((params: Partial<Project>) =>
 
     http({
@@ -69,8 +90,25 @@ export const useAddProject = () => {
       method: 'post'
     }),
     {
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
+      async onMutate(target) {
+        console.log(target, '需要增加的');
 
-      onSuccess: () => queryClient.invalidateQueries('projects')
+        //query缓存中的数据
+        const previousItems = queryClient.getQueryData(queryKey);
+        console.log(previousItems, '缓存中的数据');
+
+        //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
+        queryClient.setQueryData(queryKey, (old?: any[]) => (old ? [...old, target] : []));
+        return { previousItems };
+      },
+      //出现错误后回滚
+      onError(error: Error, newItem, context) {
+        console.log(error, newItem);
+        console.log(context?.previousItems, 'huigun');
+
+        queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems);
+      }
     }
   );
 

@@ -220,7 +220,11 @@ export const handlers = [
     //调用写入数据的函数
     const projectData = await db.addProjectsData(projectDB, addProjectItem);
 
-    return res(ctx.json({ projectData }));
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json({ projectData })
+    );
 
 
 
@@ -238,7 +242,11 @@ export const handlers = [
     const projectData = await db.projectsUpdata(projectDB, id as string, updates);
 
 
-    return res(ctx.json({ projectData }));
+    return res(
+      //延迟
+      ctx.delay(1000 * 60),
+      ctx.json({ projectData })
+    );
 
 
   }),

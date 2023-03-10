@@ -8,7 +8,7 @@ import { Menu, Table, TableProps, Dropdown, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 //处理时间的库
 import dayjs from 'dayjs';
-//import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
 
 import { useProjectModal } from './util';
@@ -41,6 +41,7 @@ const List = ({ users, ...props }: ListProps) => {
     const editProject = (id: number) => startEdit(id);
     //删除project
     const { mutate: deleteProject } = useDeleteProject();
+    //删除前确认
     const confirmDeleteProject = (id: number) => {
         Modal.confirm({
             title: '确定删除这个项目吗?',
@@ -53,8 +54,8 @@ const List = ({ users, ...props }: ListProps) => {
             }
         });
     };
-    //定义antd中menu组件中的items
 
+    //定义antd中menu组件中的items
     const Constants = () => {
         const EDIT = 'edit';
         const DELETE = 'delete';
@@ -63,6 +64,7 @@ const List = ({ users, ...props }: ListProps) => {
             DELETE
         };
     };
+
     const menuItems: MenuProps['items'] = [
         {
             key: 'edit',
@@ -77,9 +79,12 @@ const List = ({ users, ...props }: ListProps) => {
     return (
         <Table
             pagination={false}
+            //设置唯一的key
+            rowKey={nanoid()}
             columns={[
                 {
                     //因为checed={true},所以这里简写
+
                     title: (
                         <Pin
                             checked
@@ -99,7 +104,12 @@ const List = ({ users, ...props }: ListProps) => {
                     //localeCompare排序中文字符
                     sorter: (a, b) => a.name.localeCompare(b.name),
                     render: (_value, project) => (
-                        <Link to={`/projects/${String(project.id)}`}>{project.name}</Link>
+                        <Link
+                            key={nanoid()}
+                            to={`/projects/${String(project.id)}`}
+                        >
+                            {project.name}
+                        </Link>
                     )
                 },
                 {
@@ -152,8 +162,6 @@ const List = ({ users, ...props }: ListProps) => {
             ]}
             //type PropsType = Omit<ListProps,'users'>//...props的类型
             {...props}
-            //设置唯一的key
-            rowKey={project => project.id!}
         />
     );
 };
