@@ -8,7 +8,7 @@ import { Menu, Table, TableProps, Dropdown, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 //处理时间的库
 import dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
+//import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
 
 import { useProjectModal } from './util';
@@ -78,9 +78,8 @@ const List = ({ users, ...props }: ListProps) => {
 
     return (
         <Table
+            rowKey='id'
             pagination={false}
-            //设置唯一的key
-            rowKey={nanoid()}
             columns={[
                 {
                     //因为checed={true},所以这里简写
@@ -104,12 +103,7 @@ const List = ({ users, ...props }: ListProps) => {
                     //localeCompare排序中文字符
                     sorter: (a, b) => a.name.localeCompare(b.name),
                     render: (_value, project) => (
-                        <Link
-                            key={nanoid()}
-                            to={`/projects/${String(project.id)}`}
-                        >
-                            {project.name}
-                        </Link>
+                        <Link to={`/projects/${String(project.id)}`}>{project.name}</Link>
                     )
                 },
                 {

@@ -214,7 +214,7 @@ export const handlers = [
     //组装数据
     const addProjectItem = { created: Date.now(), id: Number(nanoid()), name, organization, personId: Number(personId), pin: false };
 
-    console.log(addProjectItem, 'add001');
+
 
 
     //调用写入数据的函数
@@ -223,6 +223,7 @@ export const handlers = [
     return res(
       //延迟
       //ctx.delay(1000 * 60),
+
       ctx.json({ projectData })
     );
 
@@ -267,7 +268,11 @@ export const handlers = [
     const projectData = await db.projectDetele(projectDB, id as string);
 
 
-    return res(ctx.json({ projectData }));
+    return res(
+      //延迟
+      ctx.delay(1000 * 60),
+      ctx.json({ projectData })
+    );
 
 
   }),
