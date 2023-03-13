@@ -11,7 +11,7 @@ import { Form, Input } from 'antd';
 
 import { UserSelect } from '@/components/userSelect/user-select';
 //定义类型
-import { Project } from '@/types/user';
+import { Project } from '@/types/Project';
 
 interface SearchPanelProps {
     //通过utiltype和list组件中的类型保持一致

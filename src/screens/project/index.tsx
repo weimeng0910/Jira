@@ -19,7 +19,12 @@ export const ProjectScreen = () => (
             {/*默认路由 */}
             <Route
                 path='/'
-                element={<Navigate to={`${window.location.pathname}/displayBoard`} />}
+                element={
+                    <Navigate
+                        to={`${window.location.pathname}/displayBoard`}
+                        replace
+                    />
+                }
             />
             <Route
                 path='displayBoard'

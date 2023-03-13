@@ -12,7 +12,7 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
 //导入类型
-import { Project } from '@/types/user';
+import { Project } from '@/types/Project';
 // eslint-disable-next-line import/no-cycle
 import { useProjectSearchParam } from '@/screens/project-list/util';
 

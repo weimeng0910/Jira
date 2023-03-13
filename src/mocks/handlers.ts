@@ -245,7 +245,7 @@ export const handlers = [
 
     return res(
       //延迟
-      ctx.delay(1000 * 60),
+      //ctx.delay(1000 * 60),
       ctx.json({ projectData })
     );
 
@@ -270,7 +270,7 @@ export const handlers = [
 
     return res(
       //延迟
-      ctx.delay(1000 * 60),
+      //ctx.delay(1000 * 60),
       ctx.json({ projectData })
     );
 
@@ -289,7 +289,11 @@ export const handlers = [
     const projectData = await db.ScreensProjectData(projectDB, id as string);
 
 
-    return res(ctx.json(projectData));
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json(projectData)
+    );
 
 
   }),

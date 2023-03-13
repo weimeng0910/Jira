@@ -67,7 +67,7 @@ export const useProjectModal = () => {
   //根据id编辑project数据
   const startEdit = (id: number) => setEditingProjectId({ editingProjectId: id });
   return {
-    projectModalOpen: projectCreate === 'true' || Boolean(editingProject),
+    projectModalOpen: projectCreate === 'true' || Boolean(editingProjectId),
     open,
     close,
     startEdit,

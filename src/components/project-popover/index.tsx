@@ -4,7 +4,7 @@ import { Popover, Typography, List, Divider } from 'antd';
 import { ButtonNoPadding } from '@/components/lib/lib';
 import { useProjectModal } from '@/screens/project-list/util';
 //定义类型
-import { Project } from '@/types/user';
+import { Project } from '@/types/Project';
 import { useProjects } from '@/utils/hooks/project';
 
 //样式

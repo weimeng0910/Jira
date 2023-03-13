@@ -8,14 +8,14 @@ import { Menu, Table, TableProps, Dropdown, Modal } from 'antd';
 import type { MenuProps } from 'antd';
 //处理时间的库
 import dayjs from 'dayjs';
-//import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
 
 import { useProjectModal } from './util';
 import { ButtonNoPadding } from '@/components/lib/lib';
 import { Pin } from '@/components/pin/pin';
+import { Project } from '@/types/Project';
 //定义类型
-import { Project, User } from '@/types/user';
+import { User } from '@/types/user';
 import { useEditProject, useDeleteProject } from '@/utils/hooks/project';
 
 //这个类型包含了TableProps中的所有属性，和users这个属性
