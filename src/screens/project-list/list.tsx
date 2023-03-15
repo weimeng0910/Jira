@@ -79,7 +79,6 @@ const List = ({ users, ...props }: ListProps) => {
         <Table
             rowKey='id'
             //设置唯一的key
-            //rowKey={project => project.id!}
             pagination={false}
             columns={[
                 {
@@ -116,7 +115,8 @@ const List = ({ users, ...props }: ListProps) => {
 
                     render: (_value, project) => (
                         <span>
-                            {users.find(user => user.id === project.personId)?.name || '未知'}
+                            {(users.find(user => user.id === project.personId)?.name as string) ||
+                                '未知'}
                         </span>
                     )
                 },

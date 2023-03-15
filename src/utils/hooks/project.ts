@@ -9,13 +9,12 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 //导入API请求
-import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
 //导入类型
 import { Project } from '@/types/Project';
 // eslint-disable-next-line import/no-cycle
 import { useProjectSearchParam } from '@/screens/project-list/util';
-
+import { cleanObject } from '@/utils/cleanObject';
 /**
 * @function
 * 通过useQuery获取project数据
@@ -23,10 +22,14 @@ import { useProjectSearchParam } from '@/screens/project-list/util';
 
 export const useProjects = (param?: Partial<Project>) =>
 
-  useQuery<Project[]>(['projects', param], () =>
+  useQuery<Project[]>(['projects', cleanObject(param!)], () =>
 
-    getProjectsList(param || {}));
-
+    http({
+      url: 'projects',
+      data: param,
+      method: 'get'
+    })
+  );
 /**
 * @function
 * 编辑project

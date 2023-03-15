@@ -1,7 +1,7 @@
 import { URLSearchParamsInit, useSearchParams } from 'react-router-dom';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
-import { cleanObject } from '../cleanObject';
+import { cleanObject, subset } from '../cleanObject';
 
 /**
  * 通过这个hook来set search param
@@ -32,24 +32,24 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams] = useSearchParams();
   //用自定义的方法来设置url中的参数
   const setSearchParams = useSetUrlSearchParam();
-  //const [stateKeys] = useState(keys);
-  //return [
-  //  useMemo(
-  //    () =>
-  //      subset(Object.fromEntries(searchParams), stateKeys) as {
-  //        [key in K]: string;
-  //      },
-  //    [searchParams, stateKeys]
-  //  ),
-  //  (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params),
-  //] as const;
+  const [stateKeys] = useState(keys);
   return [
     useMemo(
-      () => keys.reduce((prev, key) => ({ ...prev, [key]: searchParams.get(key) || '' }), {} as { [key in K]: string }),
-      [keys, searchParams]
+      () =>
+        subset(Object.fromEntries(searchParams), stateKeys) as {
+          [key in K]: string;
+        },
+      [searchParams, stateKeys]
     ),
-    (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params)
+    (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params),
   ] as const;
+  //return [
+  //  useMemo(
+  //    () => keys.reduce((prev, key) => ({ ...prev, [key]: searchParams.get(key) || '' }), {} as { [key in K]: string }),
+  //    [keys, searchParams]
+  //  ),
+  //  (params: Partial<{ [key in K]: unknown }>) => setSearchParams(params)
+  //] as const;
 };
 
 

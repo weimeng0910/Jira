@@ -19,10 +19,11 @@ export const useProjectSearchParam = () => {
   const [param, setParam] = useUrlQueryParam(['name', 'personId']);
   return [
     //采用useMemo解决重复调用的问题
-    useMemo(() => ({
-      ...param,
-      personId: Number(param.personId) || undefined,
-    }), [param]),
+    useMemo(
+      () => ({
+        ...param,
+        personId: Number(param.personId) || undefined,
+      }), [param]),
     setParam,
   ] as const;
   //在 TypeScript 中使用 as const 时，我们可以将对象的属性或数组的元素设置为只读，向语言表明表达式中的类型不会被扩大
@@ -74,15 +75,6 @@ export const useProjectModal = () => {
     isLoading,
     editingProject
   };
-  //return [
-  //  projectCreate === 'true',//因为从url中读取的数据都是字符串
-  //  open,
-  //  close
-  //] as const;//这里返回的是一个tuples,返回一个元组，用as const时，可以在使用中像useState一样自定义变量名
-  //返回的数据有三个以内放在tuples中，超过三个以上要用对象，使用对象返回数据后，要按名称和顺序来使用
+
+
 };
-//例如
-//cosnt useTexst=()=>{
-//  const [created,openxx,closexx]=useProjectModal()
-//const [a,setA]=useState();
-//}

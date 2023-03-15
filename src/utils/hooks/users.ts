@@ -4,21 +4,13 @@
  * @date 2022/11/30
  * 获取工程用户列表的自定义hook
  */
+import { useQuery } from 'react-query';
 
-import useEffectOnce from '@/utils/hooks/useMount';
-import { useAsync } from './useAsync';
 //导入API请求
 import { getUsersList } from '@/api/index';
 //导入类型
 import { User } from '@/types/user';
 
-export const useUser = () => {
-  const { run, ...result } = useAsync<User[]>();
-  //请求数据
-  useEffectOnce(() => {
+export const useUser = (param?: Partial<User>) => useQuery<User[]>(['users', param], () =>
 
-    run(getUsersList());
-
-  });
-  return result;
-};
+  getUsersList());

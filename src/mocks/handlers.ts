@@ -176,8 +176,10 @@ export const handlers = [
 
 
     const personId: string = req.url.searchParams.get('personId')!;
+    console.log(personId, '后接收的personId');
 
     const name: string = req.url.searchParams.get('name')!;
+    console.log(name, '后接收的name001');
     //组装数据
     const query = { personId, name };
 
@@ -207,8 +209,10 @@ export const handlers = [
     //const { name, organization, personId } = addProject;
     //类型守卫
     const name: string = typeof addProject.name === 'string' ? addProject.name : '';
+
     const organization: string = typeof addProject.organization === 'string' ? addProject.organization : '';
     const personId: string = typeof addProject.personId === 'string' ? addProject.personId : '';
+   
     const nanoid = customAlphabet('1234567890', 10);
     //组装数据
     const addProjectItem = { created: Date.now(), id: Number(nanoid()), name, organization, personId: Number(personId), pin: false };
