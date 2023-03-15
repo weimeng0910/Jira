@@ -21,7 +21,6 @@ import { useEditProject, useDeleteProject } from '@/utils/hooks/project';
 //这个类型包含了TableProps中的所有属性，和users这个属性
 interface ListProps extends TableProps<Project> {
     users: User[];
-    //refresh?: () => void;
 }
 
 /**
@@ -79,6 +78,8 @@ const List = ({ users, ...props }: ListProps) => {
     return (
         <Table
             rowKey='id'
+            //设置唯一的key
+            //rowKey={project => project.id!}
             pagination={false}
             columns={[
                 {

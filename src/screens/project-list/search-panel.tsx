@@ -30,7 +30,7 @@ const SearchPanel = ({ param, setParam }: SearchPanelProps) => (
             <Input
                 placeholder='项目名'
                 type='text'
-                value={param.name}
+                value={param.name || ''}
                 onChange={evt =>
                     setParam({
                         ...param,
@@ -42,7 +42,7 @@ const SearchPanel = ({ param, setParam }: SearchPanelProps) => (
         <Form.Item>
             <UserSelect
                 defaultOptionName='负责人'
-                value={param.personId}
+                value={param.personId || ''}
                 onChange={value =>
                     setParam({
                         ...param,

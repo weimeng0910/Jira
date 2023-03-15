@@ -50,7 +50,7 @@ export const useEditProject = () => {
 
     {
       //queryClient.invalidateQueries： 在提交成功/失败之后都进行重新查询更新状态
-      onSuccess: () => queryClient.invalidateQueries(queryKey),
+      //onSuccess: () => queryClient.invalidateQueries(queryKey),
       async onMutate(target) {
         //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
         const previousItems = queryClient.getQueryData(queryKey);
@@ -63,8 +63,11 @@ export const useEditProject = () => {
         console.log(error, newItem);
 
         queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems);
-      }
-
+      },
+      // 总是在错误或成功后重新获取
+      onSettled: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
     }
   );
 

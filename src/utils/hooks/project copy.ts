@@ -13,7 +13,7 @@ import { useAsync } from '@/utils/hooks/useAsync';
 import { getProjectsList } from '@/api/index';
 import { http } from '@/api/http';
 //导入类型
-import { Project } from "@/types/Project";
+import { Project } from '@/types/Project';
 
 export const useProjects = (param?: Partial<Project>) => {
   //定义请求的工程列表的状态

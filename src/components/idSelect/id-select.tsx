@@ -5,6 +5,7 @@
  * @file 实现id类型
  */
 import { Select } from 'antd';
+import { nanoid } from 'nanoid';
 import { ComponentProps } from 'react';
 
 import { Raw } from '@/types/index';
@@ -45,7 +46,7 @@ export const IdSelect = (props: IdSelectProps) => {
             ) : null}
             {options?.map(option => (
                 <Select.Option
-                    key={option.id}
+                    key={nanoid()}
                     value={option.id}
                 >
                     {option.name}

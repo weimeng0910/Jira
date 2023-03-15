@@ -15,16 +15,15 @@ import * as db from './db';
 // 导入开发URL
 import { API_URL, projectDB, userDB } from '../config';
 // 导入数据
-import { initData } from './initData';
+import { bootstrap } from './bootstrap';
 import { ResponseError, RequestBody, PostRequestParams, Project } from './type/handlersType';
-
 
 
 /**
  * 初始化数据
  */
 
-initData();
+bootstrap();
 
 /**
  *  @function getToken
