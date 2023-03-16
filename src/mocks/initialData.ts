@@ -51,18 +51,22 @@ export const kanbans = [
 
 export const users = [
   {
+    id: 1,
     name: '高修文',
     organization: '外卖组',
   },
   {
+    id: 2,
     name: '熊天成',
     organization: '外卖组',
   },
   {
+    id: 3,
     name: '郑华',
     organization: '总部组',
   },
   {
+    id: 4,
     name: '王文静',
     organization: '中台组',
   },

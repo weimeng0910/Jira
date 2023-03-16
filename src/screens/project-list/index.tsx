@@ -23,7 +23,6 @@ const Container = styled.div`
     padding: 3.2rem;
 `;
 export const ProjectListScreen = () => {
-    //url获取状态
     const { open } = useProjectModal();
     //设置页面标题
     useDocumentTitle('项目列表', false);
@@ -32,8 +31,6 @@ export const ProjectListScreen = () => {
     //const projectParam = { ...param, personId: Number(param.personId) || undefined };
     //从获取url中参数的hook中解构param参数
     const [param, setParam] = useProjectSearchParam();
-    //console.log(param, '获取param001');
-
     const debounceParam = useDebounce(param, 2000);
     //自定义hook抽像两层，把数据获取隐藏在hook useProjects useUser 中
     //定义请求的工程列表的状态

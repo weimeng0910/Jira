@@ -9,6 +9,7 @@
 import { css } from '@emotion/react';
 import { Form, Input } from 'antd';
 
+//导入封装好的选择组件
 import { UserSelect } from '@/components/userSelect/user-select';
 //定义类型
 import { Project } from '@/types/Project';
@@ -30,7 +31,7 @@ const SearchPanel = ({ param, setParam }: SearchPanelProps) => (
             <Input
                 placeholder='项目名'
                 type='text'
-                value={param.name}
+                value={param.name || ''}
                 onChange={evt =>
                     setParam({
                         ...param,

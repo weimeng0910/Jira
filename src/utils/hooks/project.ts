@@ -14,7 +14,7 @@ import { http } from '@/api/http';
 import { Project } from '@/types/Project';
 // eslint-disable-next-line import/no-cycle
 import { useProjectSearchParam } from '@/screens/project-list/util';
-import { cleanObject } from '@/utils/cleanObject';
+//import { cleanObject } from '@/utils/cleanObject';
 /**
 * @function
 * 通过useQuery获取project数据
@@ -22,7 +22,7 @@ import { cleanObject } from '@/utils/cleanObject';
 
 export const useProjects = (param?: Partial<Project>) =>
 
-  useQuery<Project[]>(['projects', cleanObject(param!)], () =>
+  useQuery<Project[]>(['projects', param], () =>
 
     http({
       url: 'projects',

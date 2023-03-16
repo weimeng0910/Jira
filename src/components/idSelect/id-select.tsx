@@ -32,6 +32,7 @@ const toNumber = (value: unknown) => (Number.isNaN(Number(value)) ? 0 : Number(v
 export const IdSelect = (props: IdSelectProps) => {
     //从传入的props中解构相关属性
     const { value, onChange, defaultOptionName, options, ...restProps } = props;
+
     return (
         <Select
             //当数据没有返回时，这里需要判断，否则会显示ID的数字

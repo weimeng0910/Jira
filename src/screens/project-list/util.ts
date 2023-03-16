@@ -13,7 +13,7 @@ import { useProject } from '@/utils/hooks/project';
 
 export const useProjectSearchParam = () => {
   //要搜索的数据
-  //返回新的对角，造成地址改变后不断渲染
+  //返回新的对象，造成地址改变后不断渲染
   //用这个方法来设置路由地址跟随输入框变化
   //服务器返回string类型
   const [param, setParam] = useUrlQueryParam(['name', 'personId']);
