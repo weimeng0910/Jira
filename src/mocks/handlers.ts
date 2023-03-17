@@ -176,7 +176,7 @@ export const handlers = [
 
 
     const personId: string = req.url.searchParams.get('personId')!;
- 
+
 
     const name: string = req.url.searchParams.get('name')!;
 
@@ -205,6 +205,8 @@ export const handlers = [
     // 获得前瑞发送的参数,
 
     const body = await req.json();
+
+
     const addProject = qs.parse(body);
     //const { name, organization, personId } = addProject;
     //类型守卫
@@ -212,6 +214,7 @@ export const handlers = [
 
     const organization: string = typeof addProject.organization === 'string' ? addProject.organization : '';
     const personId: string = typeof addProject.personId === 'string' ? addProject.personId : '';
+    console.log(addProject, 'add001');
 
     const nanoid = customAlphabet('1234567890', 10);
     //组装数据

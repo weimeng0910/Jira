@@ -47,8 +47,6 @@ const List = ({ users, ...props }: ListProps) => {
             content: '点击确定删除',
             okText: '确定',
             onOk() {
-                console.log(id, '前瑞删除id');
-
                 deleteProject({ id });
             }
         });
@@ -79,6 +77,10 @@ const List = ({ users, ...props }: ListProps) => {
         <Table
             rowKey='id'
             //设置唯一的key
+            //rowKey={record => {
+            //    console.log(record.id);
+            //    return record.id;
+            //}}
             pagination={false}
             columns={[
                 {

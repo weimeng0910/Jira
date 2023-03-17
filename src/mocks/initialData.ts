@@ -80,7 +80,8 @@ export const projects = [
     personId: 3,
     organization: '外卖组',
     created: 1_604_989_757_139,
-    pin: false
+    pin: false,
+
   },
   {
     id: 2,
@@ -88,7 +89,8 @@ export const projects = [
     personId: 1,
     organization: '团购组',
     created: 160_498_757_139,
-    pin: false
+    pin: false,
+
   },
   {
     id: 3,
@@ -96,7 +98,8 @@ export const projects = [
     personId: 2,
     organization: '物料组',
     created: 1_604_980_000_012,
-    pin: false
+    pin: false,
+
   },
   {
     id: 4,
@@ -104,7 +107,8 @@ export const projects = [
     personId: 3,
     organization: '总部',
     created: 1_604_980_000_011,
-    pin: false
+    pin: false,
+
   },
   {
     id: 5,
@@ -112,7 +116,8 @@ export const projects = [
     personId: 4,
     organization: '快递组',
     created: 1_604_989_757_139,
-    pin: false
+    pin: false,
+
   },
 
 

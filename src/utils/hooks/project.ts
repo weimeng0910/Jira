@@ -2,11 +2,12 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/30
- * @file 获取工程列表的自定义hook
+ * @file 获取工程列表的自定义hook project.ts
  * @date 2023/02/08利用react-query来获取缓存数据
  */
 
 import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { nanoid } from 'nanoid';
 
 //导入API请求
 import { http } from '@/api/http';
@@ -14,6 +15,7 @@ import { http } from '@/api/http';
 import { Project } from '@/types/Project';
 // eslint-disable-next-line import/no-cycle
 import { useProjectSearchParam } from '@/screens/project-list/util';
+
 //import { cleanObject } from '@/utils/cleanObject';
 /**
 * @function
@@ -53,7 +55,7 @@ export const useEditProject = () => {
 
     {
       //queryClient.invalidateQueries： 在提交成功/失败之后都进行重新查询更新状态
-      //onSuccess: () => queryClient.invalidateQueries(queryKey),
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
       async onMutate(target) {
         //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
         const previousItems = queryClient.getQueryData(queryKey);
@@ -68,9 +70,9 @@ export const useEditProject = () => {
         queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems);
       },
       // 总是在错误或成功后重新获取
-      onSettled: () => {
-        queryClient.invalidateQueries(queryKey);
-      },
+      //onSettled: () => {
+      //  queryClient.invalidateQueries(queryKey);
+      //},
     }
   );
 
@@ -97,33 +99,29 @@ export const useAddProject = () => {
     }),
     {
       // queryClient.invalidateQueries： 在提交成功/失败之后都进行重新查询更新状态
-      //onSuccess: () => queryClient.invalidateQueries(queryKey),
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
       async onMutate(target) {
-        console.log(target, '需要增加的');
+        //组装对象写入缓存数据
+        const newTarget = { ...target, id: nanoid(), created: Date.now(), };
         //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
         await queryClient.cancelQueries(queryKey);
         //query缓存中的数据
         const previousItems = queryClient.getQueryData(queryKey);
-        console.log(previousItems, '缓存中的数据');
-
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
-        const newdata = queryClient.setQueryData(queryKey, (old?: any[]) => (old ? [...old, target] : []));
+        queryClient.setQueryData(queryKey, (old?: any[]) => (old ? [...old, newTarget] : []));
         // 返回具有快照值的上下文对象
-        console.log(newdata, '新的缓存中的数据');
+
 
         return { previousItems };
       },
       //出现错误后回滚
       onError(_error: Error, _newItem, context) {
-        //console.log(error, newItem);
-        //console.log(context?.previousItems, 'huigun');
-
         queryClient.setQueryData(queryKey, (context as { previousItems: Project[] }).previousItems);
       },
       // 总是在错误或成功后重新获取
-      onSettled: () => {
-        queryClient.invalidateQueries(queryKey);
-      },
+      //onSettled: () => {
+      //  queryClient.invalidateQueries(queryKey);
+      //},
     }
   );
 
