@@ -77,10 +77,6 @@ const List = ({ users, ...props }: ListProps) => {
         <Table
             rowKey='id'
             //设置唯一的key
-            //rowKey={record => {
-            //    console.log(record.id);
-            //    return record.id;
-            //}}
             pagination={false}
             columns={[
                 {

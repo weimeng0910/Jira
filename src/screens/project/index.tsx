@@ -22,6 +22,7 @@ export const ProjectScreen = () => (
                 element={
                     <Navigate
                         to={`${window.location.pathname}/displayBoard`}
+                        //不会出现无限循环，会回退到需要的页['projects','projects/6',window.location.pathname}+'displayBoardš]
                         replace
                     />
                 }

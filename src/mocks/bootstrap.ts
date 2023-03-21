@@ -5,7 +5,7 @@
  * 初始化数据
  */
 import * as initalData from './initialData';
-import { epicDB, kanbanDB, projectDB, tagDB, taskDB, taskTypeDB, userDB } from '../config';
+import { epicDB, displayBoardDB, projectDB, tagDB, taskDB, taskTypeDB, userDB } from '../config';
 
 /**
  * 初始化数据
@@ -22,7 +22,7 @@ export const bootstrap = () => {
   store(projectDB, initalData.projects);
   store(userDB, initalData.users);
   store(epicDB, initalData.epics);
-  store(kanbanDB, initalData.kanbans);
+  store(displayBoardDB, initalData.kanbans);
   store(tagDB, initalData.tags);
   store(taskDB, initalData.tasks);
   store(taskTypeDB, initalData.taskTypes);

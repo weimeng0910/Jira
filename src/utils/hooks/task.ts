@@ -1,8 +1,8 @@
 /**
  * @author meng
  * @version 1.0
- * @date 2023/03/14
- * @file 获取看板数据的自定义hook
+ * @date 2023/03/20
+ * @file 获取task数据的自定义hook
  */
 import { useQuery } from 'react-query';
 
@@ -10,19 +10,19 @@ import { useQuery } from 'react-query';
 
 import { http } from '@/api/http';
 //导入类型
-import { DisplayBoard } from '@/types/displayBoard';
+import { Task } from '@/types/task';
 
 /**
 * @function
 * 通过useQuery获取isplayBoard数据
 */
 
-export const useDisplayBoard = (param?: Partial<DisplayBoard>) =>
+export const useTask = (param?: Partial<Task>) =>
 
-  useQuery<DisplayBoard[]>(['displayBoards', param], () =>
+  useQuery<Task[]>(['task', param], () =>
 
     http({
-      url: 'displayBoards',
+      url: `task/${param}`,
       data: param,
       method: 'get'
     })

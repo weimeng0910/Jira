@@ -184,7 +184,6 @@ export const useProject = (id?: number) => {
 
     http({
       url: `project/${id}`,
-      //data:,
       method: 'get'
     }),
     {

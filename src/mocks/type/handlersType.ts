@@ -8,11 +8,6 @@ export interface RequestBody {
   username: string;
   password: string;
 }
-//Request parameters
-export interface PostRequestParams {
-  name: string,
-  personId: string,
-}
 export interface User {
   id: string,
   username: string,
@@ -34,4 +29,9 @@ export interface UserData {
   id: number | string,
   name: string,
 
+}
+export interface DisplayBoard {
+  id: number;
+  name: string;
+  projectId: number;
 }

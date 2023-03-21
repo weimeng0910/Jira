@@ -13,10 +13,10 @@ import { jwtDecodeGetId } from './core/util';
 // 引入处理数据的文件
 import * as db from './db';
 // 导入开发URL
-import { API_URL, projectDB, userDB } from '../config';
+import { API_URL, projectDB, userDB, displayBoardDB } from '../config';
 // 导入数据
 import { bootstrap } from './bootstrap';
-import { ResponseError, RequestBody, PostRequestParams, Project } from './type/handlersType';
+import { ResponseError, RequestBody, Project, DisplayBoard } from './type/handlersType';
 
 
 /**
@@ -25,7 +25,8 @@ import { ResponseError, RequestBody, PostRequestParams, Project } from './type/h
 
 bootstrap();
 
-/**
+/****************************************************
+ *  用户数据处理
  *  @function getToken
  *  @param req
  *  @description 获得用户携带存在localstorega中的token
@@ -81,7 +82,7 @@ export const handlers = [
    * @todo 注册
    * @returns data
    */
-  rest.post<RequestBody, PostRequestParams>(`${API_URL}/register`, async (req, res, ctx) => {
+  rest.post<RequestBody>(`${API_URL}/register`, async (req, res, ctx) => {
 
     // 获取到url 中的参数
     // await Promise.then 成功的情况，对应await
@@ -115,7 +116,7 @@ export const handlers = [
   /**
    * @todo 登陆
    */
-  rest.post<RequestBody, PostRequestParams>(`${API_URL}/login`, async (req, res, ctx) => {
+  rest.post<RequestBody>(`${API_URL}/login`, async (req, res, ctx) => {
 
 
     const body = await req.json() as RequestBody;
@@ -163,21 +164,15 @@ export const handlers = [
 
   }),
 
-  /**
-   * 响应各种项目数据请求
-   *
-   *
-   * @todo 响应get请求获得项目数据
-   */
+  /****************************************************
+    * 响应各种project项目数据请求
+    * @todo 响应get请求获得项目数据
+    */
 
-  rest.get<PostRequestParams>(`${API_URL}/projects`, async (req, res, ctx) => {
+  rest.get<Partial<Project>>(`${API_URL}/projects`, async (req, res, ctx) => {
 
     // 获得前瑞发送的参数
-
-
     const personId: string = req.url.searchParams.get('personId')!;
-
-
     const name: string = req.url.searchParams.get('name')!;
 
     //组装数据
@@ -240,7 +235,8 @@ export const handlers = [
   * @todo 响应put请求
   */
 
-  rest.put<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
+  rest.put<Partial<Project>>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
+
     // 获得前瑞发送的参数
     const { id } = req.params;
 
@@ -262,45 +258,49 @@ export const handlers = [
   * @todo 响应delete请求
   */
 
-  rest.delete<RequestBody>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
+  rest.delete<Partial<Project>>(`${API_URL}/projects/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
-
-    if (id) {
-      console.log(id, 'dele001');
-
-    }
-
     const projectData = await db.projectDetele(projectDB, id as string);
-
-
     return res(
       //延迟
       //ctx.delay(1000 * 60),
       ctx.json({ projectData })
     );
-
-
   }),
   /**
    * @todo 根据id请求project
    */
 
-  rest.get<RequestBody>(`${API_URL}/project/:id`, async (req, res, ctx) => {
+  rest.get<Partial<Project>>(`${API_URL}/project/:id`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const { id } = req.params;
-
-    //console.log(id, '001');
-
     const projectData = await db.ScreensProjectData(projectDB, id as string);
-
-
     return res(
       //延迟
       //ctx.delay(1000 * 60),
       ctx.json(projectData)
     );
+  }),
 
+  /****************************************************
+   * 响应各种displayBoard项目数据请求
+   * @todo 响应get请求获得项目数据
+   */
+  rest.get<DisplayBoard>(`${API_URL}/displayBoards`, async (_req, res, ctx) => {
+
+    //调用写入数据的函数
+    //const projectData = [{ name: '待完成' }, { name: '开发中' }, { name: '完成' }];
+    const projectData = await db.ScreensDisplayBoards(displayBoardDB);
+    if (projectData) {
+      return res(
+        //延迟两秒返回数据
+        //ctx.delay(6000),
+        ctx.status(200),
+        ctx.json(projectData)
+      );
+    }
+    return res(ctx.status(500));
 
   }),
 ];

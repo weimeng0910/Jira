@@ -10,7 +10,7 @@ import CryptoJS from 'crypto-js';// 加密
 import { localStorageKey } from '../config';// 定义写入localStorageKey
 // 导入生成token的函数
 import { generteToken } from './core/util';
-import { ResponseError, RequestBody, User, Project } from './type/handlersType';
+import { ResponseError, RequestBody, User, Project, DisplayBoard } from './type/handlersType';
 
 
 type Users = User[];
@@ -82,7 +82,6 @@ async function saveUser(user: User) {
   saveUsers(users);
 }
 
-
 /**
  *  @function validateUser
  *  @param params
@@ -103,8 +102,6 @@ const validateUser = (params: RequestBody) => {
     throw error;
   }
 };
-
-
 
 /**
  *  @function hashcode
@@ -239,7 +236,7 @@ async function ScreensProjectsData(storageKey: string, query: { personId: string
     const result = projectsData.filter((item: Project) => item.name.includes(query.name!));
     result.map((item: Project) => projectList.push(item));
   }
-  /**
+  /*
    * 得到的数据去重
    */
 
@@ -347,7 +344,20 @@ async function ScreensProjectData(storageKey: string, id: string) {
   return project;
 
 }
+/**
+ *  @function ScreensProjectData
+ *  @param storageKey
+ *  @description 加载查找到的项目数据
+ */
 
+async function ScreensDisplayBoards(storageKey: string) {
+
+  // 加载localStorage里的项目数据
+  const data: DisplayBoard[] = loadScreensData(storageKey);
+
+  return data;
+
+}
 // 导出注册方法createUser，登陆方法authenticate
 export {
   createUser,
@@ -358,5 +368,6 @@ export {
   projectsUpdata,
   ScreensProjectData,
   addProjectsData,
-  projectDetele
+  projectDetele,
+  ScreensDisplayBoards
 };
