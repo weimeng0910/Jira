@@ -1,3 +1,4 @@
+import { useTasksSearchParams } from '@/screens/displayBoard/util';
 import { DisplayBoard } from '@/types/displayBoard';
 import { useTasks } from '@/utils/hooks/task';
 
@@ -9,9 +10,8 @@ import { useTasks } from '@/utils/hooks/task';
  */
 
 export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
-    const { data: allTasks } = useTasks();
+    const { data: allTasks } = useTasks(useTasksSearchParams());
     const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
-    console.log(tasks, '003');
 
     return (
         <div>

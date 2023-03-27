@@ -24,3 +24,10 @@ var pathname='www.google.com/projects/123';pathname.match(/projects\/(\d+)/)
 * 输出
 (2)['projects/123', '123', index: 15, input: 'www.google.com/projects/123', groups: undefined]
 */
+//获取url中的Id
+export const useDisplayBoardSearchParams = () => ({ projectId: useProjectIdInUrl() });
+//设置querykey
+export const useDisplayBoardQueryKey = () => ['displayBoard', useDisplayBoardSearchParams()];
+//
+export const useTasksSearchParams = () => ({ projectId: useProjectIdInUrl() });
+export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()];
