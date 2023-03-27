@@ -1,52 +1,79 @@
 export const taskTypes = [
   {
+    id: 1,
     name: 'task',
+    ownerId: 2_087_627_972
   },
   {
+    id: 2,
     name: 'bug',
+    ownerId: 2_087_627_972
   },
 ];
 
 export const tags = [
   {
+    id: 1,
     name: '初始',
+    ownerId: 2_087_627_972
   },
   {
+    id: 2,
     name: '中期',
+    ownerId: 2_087_627_972
   },
   {
+    id: 3,
     name: '结项',
+    ownerId: 2_087_627_972
   },
 ];
 
 export const epics = [
   {
+    id: 1,
     name: '骑手物料表单开发',
     start: new Date('2020-12-10').getTime(),
     end: new Date('2021-01-11').getTime(),
+    projectId: 1,
+
   },
   {
+    id: 2,
     name: '骑手地图开发',
     start: new Date('2021-01-12').getTime(),
     end: new Date('2021-02-14').getTime(),
+    projectId: 1,
   },
   {
+    id: 3,
     name: '骑手地图开发',
     start: new Date('2021-01-12').getTime(),
     end: new Date('2021-02-14').getTime(),
+    projectId: 1,
   },
 ];
 
 export const kanbans = [
   {
+    id: 1,
     name: '待完成',
+    ownerId: 2_087_627_972,
+    projectId: 1
   },
   {
+    id: 2,
     name: '开发中',
+    ownerId: 2_087_627_972,
+    projectId: 2
   },
   {
+    id: 3,
     name: '已完成',
+    ownerId: 2_087_627_972,
+    projectId: 3
   },
+
 ];
 
 export const users = [
@@ -125,80 +152,101 @@ export const projects = [
 
 export const tasks = [
   {
+    id: 1,
     name: '管理注册界面开发',
     tags: [1, 2],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 2,
     favorite: true,
     typeId: 1,
     note: '请尽快完成',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 2,
     name: '管理登录界面开发',
     tags: [2],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 1,
     favorite: true,
     typeId: 1,
     note: '请使用JWT完成',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 3,
     name: '单元测试',
     tags: [1],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 2,
     favorite: true,
     typeId: 1,
     note: '',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 4,
     name: '性能优化',
     tags: [1],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 3,
     favorite: true,
     typeId: 1,
     note: '',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 5,
     name: '权限管理界面开发',
     tags: [1],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 3,
     favorite: true,
     typeId: 1,
     note: '',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 6,
     name: 'UI开发',
     tags: [1],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 3,
     favorite: true,
     typeId: 1,
     note: '',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
   {
+    id: 7,
     name: '自测',
     tags: [1],
     reporterId: 1,
     processorId: 2,
     epicId: 1,
-    kanbanId: 1,
+    displayBoardId: 1,
     favorite: true,
     typeId: 1,
     note: '',
+    ownerId: 2_087_627_972,
+    projectId: 1,
   },
 ];

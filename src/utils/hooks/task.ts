@@ -17,12 +17,12 @@ import { Task } from '@/types/task';
 * 通过useQuery获取isplayBoard数据
 */
 
-export const useTask = (param?: Partial<Task>) =>
+export const useTasks = (param?: Partial<Task>) =>
 
-  useQuery<Task[]>(['task', param], () =>
+  useQuery<Task[]>(['tasks', param], () =>
 
     http({
-      url: `task/${param}`,
+      url: 'tasks',
       data: param,
       method: 'get'
     })

@@ -13,7 +13,7 @@ import { jwtDecodeGetId } from './core/util';
 // 引入处理数据的文件
 import * as db from './db';
 // 导入开发URL
-import { API_URL, projectDB, userDB, displayBoardDB } from '../config';
+import { API_URL, projectDB, userDB, displayBoardDB, taskDB } from '../config';
 // 导入数据
 import { bootstrap } from './bootstrap';
 import { ResponseError, RequestBody, Project, DisplayBoard } from './type/handlersType';
@@ -298,6 +298,25 @@ export const handlers = [
         //ctx.delay(6000),
         ctx.status(200),
         ctx.json(projectData)
+      );
+    }
+    return res(ctx.status(500));
+
+  }),
+  /****************************************************
+ * 响应各种tasks数据请求
+ * @todo 响应get请求获得项目数据
+ */
+  rest.get<DisplayBoard>(`${API_URL}/tasks`, async (_req, res, ctx) => {
+
+    //调用写入数据的函数
+    const tasksAllData = await db.ScreensDisplayBoards(taskDB);
+    if (tasksAllData) {
+      return res(
+        //延迟两秒返回数据
+        //ctx.delay(6000),
+        ctx.status(200),
+        ctx.json(tasksAllData)
       );
     }
     return res(ctx.status(500));

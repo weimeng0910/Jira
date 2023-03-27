@@ -10,7 +10,7 @@ import CryptoJS from 'crypto-js';// 加密
 import { localStorageKey } from '../config';// 定义写入localStorageKey
 // 导入生成token的函数
 import { generteToken } from './core/util';
-import { ResponseError, RequestBody, User, Project, DisplayBoard } from './type/handlersType';
+import { ResponseError, RequestBody, User, Project, DisplayBoard, Task } from './type/handlersType';
 
 
 type Users = User[];
@@ -358,6 +358,20 @@ async function ScreensDisplayBoards(storageKey: string) {
   return data;
 
 }
+/**
+ *  @function ScreensTasks
+ *  @param storageKey
+ *  @description 加载查找到的项目数据
+ */
+
+async function ScreensTasks(storageKey: string) {
+
+  // 加载localStorage里的项目数据
+  const data: Task[] = loadScreensData(storageKey);
+
+  return data;
+
+}
 // 导出注册方法createUser，登陆方法authenticate
 export {
   createUser,
@@ -369,5 +383,6 @@ export {
   ScreensProjectData,
   addProjectsData,
   projectDetele,
-  ScreensDisplayBoards
+  ScreensDisplayBoards,
+  ScreensTasks
 };

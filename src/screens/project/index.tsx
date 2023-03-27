@@ -5,7 +5,7 @@
  */
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
 
-import { DisplayBoardScreen } from '../diplayBoard';
+import { DisplayBoardScreen } from '../displayBoard';
 import { EpicScreen } from '../epic';
 
 // 用来作为 404 页面的组件

@@ -1,5 +1,6 @@
-import { nanoid } from 'nanoid';
+import styled from '@emotion/styled';
 
+import { DisplayBoardColumn } from './displayBoardColumn';
 import { useProjectInUrl } from './util';
 import { useDisplayBoard } from '@/utils/hooks/displayBoard';
 import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
@@ -10,18 +11,30 @@ import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
  * * @date 2022/03/20
  * @file DisplayBoar看板页面
  */
+//样式
+const ColumnsContainer = styled.div`
+    display: flex;
+    overflow: hidden;
+    margin-right: 4rem;
+`;
 export const DisplayBoardScreen = () => {
     useDocumentTitle('看板列表');
+    //通过ID来获取相应的project
     const { data: currentProject } = useProjectInUrl();
+    //获得所有看板列表
     const { data: displayBoards } = useDisplayBoard();
 
     return (
         <div>
             <h1>{currentProject?.name}display</h1>
-
-            {displayBoards?.map(board => (
-                <div key={nanoid()}>{board.name}</div>
-            ))}
+            <ColumnsContainer>
+                {displayBoards?.map(board => (
+                    <DisplayBoardColumn
+                        displayBoard={board}
+                        key={board.id}
+                    />
+                ))}
+            </ColumnsContainer>
         </div>
     );
 };
