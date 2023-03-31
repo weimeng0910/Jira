@@ -13,7 +13,7 @@ import { jwtDecodeGetId } from './core/util';
 // 引入处理数据的文件
 import * as db from './db';
 // 导入开发URL
-import { API_URL, projectDB, userDB, displayBoardDB, taskDB } from '../config';
+import { API_URL, projectDB, userDB, displayBoardDB, taskDB, taskTypeDB } from '../config';
 // 导入数据
 import { bootstrap } from './bootstrap';
 import { ResponseError, RequestBody, Project, DisplayBoard } from './type/handlersType';
@@ -285,6 +285,7 @@ export const handlers = [
 
   /****************************************************
    * 响应各种displayBoard项目数据请求
+   *  displayBoard项目数据请求
    * @todo 响应get请求获得项目数据
    */
   rest.get<DisplayBoard>(`${API_URL}/displayBoards`, async (_req, res, ctx) => {
@@ -303,10 +304,10 @@ export const handlers = [
     return res(ctx.status(500));
 
   }),
-  /****************************************************
- * 响应各种tasks数据请求
- * @todo 响应get请求获得项目数据
- */
+  /*
+   * 响应各种tasks数据请求
+   * @todo 响应get请求获得项目数据
+  */
   rest.get<DisplayBoard>(`${API_URL}/tasks`, async (_req, res, ctx) => {
 
     //调用写入数据的函数
@@ -317,6 +318,25 @@ export const handlers = [
         //ctx.delay(6000),
         ctx.status(200),
         ctx.json(tasksAllData)
+      );
+    }
+    return res(ctx.status(500));
+
+  }),
+  /*
+  * 响应各种taskType数据请求
+  * @todo 响应get请求获得项目数据
+  */
+  rest.get<DisplayBoard>(`${API_URL}/taskTypes`, async (_req, res, ctx) => {
+
+    //调用写入数据的函数
+    const taskTypeAllData = await db.ScreensTaskTypes(taskTypeDB);
+    if (taskTypeAllData) {
+      return res(
+        //延迟两秒返回数据
+        //ctx.delay(6000),
+        ctx.status(200),
+        ctx.json(taskTypeAllData)
       );
     }
     return res(ctx.status(500));

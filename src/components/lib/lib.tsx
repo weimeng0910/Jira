@@ -12,14 +12,14 @@ import { Spin, Typography, Button } from 'antd';
 export const Row = styled.div<{
     gap?: number | boolean; //定义props中携带的属性
     between?: boolean;
-    marginBottonm?: number;
+    marginBottom?: number;
 }>`
     display: flex;
     /* 为了使我们的盒子居中，通过align-items属性，可以将交叉轴上的 item 对齐 */
     align-items: center;
     //props的between属性要在传入的泛型中定义类型
     justify-content: ${props => (props.between ? 'space-between' : undefined)};
-    margin-bottom: ${props => `${props.marginBottonm}rem`};
+    margin-bottom: ${props => `${props.marginBottom}rem`};
     /* 子元素的 margin-top bottom 会影响垂直居中，所以下面设置 优先级*/
     > * {
         margin-top: 0 !important;

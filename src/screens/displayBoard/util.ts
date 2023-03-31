@@ -1,6 +1,8 @@
+import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 
 import { useProject } from '@/utils/hooks/project';
+import { useUrlQueryParam } from '@/utils/hooks/useUrlQueryParam';
 
 /**
  * @author meng
@@ -29,5 +31,24 @@ export const useDisplayBoardSearchParams = () => ({ projectId: useProjectIdInUrl
 //设置querykey
 export const useDisplayBoardQueryKey = () => ['displayBoard', useDisplayBoardSearchParams()];
 //
-export const useTasksSearchParams = () => ({ projectId: useProjectIdInUrl() });
+export const useTasksSearchParams = () => {
+  const [param] = useUrlQueryParam([
+    'name',
+    'typeId',
+    'processorId',
+    'tagId'
+  ]);
+  const projectId = useProjectIdInUrl();
+  return useMemo(
+    () => ({
+      projectId,
+      typeId: Number(param.typeId) || undefined,
+      processorId: Number(param.processorId) || undefined,
+      tagId: Number(param.tagId) || undefined,
+      name: param.name,
+    }),
+    [projectId, param]
+  );
+
+};
 export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()];

@@ -15,8 +15,6 @@ import { http } from '@/api/http';
 import { Project } from '@/types/Project';
 // eslint-disable-next-line import/no-cycle
 import { useProjectSearchParam } from '@/screens/project-list/util';
-
-//import { cleanObject } from '@/utils/cleanObject';
 /**
 * @function
 * 通过useQuery获取project数据

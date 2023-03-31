@@ -53,3 +53,8 @@ export interface Task {
   tags: number;
 
 }
+export interface TaskType {
+  id: number;
+  name: string;
+  ownerId: number;
+}

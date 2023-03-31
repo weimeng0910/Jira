@@ -32,9 +32,10 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     (params: Partial<{ [key in K]: unknown }>) => {
 
       const o = cleanObject({
+        //Object.fromEntries() 方法把键值对列表转换为一个对象
         ...Object.fromEntries(searchParams),
         ...params,
-      }) as URLSearchParamsInit;
+      }) as URLSearchParamsInit;//默认的 URLSearchParams类型的对象
 
       return setSearchParams(o);
     }
