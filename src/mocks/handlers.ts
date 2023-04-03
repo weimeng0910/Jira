@@ -308,10 +308,18 @@ export const handlers = [
    * 响应各种tasks数据请求
    * @todo 响应get请求获得项目数据
   */
-  rest.get<DisplayBoard>(`${API_URL}/tasks`, async (_req, res, ctx) => {
-
+  rest.get<DisplayBoard>(`${API_URL}/tasks`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const typeId: string = req.url.searchParams.get('typeId')!;
+    console.log(typeId, 'task参数');
+    const name: string = req.url.searchParams.get('name')!;
+    console.log(name, '任务参数');
+    const processorId: string = req.url.searchParams.get('processorId')!;
+    console.log(processorId, '经办人');
+    //组装数据
+    const query = { typeId, name, processorId };
     //调用写入数据的函数
-    const tasksAllData = await db.ScreensDisplayBoards(taskDB);
+    const tasksAllData = await db.ScreensTasks(taskDB, query);
     if (tasksAllData) {
       return res(
         //延迟两秒返回数据

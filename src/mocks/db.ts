@@ -209,25 +209,13 @@ const loadScreensData = (storageKey: string) => {
  *  @param storageKey
  *  @description 根据传入参数响应数据
  */
-//去重函数抽像
-//function ArrayDeduplication<T>(arr: T[], uniId: number): T[] {
-
-//  const hash: { [key: string]: boolean; } = {};
-//  return arr.reduce((accum: T[], item) => {
-//    if (!hash[item[uniId]]) {
-//      accum.push(item);
-//      hash[item[uniId]] = false;
-//    }
-//    return accum;
-//  }, []);
-//}
 
 async function ScreensProjectsData(storageKey: string, query: { personId: string, name: string }) {
   // 加载localStorage里的项目数据
   const projectsData = loadScreensData(storageKey);
   //定义一个空数组
   const projectList: Project[] = [];
-  //localStorage是string|null,personId传入的是strin，所以只需要if(personId)
+  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
   if (query.personId) {
     const result = projectsData.filter((item: Project) => item.personId === Number(query.personId!));
     result.map((item: Project) => projectList.push(item));
@@ -273,7 +261,7 @@ async function projectsUpdata(storageKey: string, id: string, updates: Partial<P
     projectsData[projectsData.indexOf(project)] = { ...project, ...updates };
 
   } else {
-    console.log(updates, 'push');
+    //console.log(updates, 'push');
     const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10))!;
     //改变pin的boolean
     project.pin = !project.pin;
@@ -345,9 +333,9 @@ async function ScreensProjectData(storageKey: string, id: string) {
 
 }
 /**
- *  @function ScreensProjectData
+ *  @function ScreensDisplayBoards
  *  @param storageKey
- *  @description 加载查找到的项目数据
+ *  @description 加载查找到的看板数据
  */
 
 async function ScreensDisplayBoards(storageKey: string) {
@@ -361,21 +349,48 @@ async function ScreensDisplayBoards(storageKey: string) {
 /**
  *  @function ScreensTasks
  *  @param storageKey
- *  @description 加载查找到的项目数据
+ *  @description 加载查找到的task数据
  */
 
-async function ScreensTasks(storageKey: string) {
+async function ScreensTasks(storageKey: string, query: { typeId: string, name: string, processorId: string }) {
 
   // 加载localStorage里的项目数据
   const data: Task[] = loadScreensData(storageKey);
+  //定义一个空数组
+  const tasksList: Task[] = [];
+  //根据tasktyp
+  if (query.typeId) {
+    const result = data.filter((item) => item.typeId === Number(query.typeId!));
+    result.map((item: Task) => tasksList.push(item));
+  } if (query.name) {
+    const result = data.filter((item: Task) => item.name.includes(query.name!));
+    result.map((item: Task) => tasksList.push(item));
+  } if (query.processorId) {
+    const result = data.filter((item) => item.processorId === Number(query.processorId!));
+    result.map((item: Task) => tasksList.push(item));
+  }
+  /*
+   * 得到的数据去重
+   */
 
-  return data;
+  //const list = ArrayDeduplication(projectList, Number(query.personId!));
+  const obj: { [key: string]: boolean; } = {};//定义一个空对象
+  //通过reduce来给数组去重
+  const list = tasksList.reduce<Task[]>((item, next) => {
+    if (!obj[next.id]) {
+      item.push(next);
+      obj[next.id] = true;
+    }
+    return item;
+  }, []);
+  return list.length > 0 ? list : data;
+
 
 }
 /**
- *  @function ScreensTasks
+ *  @function ScreensTaskTypes
  *  @param storageKey
- *  @description 加载查找到的项目数据
+ *  @description 加载查找到的TaskTypes数据
  */
 
 async function ScreensTaskTypes(storageKey: string) {
