@@ -29,8 +29,8 @@ var pathname='www.google.com/projects/123';pathname.match(/projects\/(\d+)/)
 //获取url中的Id
 export const useDisplayBoardSearchParams = () => ({ projectId: useProjectIdInUrl() });
 //设置querykey
-export const useDisplayBoardQueryKey = () => ['displayBoard', useDisplayBoardSearchParams()];
-//
+export const useDisplayBoardQueryKey = () => ['displayBoards', useDisplayBoardSearchParams()];
+
 export const useTasksSearchParams = () => {
   //name用来搜索任务名称，typeId用来搜索task类型，processorId用来搜索负责人，tagId用来搜素
   const [param] = useUrlQueryParam([

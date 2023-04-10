@@ -347,6 +347,21 @@ async function ScreensDisplayBoards(storageKey: string) {
 
 }
 /**
+ *  @function addDisplayBoards
+ *  @param storageKey
+ *  @description 加载查找到的看板数据
+ */
+
+async function addDisplayBoardData(storageKey: string, displayBoard: DisplayBoard) {
+
+  // 加载localStorage里的项目数据
+  const displayBoardData: DisplayBoard[] = loadScreensData(storageKey);
+  const displayBoardList = [...displayBoardData, displayBoard];
+
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(displayBoardList));
+}
+/**
  *  @function ScreensTasks
  *  @param storageKey
  *  @description 加载查找到的task数据
@@ -413,6 +428,7 @@ export {
   addProjectsData,
   projectDetele,
   ScreensDisplayBoards,
+  addDisplayBoardData,
   ScreensTasks,
   ScreensTaskTypes
 };

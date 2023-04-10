@@ -153,7 +153,7 @@ export const handlers = [
    */
 
   rest.get<RequestBody>(`${API_URL}/me`, async (req, res, ctx) => {
-    const user = await getUser(req);
+    const user = await getUser(req)!;
     const token = getToken(req);
     return res(
       //延迟
@@ -200,7 +200,6 @@ export const handlers = [
     // 获得前瑞发送的参数,
 
     const body = await req.json();
-
 
     const addProject = qs.parse(body);
     //const { name, organization, personId } = addProject;
@@ -302,6 +301,45 @@ export const handlers = [
       );
     }
     return res(ctx.status(500));
+
+  }),
+  /**
+   * @todo 响应post请求增加displayBoard项目数据
+   */
+
+  rest.post<Partial<DisplayBoard>>(`${API_URL}/displayBoards`, async (req, res, ctx) => {
+
+    // 获得前瑞发送的参数,
+    //Request 接口的 json() 方法读取请求体并将其作为一个 promise 返回一个对象
+    const body = await req.json();
+    //console.log(body, '002');
+
+    //通过qs.parse方法把url中的参数（name=sdf&projectId=1 002）解析成对象
+    const addDisplayBoard = qs.parse(body);
+
+    //类型守卫
+    const name: string = typeof addDisplayBoard.name === 'string' ? addDisplayBoard.name : '';
+
+    const projectId: string = typeof addDisplayBoard.projectId === 'string' ? addDisplayBoard.projectId : '';
+
+    console.log(projectId, '003');
+
+    const nanoid = customAlphabet('1234567890', 10);
+    //组装数据
+    const addDisplayBoardItem = { ownerId: Date.now(), id: Number(nanoid()), name, projectId: Number(projectId) };
+
+    //调用写入数据的函数
+    const displayBoardtData = await db.addDisplayBoardData(displayBoardDB, addDisplayBoardItem);
+
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+
+      ctx.json({ displayBoardtData })
+
+    );
+
+
 
   }),
   /*

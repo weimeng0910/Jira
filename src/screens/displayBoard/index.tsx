@@ -1,9 +1,13 @@
 import styled from '@emotion/styled';
+import { Spin } from 'antd';
 
+import { CreateDisplayBoard } from './createDisplayBoard';
 import { DisplayBoardColumn } from './displayBoardColumn';
 import { SearchPanel } from './searchPanel';
-import { useProjectInUrl } from './util';
+import { useDisplayBoardSearchParams, useProjectInUrl, useTasksSearchParams } from './util';
+import { ScreenContainer } from '@/components/lib/lib';
 import { useDisplayBoard } from '@/utils/hooks/displayBoard';
+import { useTasks } from '@/utils/hooks/task';
 import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 
 /**
@@ -23,20 +27,30 @@ export const DisplayBoardScreen = () => {
     //通过ID来获取相应的project
     const { data: currentProject } = useProjectInUrl();
     //获得所有看板列表
-    const { data: displayBoards } = useDisplayBoard();
+    const { data: displayBoards, isLoading: displayBoardLoding } = useDisplayBoard(
+        useDisplayBoardSearchParams()
+    );
+    const { isLoading: tasksLoading } = useTasks(useTasksSearchParams());
+
+    const isLoading = tasksLoading || displayBoardLoding;
 
     return (
-        <div>
+        <ScreenContainer>
             <h1>{currentProject?.name}display</h1>
             <SearchPanel />
-            <ColumnsContainer>
-                {displayBoards?.map(board => (
-                    <DisplayBoardColumn
-                        displayBoard={board}
-                        key={board.id}
-                    />
-                ))}
-            </ColumnsContainer>
-        </div>
+            {isLoading ? (
+                <Spin size='large' />
+            ) : (
+                <ColumnsContainer>
+                    {displayBoards?.map(board => (
+                        <DisplayBoardColumn
+                            displayBoard={board}
+                            key={board.id}
+                        />
+                    ))}
+                    <CreateDisplayBoard />
+                </ColumnsContainer>
+            )}
+        </ScreenContainer>
     );
 };
