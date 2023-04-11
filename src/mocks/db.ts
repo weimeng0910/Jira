@@ -403,6 +403,23 @@ async function ScreensTasks(storageKey: string, query: { typeId: string, name: s
 
 }
 /**
+ *  @function addTask
+ *  @param storageKey
+ *  @description 加载查找到的看板数据
+ */
+
+async function addTaskData(storageKey: string, task: Partial<Task>) {
+  console.log(task, 'db001');
+
+  // 加载localStorage里的项目数据
+  const taskData: Task[] = loadScreensData(storageKey);
+  const tasksList = [...taskData, task];
+
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(tasksList));
+}
+
+/**
  *  @function ScreensTaskTypes
  *  @param storageKey
  *  @description 加载查找到的TaskTypes数据
@@ -430,5 +447,6 @@ export {
   ScreensDisplayBoards,
   addDisplayBoardData,
   ScreensTasks,
+  addTaskData,
   ScreensTaskTypes
 };

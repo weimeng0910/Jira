@@ -19,8 +19,8 @@ import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 //样式
 const ColumnsContainer = styled.div`
     display: flex;
-    overflow: hidden;
-    margin-right: 4rem;
+    overflow-x: scroll;
+    flex: 1;
 `;
 export const DisplayBoardScreen = () => {
     useDocumentTitle('看板列表');

@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Card } from 'antd';
 
+import { CreateTask } from './createTask';
 import bugIcon from '@/assets/bug.svg';
 import taskIcon from '@/assets/task.svg';
 import { useTasksSearchParams } from '@/screens/displayBoard/util';
@@ -66,6 +67,7 @@ export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoar
                         <TaskTypeIcon id={task.typeId} />
                     </Card>
                 ))}
+                <CreateTask displayBoardId={displayBoard.id} />
             </TasksContainer>
         </Container>
     );

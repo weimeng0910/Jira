@@ -16,7 +16,7 @@ import * as db from './db';
 import { API_URL, projectDB, userDB, displayBoardDB, taskDB, taskTypeDB } from '../config';
 // 导入数据
 import { bootstrap } from './bootstrap';
-import { ResponseError, RequestBody, Project, DisplayBoard } from './type/handlersType';
+import { ResponseError, RequestBody, Project, DisplayBoard, Task } from './type/handlersType';
 
 
 /**
@@ -322,8 +322,6 @@ export const handlers = [
 
     const projectId: string = typeof addDisplayBoard.projectId === 'string' ? addDisplayBoard.projectId : '';
 
-    console.log(projectId, '003');
-
     const nanoid = customAlphabet('1234567890', 10);
     //组装数据
     const addDisplayBoardItem = { ownerId: Date.now(), id: Number(nanoid()), name, projectId: Number(projectId) };
@@ -346,14 +344,14 @@ export const handlers = [
    * 响应各种tasks数据请求
    * @todo 响应get请求获得项目数据
   */
-  rest.get<DisplayBoard>(`${API_URL}/tasks`, async (req, res, ctx) => {
+  rest.get<Task>(`${API_URL}/tasks`, async (req, res, ctx) => {
     // 获得前瑞发送的参数
     const typeId: string = req.url.searchParams.get('typeId')!;
-    console.log(typeId, 'task参数');
+
     const name: string = req.url.searchParams.get('name')!;
-    console.log(name, '任务参数');
+
     const processorId: string = req.url.searchParams.get('processorId')!;
-    console.log(processorId, '经办人');
+
     //组装数据
     const query = { typeId, name, processorId };
     //调用写入数据的函数
@@ -367,6 +365,57 @@ export const handlers = [
       );
     }
     return res(ctx.status(500));
+
+  }),
+  /**
+ * @todo 响应post请求增加tasks数据
+ */
+
+  rest.post<Partial<Task>>(`${API_URL}/tasks`, async (req, res, ctx) => {
+
+    // 获得前瑞发送的参数,
+    //Request 接口的 json() 方法读取请求体并将其作为一个 promise 返回一个对象
+    const body = await req.json();
+    console.log(body, '002');
+
+    //通过qs.parse方法把url中的参数（name=sdf&projectId=1 002）解析成对象
+    const addTask = qs.parse(body);
+
+    //类型守卫
+    const name: string = typeof addTask.name === 'string' ? addTask.name : '';
+
+    const projectId: string = typeof addTask.projectId === 'string' ? addTask.projectId : '';
+
+    const displayBoardId: string = typeof addTask.displayBoardId === 'string' ? addTask.displayBoardId : '';
+
+
+
+    const nanoid = customAlphabet('1234567890', 10);
+
+    //组装数据
+
+    const addTaskItem = {
+      ownerId: Date.now(),
+      id: Number(nanoid()),
+      name,
+      projectId: Number(projectId),
+      displayBoardId: Number(displayBoardId),
+      typeId: 1
+    };
+
+    //调用写入数据的函数
+    // eslint-disable-next-line import/namespace
+    const tasktData = await db.addTaskData(taskDB, addTaskItem);
+
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+
+      ctx.json({ tasktData })
+
+    );
+
+
 
   }),
   /*

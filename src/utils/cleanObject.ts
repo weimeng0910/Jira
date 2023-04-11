@@ -44,11 +44,13 @@ export const cleanObject = (object: object) => {
 //  });
 //  return result;
 //};
+
 /**
  * 传入一个对象，和键集合，返回对应的对象中的键值对
  * @param obj
  * @param keys
  */
+
 export const subset = <
   O extends { [key in string]: unknown },
   K extends keyof O
