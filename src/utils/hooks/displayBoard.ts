@@ -77,3 +77,46 @@ export const useAddDisplayBoard = (queryKey: QueryKey) => {
   );
 
 };
+/**
+* @function
+*  useDeleteDisplayBoard通过useQuery删除isplayBoard数据
+*/
+export const useDeleteDisplayBoard = (queryKey: QueryKey) => {
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+
+    ({ id }: { id: number }) =>
+
+      http({
+        url: `displayBoards/${id}`,
+        method: 'delete'
+      }),
+
+    {
+      async onMutate(target) {
+
+        //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
+        await queryClient.cancelQueries(queryKey);
+        //query缓存中的数据
+        const previousItems = queryClient.getQueryData(queryKey);
+        //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
+        queryClient.setQueryData(queryKey, (old?: any[]) => (old?.filter((item) => item.id !== target.id) || []));
+        // 返回具有快照值的上下文对象
+        return { previousItems };
+      },
+      //出现错误后回滚
+      onError(_error: Error, _newItem, context) {
+        queryClient.setQueryData(queryKey, (context as { previousItems: DisplayBoard[] }).previousItems);
+      },
+      // 总是在错误或成功后重新获取
+      onSettled: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
+    }
+  );
+
+  return mutation;
+
+};

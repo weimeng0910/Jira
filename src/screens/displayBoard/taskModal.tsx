@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useTasksModal, useTasksQueryKey } from './util';
 import { TaskTypeSelect } from '@/components/taskTypeSelect';
 import { UserSelect } from '@/components/userSelect/user-select';
-import { useEditTask } from '@/utils/hooks/task';
+import { useDeleteTask, useEditTask } from '@/utils/hooks/task';
 
 /**
  * @author meng
@@ -24,6 +24,8 @@ export const TaskModal = () => {
     const { editingTaskId, editingTask, close } = useTasksModal();
     //获取编辑task的数据
     const { mutateAsync: editTask, isLoading: editLoading } = useEditTask(useTasksQueryKey());
+    //获取删除task的方法
+    const { mutateAsync: deleteTask } = useDeleteTask(useTasksQueryKey());
     //关闭modal
     const onCancel = () => {
         //关闭窗口
@@ -38,10 +40,23 @@ export const TaskModal = () => {
         //关闭
         close();
     };
+    //删除相关task
+    const startDelete = () => {
+        close();
+        Modal.confirm({
+            okText: '确定',
+            cancelText: '取消',
+            title: '确定删除任务吗',
+            onOk() {
+                return deleteTask({ id: Number(editingTaskId) });
+            }
+        });
+    };
     //Modal打开时，加载数据到表单
     useEffect(() => {
         form.setFieldsValue(editingTask);
     }, [form, editingTask]);
+
     return (
         <Modal
             forceRender
@@ -81,7 +96,7 @@ export const TaskModal = () => {
             </Form>
             <div style={{ textAlign: 'right' }}>
                 <Button
-                    //onClick={startDelete}
+                    onClick={startDelete}
                     style={{ fontSize: '14px' }}
                     size='small'
                 >

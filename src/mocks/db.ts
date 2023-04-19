@@ -361,6 +361,25 @@ async function addDisplayBoardData(storageKey: string, displayBoard: DisplayBoar
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(displayBoardList));
 }
+
+/**
+ *  @function displayBoardsDetele
+ *  @param storageKey
+ *  @description 加载查找到的看板数据
+ */
+async function displayBoardsDetele(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const displayBoardsData: DisplayBoard[] = loadScreensData(storageKey);
+  let displayBoardsList: DisplayBoard[] = [];
+  if (id) {
+    //通过ID查找对应的数据
+    displayBoardsList = displayBoardsData.filter((item: DisplayBoard) => item.id !== Number.parseInt(id!, 10))!;
+
+  }
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(displayBoardsList));
+}
 /**
  *  @function ScreensTasks
  *  @param storageKey
@@ -501,6 +520,7 @@ export {
   projectDetele,
   ScreensDisplayBoards,
   addDisplayBoardData,
+  displayBoardsDetele,
   ScreensTasks,
   addTaskData,
   taskUpdata,

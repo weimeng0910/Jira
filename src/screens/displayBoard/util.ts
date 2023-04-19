@@ -32,6 +32,7 @@ export const useDisplayBoardSearchParams = () => ({ projectId: useProjectIdInUrl
 
 //设置看板的querykey
 export const useDisplayBoardQueryKey = () => ['displayBoards', useDisplayBoardSearchParams()];
+
 //获取tasks的url参数
 export const useTasksSearchParams = () => {
   //name用来搜索任务名称，typeId用来搜索task类型，processorId用来搜索负责人，tagId用来搜素
@@ -54,7 +55,8 @@ export const useTasksSearchParams = () => {
   );
 
 };
-//设置querykey
+
+//设置Tasks的querykey
 export const useTasksQueryKey = () => ['tasks', useTasksSearchParams()];
 
 //点击task弹出的Modal数据获取
@@ -65,6 +67,7 @@ export const useTasksModal = () => {
     'editingTaskId',
 
   ]);
+
   //通过ID获取相对应的task数据和loading
   const { data: editingTask, isLoading } = useTask(Number(editingTaskId));
 
@@ -76,6 +79,7 @@ export const useTasksModal = () => {
     },
     [setEditingTaskId]
   );
+
   //定义关闭的方法
   const close = useCallback(() => {
     setEditingTaskId({ editingTaskId: '' });

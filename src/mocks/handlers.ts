@@ -341,6 +341,20 @@ export const handlers = [
     );
 
   }),
+  /**
+    * @todo 响应delete请求删除displayBoard项目数据
+    */
+
+  rest.delete<Partial<DisplayBoard>>(`${API_URL}/displayBoards/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+    const displayBoardData = await db.displayBoardsDetele(displayBoardDB, id as string);
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json({ displayBoardData })
+    );
+  }),
 
   /****************************************************
    * 响应各种tasks数据请求

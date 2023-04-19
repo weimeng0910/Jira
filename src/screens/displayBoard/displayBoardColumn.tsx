@@ -1,12 +1,19 @@
 import styled from '@emotion/styled';
-import { Card } from 'antd';
+import { Card, Dropdown, Button, Menu, Modal } from 'antd';
 
 import { CreateTask } from './createTask';
 import bugIcon from '@/assets/bug.svg';
 import taskIcon from '@/assets/task.svg';
-import { useTasksModal, useTasksSearchParams } from '@/screens/displayBoard/util';
+import { Row } from '@/components/lib/lib';
+import { Mark } from '@/components/mark';
+import {
+    useTasksModal,
+    useTasksSearchParams,
+    useDisplayBoardQueryKey
+} from '@/screens/displayBoard/util';
 import { DisplayBoard } from '@/types/displayBoard';
-//import { TaskType } from '@/types/taskType';
+import { Task } from '@/types/task';
+import { useDeleteDisplayBoard } from '@/utils/hooks/displayBoard';
 import { useTasks } from '@/utils/hooks/task';
 import { useTaskTypes } from '@/utils/hooks/taskType';
 
@@ -48,27 +55,95 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
         />
     );
 };
-//看板的数据呈现
+
+/**
+ * @todo 抽像Card，让看板组件和Crad组件各司其职
+ * @param task
+ */
+
+const TaskCard = ({ task }: { task: Task }) => {
+    //打开编辑modal
+    const { startEdit } = useTasksModal();
+    //获取URL中的参数
+    const { name: keyword } = useTasksSearchParams();
+    return (
+        <Card
+            onClick={() => startEdit(task.id)}
+            style={{ marginBottom: '0.5rem', cursor: 'pointer' }}
+            key={task.id}
+        >
+            <p>
+                <Mark
+                    keyword={keyword}
+                    name={task.name}
+                />
+            </p>
+
+            <TaskTypeIcon id={task.typeId} />
+        </Card>
+    );
+};
+/**
+ * @todo 看板列表删除
+ * @param displayBoard
+ */
+const More = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
+    //获取删除看板的方法
+    const { mutateAsync } = useDeleteDisplayBoard(useDisplayBoardQueryKey());
+    const startDelete = () => {
+        Modal.confirm({
+            okText: '确定',
+            cancelText: '取消',
+            title: '确定删除看板吗',
+            onOk() {
+                return mutateAsync({ id: displayBoard.id });
+            }
+        });
+    };
+    //
+    const overlay = (
+        <Menu>
+            <Menu.Item>
+                <Button
+                    type='link'
+                    onClick={startDelete}
+                >
+                    删除
+                </Button>
+            </Menu.Item>
+        </Menu>
+    );
+    return (
+        <Dropdown overlay={overlay}>
+            <Button type='link'>...</Button>
+        </Dropdown>
+    );
+};
+/**
+ * @todo 看板列表
+ * @param displayBoard
+ */
 export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
     const { data: allTasks } = useTasks(useTasksSearchParams());
     const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
-    //打开编辑modal
-    const { startEdit } = useTasksModal();
 
     return (
         <Container>
-            <h3>{displayBoard.name}</h3>
+            <Row between>
+                <h3>{displayBoard.name}</h3>
+                <More
+                    displayBoard={displayBoard}
+                    key={displayBoard.id}
+                />
+            </Row>
             <TasksContainer>
                 {tasks?.map(task => (
-                    <Card
-                        onClick={() => startEdit(task.id)}
-                        style={{ marginBottom: '0.5rem' }}
-                        key={task.id}
-                    >
-                        <div>{task.name}</div>
-
-                        <TaskTypeIcon id={task.typeId} />
-                    </Card>
+                    <div key={task.id}>
+                        <TaskCard
+                            key={task.id}
+                            task={task}
+                        />
+                    </div>
                 ))}
                 <CreateTask displayBoardId={displayBoard.id} />
             </TasksContainer>
