@@ -409,7 +409,6 @@ async function ScreensTasks(storageKey: string, query: { typeId: string, name: s
  */
 
 async function addTaskData(storageKey: string, task: Partial<Task>) {
-  console.log(task, 'db001');
 
   // 加载localStorage里的项目数据
   const taskData: Task[] = loadScreensData(storageKey);
@@ -419,6 +418,62 @@ async function addTaskData(storageKey: string, task: Partial<Task>) {
   return window.localStorage.setItem(storageKey, JSON.stringify(tasksList));
 }
 
+/**
+ *  @function taskUpdata
+ *  @param storageKey
+ *  @description 根据传入参数响应数据
+ */
+
+async function taskUpdata(storageKey: string, id: string, updates: Partial<Task>) {
+
+  // 加载localStorage里的项目数据
+  const tasksData: Task[] = loadScreensData(storageKey);
+
+
+  //通过ID查找对应的数据
+  const task = tasksData.find((item: Task) => item.id === Number.parseInt(id!, 10))!;
+
+  tasksData[tasksData.indexOf(task)] = { ...task, ...updates };
+
+
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(tasksData));
+}
+/**
+ *  @function  taskDetele
+ *  @param storageKey
+ *  @description 根据传入参数响应数据
+ */
+
+
+async function taskDetele(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const taskData: Task[] = loadScreensData(storageKey);
+  let taskList: Task[] = [];
+  if (id) {
+    //通过ID查找对应的数据
+    taskList = taskData.filter((item: Task) => item.id !== Number.parseInt(id!, 10))!;
+
+  }
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(taskList));
+}
+/**
+ *  @function ScreensTaskData
+ *  @param storageKey
+ *  @description 加载查找到的项目数据
+ */
+
+async function ScreensTaskData(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const taskData: Task[] = loadScreensData(storageKey);
+  //通过ID查找对应的数据
+  const task = taskData.find((item: Task) => item.id === Number.parseInt(id!, 10))!;
+  return task;
+
+}
 /**
  *  @function ScreensTaskTypes
  *  @param storageKey
@@ -448,5 +503,8 @@ export {
   addDisplayBoardData,
   ScreensTasks,
   addTaskData,
+  taskUpdata,
+  taskDetele,
+  ScreensTaskData,
   ScreensTaskTypes
 };

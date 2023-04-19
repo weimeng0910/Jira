@@ -267,6 +267,7 @@ export const handlers = [
       ctx.json({ projectData })
     );
   }),
+
   /**
    * @todo 根据id请求project
    */
@@ -287,22 +288,24 @@ export const handlers = [
    *  displayBoard项目数据请求
    * @todo 响应get请求获得项目数据
    */
+
   rest.get<DisplayBoard>(`${API_URL}/displayBoards`, async (_req, res, ctx) => {
 
     //调用写入数据的函数
     //const projectData = [{ name: '待完成' }, { name: '开发中' }, { name: '完成' }];
-    const projectData = await db.ScreensDisplayBoards(displayBoardDB);
-    if (projectData) {
+    const displayBoardsData = await db.ScreensDisplayBoards(displayBoardDB);
+    if (displayBoardsData) {
       return res(
         //延迟两秒返回数据
         //ctx.delay(6000),
         ctx.status(200),
-        ctx.json(projectData)
+        ctx.json(displayBoardsData)
       );
     }
     return res(ctx.status(500));
 
   }),
+
   /**
    * @todo 响应post请求增加displayBoard项目数据
    */
@@ -337,10 +340,9 @@ export const handlers = [
 
     );
 
-
-
   }),
-  /*
+
+  /****************************************************
    * 响应各种tasks数据请求
    * @todo 响应get请求获得项目数据
   */
@@ -368,7 +370,7 @@ export const handlers = [
 
   }),
   /**
- * @todo 响应post请求增加tasks数据
+ * @todo 响应post响应add请求返回tasks数据
  */
 
   rest.post<Partial<Task>>(`${API_URL}/tasks`, async (req, res, ctx) => {
@@ -388,8 +390,6 @@ export const handlers = [
 
     const displayBoardId: string = typeof addTask.displayBoardId === 'string' ? addTask.displayBoardId : '';
 
-
-
     const nanoid = customAlphabet('1234567890', 10);
 
     //组装数据
@@ -404,7 +404,6 @@ export const handlers = [
     };
 
     //调用写入数据的函数
-    // eslint-disable-next-line import/namespace
     const tasktData = await db.addTaskData(taskDB, addTaskItem);
 
     return res(
@@ -415,10 +414,60 @@ export const handlers = [
 
     );
 
+  }),
+
+  /**
+    * @todo 响应put请求
+    */
+
+  rest.put<Partial<Task>>(`${API_URL}/tasks/:id`, async (req, res, ctx) => {
+
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+
+    const updates: Partial<Task> = await req.json();
+
+    const taskData = await db.taskUpdata(taskDB, id as string, updates);
+
+
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json({ taskData })
+    );
 
 
   }),
-  /*
+  /**
+  * @todo 响应delete请求
+  */
+
+  rest.delete<Partial<Task>>(`${API_URL}/tasks/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+    const taskData = await db.taskDetele(taskDB, id as string);
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json({ taskData })
+    );
+  }),
+  /**
+  * @todo 根据id响应get请求taskModal数据
+  */
+
+  rest.get<Partial<Task>>(`${API_URL}/tasks/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+    const taskData = await db.ScreensTaskData(taskDB, id as string);
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json(taskData)
+    );
+  }),
+
+  /****************************************************
   * 响应各种taskType数据请求
   * @todo 响应get请求获得项目数据
   */

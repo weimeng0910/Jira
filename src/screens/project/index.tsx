@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { Routes, Route, Navigate, Link } from 'react-router-dom';
+import { Menu } from 'antd';
+import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
 
 import { DisplayBoardScreen } from '../displayBoard';
 import { EpicScreen } from '../epic';
@@ -28,40 +29,60 @@ const Container = styled.div`
 // 用来作为 404 页面的组件
 const NotFound = () => <div>路径错误</div>;
 
-export const ProjectScreen = () => (
-    <Container>
-        <Aside>
-            <h1>ProjectScreen</h1>
-            <Link to='displayBoard'>看板</Link>
-            <Link to='epic'>任务组</Link>
-        </Aside>
-        <Main>
-            <Routes>
-                {/*默认路由 */}
-                <Route
-                    path='/'
-                    element={
-                        <Navigate
-                            to={`${window.location.pathname}/displayBoard`}
-                            //不会出现无限循环，会回退到需要的页['projects','projects/6',window.location.pathname}+'displayBoardš]
-                            replace
-                        />
-                    }
-                />
-                <Route
-                    path='displayBoard'
-                    element={<DisplayBoardScreen />}
-                />
-                <Route
-                    path='epic'
-                    element={<EpicScreen />}
-                />
+const useRouteType = () => {
+    const units = useLocation().pathname.split('/');
+    return units[units.length - 1];
+};
 
-                <Route
-                    path='*'
-                    element={<NotFound />}
+export const ProjectScreen = () => {
+    const routeType = useRouteType();
+    const menuItems = [
+        {
+            key: 'displayBoard',
+            label: <Link to='displayBoard'>看板</Link>
+        },
+        {
+            key: 'epic',
+            label: <Link to='epic'>任务组</Link>
+        }
+    ];
+    return (
+        <Container>
+            <Aside>
+                <Menu
+                    mode='inline'
+                    selectedKeys={[routeType]}
+                    items={menuItems}
                 />
-            </Routes>
-        </Main>
-    </Container>
-);
+            </Aside>
+            <Main>
+                <Routes>
+                    {/*默认路由 */}
+                    <Route
+                        path='/'
+                        element={
+                            <Navigate
+                                to={`${window.location.pathname}/displayBoard`}
+                                //不会出现无限循环，会回退到需要的页['projects','projects/6',window.location.pathname}+'displayBoardš]
+                                replace
+                            />
+                        }
+                    />
+                    <Route
+                        path='displayBoard'
+                        element={<DisplayBoardScreen />}
+                    />
+                    <Route
+                        path='epic'
+                        element={<EpicScreen />}
+                    />
+
+                    <Route
+                        path='*'
+                        element={<NotFound />}
+                    />
+                </Routes>
+            </Main>
+        </Container>
+    );
+};

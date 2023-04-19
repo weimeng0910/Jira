@@ -4,7 +4,7 @@ import { Card } from 'antd';
 import { CreateTask } from './createTask';
 import bugIcon from '@/assets/bug.svg';
 import taskIcon from '@/assets/task.svg';
-import { useTasksSearchParams } from '@/screens/displayBoard/util';
+import { useTasksModal, useTasksSearchParams } from '@/screens/displayBoard/util';
 import { DisplayBoard } from '@/types/displayBoard';
 //import { TaskType } from '@/types/taskType';
 import { useTasks } from '@/utils/hooks/task';
@@ -52,6 +52,8 @@ const TaskTypeIcon = ({ id }: { id: number }) => {
 export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
     const { data: allTasks } = useTasks(useTasksSearchParams());
     const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
+    //打开编辑modal
+    const { startEdit } = useTasksModal();
 
     return (
         <Container>
@@ -59,6 +61,7 @@ export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoar
             <TasksContainer>
                 {tasks?.map(task => (
                     <Card
+                        onClick={() => startEdit(task.id)}
                         style={{ marginBottom: '0.5rem' }}
                         key={task.id}
                     >

@@ -41,4 +41,6 @@ export const HeaderLeft = styled(Row)``;
 export const HeaderRight = styled.div``;
 export const Main = styled.main`
     grid-area: main;
+    display: flex;
+    overflow: hidden;
 `;

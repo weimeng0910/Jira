@@ -6,7 +6,6 @@
  */
 import styled from '@emotion/styled';
 import { Drawer, Button, Spin, Form, Input } from 'antd';
-import { useForm } from 'antd/lib/form/Form';
 import { useEffect } from 'react';
 
 import { useProjectModal } from './util';
@@ -34,7 +33,7 @@ export const ProjectModal = () => {
     //useMutateProject不能直接在函数中使用，所以这里要把更新缓存的方法解构
     const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject();
     //useForm是antd在react hooks中的函数组件，对表单数据域进行交互
-    const [form] = useForm();
+    const [form] = Form.useForm();
     //表单中定义的方法，完成form表单数据的更新
     const onFinish = (values: any) => {
         // eslint-disable-next-line promise/catch-or-return, promise/always-return

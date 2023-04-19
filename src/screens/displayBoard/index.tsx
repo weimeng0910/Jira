@@ -4,6 +4,7 @@ import { Spin } from 'antd';
 import { CreateDisplayBoard } from './createDisplayBoard';
 import { DisplayBoardColumn } from './displayBoardColumn';
 import { SearchPanel } from './searchPanel';
+import { TaskModal } from './taskModal';
 import { useDisplayBoardSearchParams, useProjectInUrl, useTasksSearchParams } from './util';
 import { ScreenContainer } from '@/components/lib/lib';
 import { useDisplayBoard } from '@/utils/hooks/displayBoard';
@@ -51,6 +52,7 @@ export const DisplayBoardScreen = () => {
                     <CreateDisplayBoard />
                 </ColumnsContainer>
             )}
+            <TaskModal />
         </ScreenContainer>
     );
 };
