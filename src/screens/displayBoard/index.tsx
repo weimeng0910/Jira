@@ -1,11 +1,13 @@
 import styled from '@emotion/styled';
 import { Spin } from 'antd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import { CreateDisplayBoard } from './createDisplayBoard';
 import { DisplayBoardColumn } from './displayBoardColumn';
 import { SearchPanel } from './searchPanel';
 import { TaskModal } from './taskModal';
 import { useDisplayBoardSearchParams, useProjectInUrl, useTasksSearchParams } from './util';
+import { Drag, Drop, DropChild } from '@/components/dragAndDrop';
 import { ScreenContainer } from '@/components/lib/lib';
 import { useDisplayBoard } from '@/utils/hooks/displayBoard';
 import { useTasks } from '@/utils/hooks/task';
@@ -18,7 +20,7 @@ import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
  * @file DisplayBoar看板页面
  */
 //样式
-const ColumnsContainer = styled.div`
+const ColumnsContainer = styled('div')`
     display: flex;
     overflow-x: scroll;
     flex: 1;
@@ -36,23 +38,43 @@ export const DisplayBoardScreen = () => {
     const isLoading = tasksLoading || displayBoardLoding;
 
     return (
-        <ScreenContainer>
-            <h1>{currentProject?.name}display</h1>
-            <SearchPanel />
-            {isLoading ? (
-                <Spin size='large' />
-            ) : (
-                <ColumnsContainer>
-                    {displayBoards?.map(board => (
-                        <DisplayBoardColumn
-                            displayBoard={board}
-                            key={board.id}
-                        />
-                    ))}
-                    <CreateDisplayBoard />
-                </ColumnsContainer>
-            )}
-            <TaskModal />
-        </ScreenContainer>
+        <DragDropContext
+            onDragEnd={() => {
+                console.log('111');
+            }}
+        >
+            <ScreenContainer>
+                <h1>{currentProject?.name}display</h1>
+                <SearchPanel />
+                {isLoading ? (
+                    <Spin size='large' />
+                ) : (
+                    <ColumnsContainer>
+                        <Drop
+                            type='COLUMN'
+                            direction='horizontal'
+                            droppableId='displayBoard'
+                        >
+                            <DropChild style={{ display: 'flex' }}>
+                                {displayBoards?.map((board, index) => (
+                                    <Drag
+                                        key={board.id}
+                                        draggableId={`board${board.id}`}
+                                        index={index}
+                                    >
+                                        <DisplayBoardColumn
+                                            displayBoard={board}
+                                            key={board.id}
+                                        />
+                                    </Drag>
+                                ))}
+                            </DropChild>
+                        </Drop>
+                        <CreateDisplayBoard />
+                    </ColumnsContainer>
+                )}
+                <TaskModal />
+            </ScreenContainer>
+        </DragDropContext>
     );
 };

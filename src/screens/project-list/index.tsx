@@ -20,6 +20,8 @@ import { useUser } from '@/utils/hooks/users';
 
 //定义样式
 const Container = styled.div`
+    width: 100%;
+
     padding: 3.2rem;
 `;
 export const ProjectListScreen = () => {

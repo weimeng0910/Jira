@@ -288,3 +288,10 @@ yarn add --dev @welldone-software/why-did-you-render
 ```
 yarn add react-query
 ```
+
+### 使用 React-beautiful-dnd 来对看板和任务组件拖拽
+
+```
+yarn add react-beautiful-dnd
+yarn add @typescript/react-beautiful-dnd -D
+```

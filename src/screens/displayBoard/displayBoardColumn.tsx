@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import { Card, Dropdown, Button, Menu, Modal } from 'antd';
+import React from 'react';
 
 import { CreateTask } from './createTask';
 import bugIcon from '@/assets/bug.svg';
 import taskIcon from '@/assets/task.svg';
+import { Drag, Drop, DropChild } from '@/components/dragAndDrop';
 import { Row } from '@/components/lib/lib';
 import { Mark } from '@/components/mark';
 import {
@@ -123,30 +125,50 @@ const More = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
  * @todo 看板列表
  * @param displayBoard
  */
-export const DisplayBoardColumn = ({ displayBoard }: { displayBoard: DisplayBoard }) => {
-    const { data: allTasks } = useTasks(useTasksSearchParams());
-    const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
+// eslint-disable-next-line react/display-name
+export const DisplayBoardColumn = React.forwardRef<HTMLDivElement, { displayBoard: DisplayBoard }>(
+    ({ displayBoard, ...props }, ref) => {
+        const { data: allTasks } = useTasks(useTasksSearchParams());
+        const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
 
-    return (
-        <Container>
-            <Row between>
-                <h3>{displayBoard.name}</h3>
-                <More
-                    displayBoard={displayBoard}
-                    key={displayBoard.id}
-                />
-            </Row>
-            <TasksContainer>
-                {tasks?.map(task => (
-                    <div key={task.id}>
-                        <TaskCard
-                            key={task.id}
-                            task={task}
-                        />
-                    </div>
-                ))}
-                <CreateTask displayBoardId={displayBoard.id} />
-            </TasksContainer>
-        </Container>
-    );
-};
+        return (
+            <Container
+                {...props}
+                ref={ref}
+            >
+                <Row between>
+                    <h3>{displayBoard.name}</h3>
+                    <More
+                        displayBoard={displayBoard}
+                        key={displayBoard.id}
+                    />
+                </Row>
+                <TasksContainer>
+                    <Drop
+                        type='ROW'
+                        direction='vertical'
+                        droppableId={String(displayBoard.id)}
+                    >
+                        <DropChild style={{ minHeight: '1rem' }}>
+                            {tasks?.map((task, taskIndex) => (
+                                <Drag
+                                    key={task.id}
+                                    index={taskIndex}
+                                    draggableId={`task${task.id}`}
+                                >
+                                    <div key={task.id}>
+                                        <TaskCard
+                                            key={task.id}
+                                            task={task}
+                                        />
+                                    </div>
+                                </Drag>
+                            ))}
+                            <CreateTask displayBoardId={displayBoard.id} />
+                        </DropChild>
+                    </Drop>
+                </TasksContainer>
+            </Container>
+        );
+    }
+);
