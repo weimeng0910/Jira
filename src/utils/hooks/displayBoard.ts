@@ -120,3 +120,61 @@ export const useDeleteDisplayBoard = (queryKey: QueryKey) => {
   return mutation;
 
 };
+/**
+* @function
+*  useReorderDisplayBoard通过useQuer更新拖拽看板和任务的DisplayBoard数据
+*/
+
+//定义拖动的类型
+export interface SortProps {
+  // 要重新排序的 item
+  fromId: number;
+  // 目标 item
+  referenceId: number;
+  // 放在目标item的前还是后
+  type: 'before' | 'after';
+  fromKanbanId?: number;
+  toKanbanId?: number;
+}
+
+export const useReorderDisplayBoard = (queryKey: QueryKey) => {
+
+  const queryClient = useQueryClient();
+
+
+  return useMutation((params: SortProps) =>
+
+    http({
+      url: 'displayBoards/reorder',
+      data: params,
+      method: 'post'
+    }),
+    {
+      // queryClient.invalidateQueries： 在提交成功/失败之后都进行重新查询更新状态
+      onSuccess: () => queryClient.invalidateQueries(queryKey),
+
+      async onMutate(target) {
+        //组装对象写入缓存数据
+        const newTarget = { ...target, id: nanoid(), ownerId: Date.now() };
+        //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
+        await queryClient.cancelQueries(queryKey);
+        //query缓存中的数据
+        const previousItems = queryClient.getQueryData(queryKey);
+        //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
+        queryClient.setQueryData(queryKey, (old?: any[]) => (old ? [...old, newTarget] : []));
+        // 返回具有快照值的上下文对象
+
+
+        return { previousItems };
+      },
+      //出现错误后回滚
+      onError(_error: Error, _newItem, context) {
+        queryClient.setQueryData(queryKey, (context as { previousItems: DisplayBoard[] }).previousItems);
+      },
+      // 总是在错误或成功后重新获取
+      onSettled: () => {
+        queryClient.invalidateQueries(queryKey);
+      },
+    }
+  );
+};
