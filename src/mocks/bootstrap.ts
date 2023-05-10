@@ -4,7 +4,7 @@
  * @date 2022/11/23
  * 初始化数据
  */
-import * as initalData from './initialData';
+import * as initalData from './data/initialData';
 import { epicDB, displayBoardDB, projectDB, tagDB, taskDB, taskTypeDB, userDB } from '../config';
 
 /**

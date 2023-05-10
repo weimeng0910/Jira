@@ -5,190 +5,7 @@
  * 模拟一个后端
  * 本地存储中的数据备份
  */
-import CryptoJS from 'crypto-js';// 加密
-
-import { localStorageKey } from '../config';// 定义写入localStorageKey
-// 导入生成token的函数
-import { generteToken } from './core/util';
-import { ResponseError, RequestBody, User, Project, DisplayBoard, Task, TaskType, SortProps } from './type/handlersType';
-
-
-type Users = User[];
-
-/**
- *  @function loadUsers
- *  @description 加载存在 localStorage里的用户数据
- *  @returns users
- */
-const loadUsers = (): Users => {
-
-  const users = JSON.parse(window.localStorage.getItem(localStorageKey)!); // 非空断言运算符告诉 typescript 您知道自己在做什么
-
-  return users ?? []; // ??在value1和value2之间，只有当value1为null或者 undefined 时取value2，否则取value1
-};
-
-/**
- *  @function clean
- *  @param user
- *  @description 检查并清除用户存在的passwordHash
- *  @returns users
- */
-const clean = (user: User) => {
-  let result;
-  // 如果用户存在passwordHash
-  if (user.passwordHash) {
-    //解构其他参数并返回
-    const { passwordHash, ...rest } = user;
-    result = rest;
-  }
-  return result;
-};
-
-
-/**
- *  @function loadUserById
- *  @param id
- *  @description 检查用户的ID存在
- *  @returns users
- *  @async user
- */
-async function loadUserById(id: string, cleanFields = false) {
-
-  //调用 loadUsers函数来检查是否存在相同的ID,如果返回true，则搜索停止。
-  const users = loadUsers();
-  const userNew = users.find((item: User) => item.id === id);
-  // 两个 & 符号表示 && 与运算符：
-  return cleanFields && userNew ? clean(userNew) : userNew;
-}
-
-
-/**
- *  @function saveUsers
- *  @param users
- *  @description  保存用户
- */
-const saveUsers = (users: Users) => {
-  window.localStorage.setItem(localStorageKey, JSON.stringify(users));
-};
-
-/**
- *  @function saveUser
- *  @param user
- *  @description 把新用户写入用户数组
- */
-async function saveUser(user: User) {
-  const users = loadUsers();
-  users.push(user);
-  saveUsers(users);
-}
-
-/**
- *  @function validateUser
- *  @param params
- *  @description 检查用户名和密码是否存在
- */
-const validateUser = (params: RequestBody) => {
-  const { username, password } = params;
-
-
-  if (!username) {
-    const error: ResponseError = new Error('用户名是必须的');
-    error.status = 400;
-    throw error;
-  }
-  if (!password) {
-    const error: ResponseError = new Error('密码是必须的');
-    error.status = 400;
-    throw error;
-  }
-};
-
-/**
- *  @function hashcode
- *  @param data
- *  @description 加密数据
- */
-function hashcode(data: string) {
-  // 生成随机的key ,不能生成随机key,要不然无法判断用户是否存在
-  // const keyStr = CryptoJS.lib.WordArray.random(16).toString();
-  const keyStr = '01234567890123456789012345678901';
-  // 字符串类型的key用之前需要用uft8先parse一下才能用
-  const SECRET_KEY = CryptoJS.enc.Utf8.parse(keyStr);
-  // 十六位十六进制数作为密钥偏移量
-  const SECRET_IV = CryptoJS.enc.Utf8.parse(keyStr);
-
-  const dataHex = CryptoJS.enc.Utf8.parse(data);
-  // 使用生成的密钥加密消息
-  const encryptedData = CryptoJS.AES.encrypt(dataHex, SECRET_KEY, {
-    iv: SECRET_IV,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  });
-  return encryptedData.ciphertext.toString();
-};
-
-
-/**
- *  @function createUser
- *  @param data
- *  @description 创建用户,组装数据
- */
-async function createUser(data: { username: string, password: string }) {
-  // 解构传进来的参数
-  const { username, password } = data;
-  // 检查用户是否为空
-  validateUser({ username, password });
-  // 加密用户名生成ID
-  const id = hashcode(username);
-  const passwordHash = hashcode(password);
-  // 读取用户Id,判卷用户ID是否存在
-  const uid = await loadUserById(id);
-  if (uid) {
-    const error: ResponseError = new Error(`无法创建用户，因为 '${username}' 存在 `);
-    error.status = 400;
-    throw error;
-  }
-
-  // 组装新的用户数据
-  const user = { id, username, passwordHash };
-  // 何存用户
-  saveUser(user);
-  return loadUserById(id);
-}
-
-/**
- *  @function authenticate
- *  @param params
- *  @description 客户登陆时返回用户的信息,生成token
- */
-async function authenticate(params: RequestBody) {
-  const { username, password } = params;
-  // 检查用户是否为空
-  validateUser({ username, password });
-  // 根据用户名，生成唯一ID
-  const id = hashcode(username);
-  // 根据ID读取相关用户数据
-  const user = (await loadUserById(id)) as User;
-  if (!user) {
-    const error: ResponseError = new Error(`请注册，因为 '${username}' 不存在 `);
-    error.status = 500;
-    throw error;
-  }
-
-  /**
-   *  @function generteToken
-   *  @param id
-   *  @description 定义令牌
-   */
-  const token = generteToken(id, 2);
-  if (user.passwordHash === hashcode(password)) {
-
-    return { ...clean(user), token };
-  }
-  const error: ResponseError = new Error('用户名或者密码不正确');
-  error.status = 400;
-  throw error;
-}
+import { Project, DisplayBoard, Task, TaskType } from '../type/handlersType';
 
 /**
  *  @function loadScreensData
@@ -224,6 +41,7 @@ async function ScreensProjectsData(storageKey: string, query: { personId: string
     const result = projectsData.filter((item: Project) => item.name.includes(query.name!));
     result.map((item: Project) => projectList.push(item));
   }
+
   /*
    * 得到的数据去重
    */
@@ -269,6 +87,7 @@ async function projectsUpdata(storageKey: string, id: string, updates: Partial<P
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(projectsData));
 }
+
 /**
  *  @function addProjectsData
  *  @param storageKey
@@ -283,18 +102,6 @@ async function addProjectsData(storageKey: string, project: Project) {
 
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(projectsList));
-}
-/**
- *  @function ScreensUserData
- *  @param storageKey
- *  @description 加载项目管理用户数据
- */
-async function ScreensUserData(storageKey: string) {
-
-  // 加载localStorage里的项目数据
-  const userData = loadScreensData(storageKey);
-  return userData;
-
 }
 
 /**
@@ -332,6 +139,7 @@ async function ScreensProjectData(storageKey: string, id: string) {
   return project;
 
 }
+
 /**
  *  @function ScreensDisplayBoards
  *  @param storageKey
@@ -346,6 +154,7 @@ async function ScreensDisplayBoards(storageKey: string) {
   return data;
 
 }
+
 /**
  *  @function addDisplayBoards
  *  @param storageKey
@@ -361,55 +170,8 @@ async function addDisplayBoardData(storageKey: string, displayBoard: DisplayBoar
   //重新写入数据
   return window.localStorage.setItem(storageKey, JSON.stringify(displayBoardList));
 }
-/**
- *  @function addDisplayBoards
- *  @param storageKey
- *  @description 加载查找到的看板数据
- */
-async function reorderDisplayBoardData(storageKey: string, { fromId, type, referenceId }: SortProps) {
 
-  // 加载localStorage里的项目数据
-  const displayBoardData: DisplayBoard[] = loadScreensData(storageKey);
 
-  //拖动前处理函数
-  const insertBefore = (list: DisplayBoard[], from: number, to: number) => {
-    const toItem = list[to];
-    const removedItem = list.splice(from, 1)[0];
-    const toIndex = list.indexOf(toItem);
-    list.splice(toIndex, 0, removedItem);
-    return window.localStorage.setItem(storageKey, JSON.stringify(list));
-  };
-
-  //拖动后处理函数
-  const insertAfter = (list: DisplayBoard[], from: number, to: number) => {
-    //数组的最后一个Item
-    const toItem = list[to];
-    //arr.splice 方法可以说是处理数组的瑞士军刀。它可以做所有事情：添加，删除和插入元素。
-    //从from 开始修改 arr：删除 1 个元素,最后返回被删除的元素所组成的数组的第一个元素。
-    const removedItem = list.splice(from, 1)[0];
-    //arr.indexOf这里是对数组元素进行操作：这里是返回数组中toItem这个元素在数组中的索引
-    const toIndex = list.indexOf(toItem);
-    //从得到的这个索引开始，插入移动的元素
-    list.splice(toIndex + 1, 0, removedItem);
-    return window.localStorage.setItem(storageKey, JSON.stringify(list));
-  };
-
-  //获得移动的看板索引
-  const movingItemIndex = displayBoardData.findIndex((item) => item.id === fromId);
-  //如果referenceId不为空
-  if (!referenceId) {
-    //调用拖动后处理函数传入看板数据，和移动的项目索引，这里的数组长度减一是该数组中的最大值会被排除在外，
-    //冒泡排序后数组是从小到大的排序
-    insertAfter(displayBoardData, movingItemIndex, displayBoardData.length - 1);
-
-  }
-  //目标索引
-  const targetIndex = displayBoardData.findIndex((item) => item.id === referenceId);
-  //type传入的值是不是after
-  const insert = type === 'after' ? insertAfter : insertBefore;
-  //调用函数来处理数据排序
-  insert(displayBoardData, movingItemIndex, targetIndex);
-}
 /**
  *  @function displayBoardsDetele
  *  @param storageKey
@@ -555,13 +317,10 @@ async function ScreensTaskTypes(storageKey: string) {
   return data;
 
 }
+
 // 导出注册方法createUser，登陆方法authenticate
 export {
-  createUser,
-  authenticate,
-  loadUserById,
   ScreensProjectsData,
-  ScreensUserData,
   projectsUpdata,
   ScreensProjectData,
   addProjectsData,
@@ -569,11 +328,12 @@ export {
   ScreensDisplayBoards,
   addDisplayBoardData,
   displayBoardsDetele,
-  reorderDisplayBoardData,
+
   ScreensTasks,
   addTaskData,
   taskUpdata,
   taskDetele,
   ScreensTaskData,
-  ScreensTaskTypes
+  ScreensTaskTypes,
+
 };
