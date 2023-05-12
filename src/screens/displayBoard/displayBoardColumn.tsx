@@ -130,7 +130,7 @@ export const DisplayBoardColumn = React.forwardRef<HTMLDivElement, { displayBoar
     ({ displayBoard, ...props }, ref) => {
         const { data: allTasks } = useTasks(useTasksSearchParams());
         const tasks = allTasks?.filter(task => task.displayBoardId === displayBoard.id);
-
+        //下面的<DropChild style={{ minHeight: '1rem' }}>，加这个style是防止在看板中没有任务时能拖动回来
         return (
             <Container
                 {...props}
@@ -149,7 +149,7 @@ export const DisplayBoardColumn = React.forwardRef<HTMLDivElement, { displayBoar
                         direction='vertical'
                         droppableId={String(displayBoard.id)}
                     >
-                        <DropChild style={{ minHeight: '1rem' }}>
+                        <DropChild style={{ minHeight: '5rem' }}>
                             {tasks?.map((task, taskIndex) => (
                                 <Drag
                                     key={task.id}

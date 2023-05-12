@@ -6,8 +6,14 @@
  */
 import { DisplayBoard, Task, SortProps } from '../type/handlersType';
 import { loadScreensData } from './accountDb';
+/**
+ * 在list中，把from放在to的前边,拖动到前面的处理函数
+ * @param storageKey
+ * @param list
+ * @param from
+ * @param to
+ */
 
-//拖动到前面的处理函数
 const insertBefore = (storageKey: string, list: any[], from: number, to: number) => {
   //数组拖动到的Item
   const toItem = list[to];
@@ -21,7 +27,14 @@ const insertBefore = (storageKey: string, list: any[], from: number, to: number)
   return window.localStorage.setItem(storageKey, JSON.stringify(list));
 };
 
-//拖动到后方的处理函数
+/**
+ * 在list中，把from放在to的后面,拖动到后方的处理函数
+ * @param storageKey
+ * @param list
+ * @param from
+ * @param to
+ */
+
 const insertAfter = (storageKey: string, list: any[], from: number, to: number) => {
   //数组的最后一个Item
   const toItem = list[to];
@@ -38,6 +51,7 @@ const insertAfter = (storageKey: string, list: any[], from: number, to: number) 
 /**
  *  @function reorderDisplayBoardData
  *  @param storageKey
+ *  @param { fromId, type, referenceId }
  *  @description 拖动看板数据
  */
 async function reorderDisplayBoardData(storageKey: string, { fromId, type, referenceId }: SortProps) {

@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid';
 import { http } from '@/api/http';
 //导入类型
 import { DisplayBoard } from '@/types/displayBoard';
-
+import { reorder } from '@/utils/hooks/reorder';
 
 /**
 * @function
@@ -102,7 +102,9 @@ export const useDeleteDisplayBoard = (queryKey: QueryKey) => {
         //query缓存中的数据
         const previousItems = queryClient.getQueryData(queryKey);
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
+
         queryClient.setQueryData(queryKey, (old?: any[]) => (old?.filter((item) => item.id !== target.id) || []));
+
         // 返回具有快照值的上下文对象
         return { previousItems };
       },
@@ -154,17 +156,16 @@ export const useReorderDisplayBoard = (queryKey: QueryKey) => {
       onSuccess: () => queryClient.invalidateQueries(queryKey),
 
       async onMutate(target) {
-        //组装对象写入缓存数据
-        const newTarget = { ...target, id: nanoid(), ownerId: Date.now() };
+        console.log(target, 'query的target001');
         //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
         await queryClient.cancelQueries(queryKey);
-        //query缓存中的数据
+        //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
         const previousItems = queryClient.getQueryData(queryKey);
+
+        console.log(previousItems, 'query的 previousItems001');
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
-        queryClient.setQueryData(queryKey, (old?: any[]) => (old ? [...old, newTarget] : []));
+        queryClient.setQueryData(queryKey, (old?: any[]) => reorder({ list: old?.map((item: { id: number, name: string }) => ({ id: item.id, name: item.name })) as DisplayBoard[], ...target }));
         // 返回具有快照值的上下文对象
-
-
         return { previousItems };
       },
       //出现错误后回滚

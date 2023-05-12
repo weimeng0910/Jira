@@ -58,7 +58,10 @@ export const useEditProject = () => {
         //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
         const previousItems = queryClient.getQueryData(queryKey);
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？,queryClient.setQueryData：设置值
-        queryClient.setQueryData(queryKey, (old?: Project[]) => old?.map(project => project.id === target.id ? { ...project, ...target } : project) || []);
+        queryClient.setQueryData(queryKey, (old?: Project[]) => {
+          console.log(old, '0098');
+          return old?.map(project => project.id === target.id ? { ...project, ...target } : project) || [];
+        });
         return { previousItems };
       },
       //出现错误后回滚
