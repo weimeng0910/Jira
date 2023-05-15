@@ -156,13 +156,12 @@ export const useReorderDisplayBoard = (queryKey: QueryKey) => {
       onSuccess: () => queryClient.invalidateQueries(queryKey),
 
       async onMutate(target) {
-        console.log(target, 'query的target001');
+
         //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
         await queryClient.cancelQueries(queryKey);
         //query缓存中的数据,queryClient.getQueryData：获取缓存的旧值
         const previousItems = queryClient.getQueryData(queryKey);
 
-        console.log(previousItems, 'query的 previousItems001');
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
         queryClient.setQueryData(queryKey, (old?: any[]) => reorder({ list: old?.map((item: { id: number, name: string }) => ({ id: item.id, name: item.name })) as DisplayBoard[], ...target }));
         // 返回具有快照值的上下文对象

@@ -70,7 +70,7 @@ export const reorderHandlers = [
 
     //通过qs.parse方法把url中的参数（name=sdf&projectId=1 002）解析成对象
     const reorderTasks = qs.parse(body);
-    console.log(reorderTasks, '后瑞接收到请求');
+
 
 
     //类型守卫
@@ -81,7 +81,7 @@ export const reorderHandlers = [
     const type: string = typeof reorderTasks.type === 'string' ? reorderTasks.type : '';
 
     const fromKanbanId: string = typeof reorderTasks.fromKanbanId === 'string' ? reorderTasks.fromKanbanId : '';
-    console.log(fromKanbanId, 'fromKanbanId');
+
 
     const toKanbanId: string = typeof reorderTasks.toKanbanId === 'string' ? reorderTasks.toKanbanId : '';
     console.log(toKanbanId, 'toKanbanId');

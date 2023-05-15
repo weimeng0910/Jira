@@ -6,11 +6,13 @@
  * @param to
  */
 const insertBefore = (list: unknown[], from: number, to: number) => {
+
+
   const toItem = list[to];
   const removedItem = list.splice(from, 1)[0];
   const toIndex = list.indexOf(toItem);
   list.splice(toIndex, 0, removedItem);
-  console.log(list, 'before');
+
   return list;
 };
 
@@ -21,6 +23,7 @@ const insertBefore = (list: unknown[], from: number, to: number) => {
  * @param to
  */
 const insertAfter = (list: unknown[], from: number, to: number) => {
+
   //数组的最后一个Item
   const toItem = list[to];
   //arr.splice 方法可以说是处理数组的瑞士军刀。它可以做所有事情：添加，删除和插入元素。
@@ -30,7 +33,6 @@ const insertAfter = (list: unknown[], from: number, to: number) => {
   const toIndex = list.indexOf(toItem);
   //从得到的这个索引开始，插入移动的元素
   list.splice(toIndex + 1, 0, removedItem);
-  console.log(list, 'after');
 
   return list;
 };
@@ -54,7 +56,7 @@ export const reorder = ({
   referenceId: number;
 }) => {
   const copiedList = [...list];
-  console.log(copiedList, '000009');
+
 
   // 找到fromId对应项目的下标
   const movingItemIndex = copiedList.findIndex((item) => item.id === fromId);
