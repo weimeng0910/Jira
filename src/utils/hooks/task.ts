@@ -200,18 +200,17 @@ export const useReorderTask = (queryKey: QueryKey) => {
       onSuccess: () => queryClient.invalidateQueries(queryKey),
 
       async onMutate(target) {
-        console.log(target, '000');
+
 
         //取消任何传出的重新获取（这样它们就不会覆盖我们的乐观更新）
         await queryClient.cancelQueries(queryKey);
         //query缓存中的数据
         const previousItems = queryClient.getQueryData(queryKey);
-        console.log(previousItems, 'task009');
+
         //向缓存中设置数据,这里会出现形参和实参不符的问题，解决是在old后面加？
         queryClient.setQueryData(queryKey, (old?: any[]) => {
           const orderedList = reorder({ list: old?.map((item: { id: number, name: string, displayBoardId: number, typeId: number }) => ({ id: item.id, name: item.name, displayBoardId: item.displayBoardId, typeId: item.typeId })) as Task[], ...target }) as Task[];
-          console.log(orderedList, 'task001');
-          //return orderedList;
+
           return orderedList.map((item) => item.id === target.fromId
             ? { ...item, displayBoardId: target.toKanbanId }
             : item);

@@ -15,7 +15,7 @@ export const ProjectPopover = () => {
     //url获取状态
     const { open } = useProjectModal();
     //获取projects数据
-    const { data: projects } = useProjects();
+    const { data: projects, refetch } = useProjects();
     //获得pin收藏项目数据
     const pinnedProjects = projects?.filter((project: Project) => project.pin);
 
@@ -41,6 +41,7 @@ export const ProjectPopover = () => {
     );
     return (
         <Popover
+            onVisibleChange={() => refetch()}
             placement='bottom'
             content={content}
         >

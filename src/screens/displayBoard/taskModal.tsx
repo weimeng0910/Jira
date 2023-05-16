@@ -2,6 +2,7 @@ import { Form, Button, Modal, Input } from 'antd';
 import { useEffect } from 'react';
 
 import { useTasksModal, useTasksQueryKey } from './util';
+import { EpicSelect } from '@/components/epicSelect';
 import { TaskTypeSelect } from '@/components/taskTypeSelect';
 import { UserSelect } from '@/components/userSelect/user-select';
 import { useDeleteTask, useEditTask } from '@/utils/hooks/task';
@@ -80,6 +81,12 @@ export const TaskModal = () => {
                     rules={[{ required: true, message: '请输入任务名' }]}
                 >
                     <Input />
+                </Form.Item>
+                <Form.Item
+                    label='任务组'
+                    name='epicId'
+                >
+                    <EpicSelect defaultOptionName='任务组' />
                 </Form.Item>
                 <Form.Item
                     label='经办人'

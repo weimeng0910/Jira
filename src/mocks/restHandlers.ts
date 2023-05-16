@@ -8,11 +8,12 @@ import { rest } from 'msw';
 import qs from 'qs';
 import { customAlphabet } from 'nanoid/non-secure';
 
-import { Project, DisplayBoard, Task } from './type/handlersType';
+import { Project, DisplayBoard, Task, Epic } from './type/handlersType';
 // 引入处理数据的文件
 import * as db from './data/restDb';
 // 导入开发URL
-import { API_URL, projectDB, displayBoardDB, taskDB, taskTypeDB } from '../config';
+import { API_URL, projectDB, displayBoardDB, taskDB, taskTypeDB, epicDB } from '../config';
+import { TaskType } from '@/types/taskType';
 
 
 
@@ -341,7 +342,7 @@ export const getRestHandlers = [
   * 响应各种taskType数据请求
   * @todo 响应get请求获得项目数据
   */
-  rest.get<DisplayBoard>(`${API_URL}/taskTypes`, async (_req, res, ctx) => {
+  rest.get<TaskType>(`${API_URL}/taskTypes`, async (_req, res, ctx) => {
 
     //调用写入数据的函数
     const taskTypeAllData = await db.ScreensTaskTypes(taskTypeDB);
@@ -355,5 +356,84 @@ export const getRestHandlers = [
     }
     return res(ctx.status(500));
 
+  }),
+  /****************************************************
+   * 响应各种epics数据请求
+   * @todo 响应get请求获得任务数据
+  */
+  rest.get<Epic>(`${API_URL}/epics`, async (_req, res, ctx) => {
+    // 获得前瑞发送的参数
+
+    //调用写入数据的函数
+    const epicsData = await db.ScreensEpic(epicDB);
+    if (epicsData) {
+      return res(
+        //延迟两秒返回数据
+        //ctx.delay(6000),
+        ctx.status(200),
+        ctx.json(epicsData)
+      );
+    }
+    return res(ctx.status(500));
+
+  }),
+  /**
+   * @todo 响应post响应add请求返回epics数据
+   */
+
+  rest.post<Partial<Epic>>(`${API_URL}/epics`, async (req, res, ctx) => {
+
+    // 获得前瑞发送的参数,
+    //Request 接口的 json() 方法读取请求体并将其作为一个 promise 返回一个对象
+    const body = await req.json();
+    console.log(body, '002');
+
+    //通过qs.parse方法把url中的参数（name=sdf&projectId=1 002）解析成对象
+    const addEpic = qs.parse(body);
+
+    //类型守卫
+    const name: string = typeof addEpic.name === 'string' ? addEpic.name : '';
+
+    const projectId: string = typeof addEpic.projectId === 'string' ? addEpic.projectId : '';
+
+    //const displayBoardId: string = typeof addTask.displayBoardId === 'string' ? addTask.displayBoardId : '';
+
+    const nanoid = customAlphabet('1234567890', 10);
+
+    //组装数据
+
+    const addTaskItem = {
+      ownerId: Date.now(),
+      id: Number(nanoid()),
+      name,
+      projectId: Number(projectId),
+
+    };
+
+    //调用写入数据的函数
+    const epicData = await db.addEpicData(epicDB, addTaskItem);
+
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+
+      ctx.json({ epicData })
+
+    );
+
+  }),
+  /**
+    * @todo 响应delete请求删除epics任务数据
+    */
+
+  rest.delete<Partial<Epic>>(`${API_URL}/epics/:id`, async (req, res, ctx) => {
+    // 获得前瑞发送的参数
+    const { id } = req.params;
+    const epicsData = await db.epicsDetele(epicDB, id as string);
+    return res(
+      //延迟
+      //ctx.delay(1000 * 60),
+      ctx.json({ epicsData })
+    );
   }),
 ];

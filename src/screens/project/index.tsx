@@ -25,6 +25,7 @@ const Main = styled.div`
 const Container = styled.div`
     display: grid;
     grid-template-columns: 16rem 1fr;
+    width: 100%;
 `;
 // 用来作为 404 页面的组件
 const NotFound = () => <div>路径错误</div>;

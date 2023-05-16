@@ -5,7 +5,7 @@
  * 模拟一个后端
  * 本地存储中的数据备份
  */
-import { Project, DisplayBoard, Task, TaskType } from '../type/handlersType';
+import { Project, DisplayBoard, Task, TaskType, Epic } from '../type/handlersType';
 
 /**
  *  @function loadScreensData
@@ -317,7 +317,54 @@ async function ScreensTaskTypes(storageKey: string) {
   return data;
 
 }
+/**
+ *  @function ScreensEpic
+ *  @param storageKey
+ *  @description 加载查找到的任务数据
+ */
 
+async function ScreensEpic(storageKey: string) {
+
+  // 加载localStorage里的项目数据
+  const epicData: Epic[] = loadScreensData(storageKey);
+  return epicData;
+
+}
+/**
+ *  @function addEpic
+ *  @param storageKey
+ *  @description 加载查找到的看板数据
+ */
+
+async function addEpicData(storageKey: string, epic: Partial<Epic>) {
+
+  // 加载localStorage里的项目数据
+  const epicData: Epic[] = loadScreensData(storageKey);
+  const epicList = [...epicData, epic];
+
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(epicList));
+}
+/**
+ *  @function  taskDetele
+ *  @param storageKey
+ *  @description 根据传入参数响应数据
+ */
+
+
+async function epicsDetele(storageKey: string, id: string) {
+
+  // 加载localStorage里的项目数据
+  const epicsData: Epic[] = loadScreensData(storageKey);
+  let epicsList: Epic[] = [];
+  if (id) {
+    //通过ID查找对应的数据
+    epicsList = epicsData.filter((item: Epic) => item.id !== Number.parseInt(id!, 10))!;
+
+  }
+  //重新写入数据
+  return window.localStorage.setItem(storageKey, JSON.stringify(epicsList));
+}
 // 导出注册方法createUser，登陆方法authenticate
 export {
   ScreensProjectsData,
@@ -325,6 +372,7 @@ export {
   ScreensProjectData,
   addProjectsData,
   projectDetele,
+
   ScreensDisplayBoards,
   addDisplayBoardData,
   displayBoardsDetele,
@@ -334,6 +382,10 @@ export {
   taskUpdata,
   taskDetele,
   ScreensTaskData,
+
   ScreensTaskTypes,
+  ScreensEpic,
+  addEpicData,
+  epicsDetele
 
 };

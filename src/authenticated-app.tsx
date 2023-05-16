@@ -14,6 +14,7 @@ import { useAuth } from './context/AuthContext';
 import { ProjectScreen } from './screens/project';
 import { ProjectListScreen } from './screens/project-list';
 import { ReactComponent as Softwarelogo } from '@/assets/software-logo.svg';
+import { UserPopover } from '@/components/userPopover';
 //导入样式文件
 import { Container, Header, HeaderLeft, HeaderRight, Main } from '@/css/authenticatedApp';
 import { ProjectModal } from '@/screens/project-list/project-modal';
@@ -57,7 +58,7 @@ const PageHeader = () => (
                 />
             </ButtonNoPadding>
             <ProjectPopover />
-            <span>用户</span>
+            <UserPopover />
         </HeaderLeft>
         <HeaderRight>
             <User />
