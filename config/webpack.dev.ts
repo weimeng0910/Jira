@@ -52,6 +52,10 @@ const devserver = new WebpackDevServer({
   port: port,
   //open: true,
   historyApiFallback: true,
+  //指定客户端尝试重新连接的确切次数
+  //client: {
+  //  reconnect: false,
+  //},
 }, webpack(config)
 );
 devserver.start().then(() => {

@@ -2,15 +2,15 @@
  * @author meng
  * @version 1.0
  * @date 2022/11/23
- * 模拟一个后端
+ * 模拟一个处理用户数据的后端
  * 本地存储中的数据备份
  */
 import CryptoJS from 'crypto-js';// 加密
 
-import { localStorageKey } from '../config';// 定义写入localStorageKey
+import { localStorageKey } from '../../config';// 定义写入localStorageKey
 // 导入生成token的函数
-import { generteToken } from './core/util';
-import { ResponseError, RequestBody, User, Project } from './type/handlersType';
+import { generteToken } from '../core/util';
+import { ResponseError, RequestBody, User } from '../type/handlersType';
 
 
 type Users = User[];
@@ -82,12 +82,12 @@ async function saveUser(user: User) {
   saveUsers(users);
 }
 
-
 /**
  *  @function validateUser
  *  @param params
  *  @description 检查用户名和密码是否存在
  */
+
 const validateUser = (params: RequestBody) => {
   const { username, password } = params;
 
@@ -104,13 +104,12 @@ const validateUser = (params: RequestBody) => {
   }
 };
 
-
-
 /**
  *  @function hashcode
  *  @param data
  *  @description 加密数据
  */
+
 function hashcode(data: string) {
   // 生成随机的key ,不能生成随机key,要不然无法判断用户是否存在
   // const keyStr = CryptoJS.lib.WordArray.random(16).toString();
@@ -130,12 +129,12 @@ function hashcode(data: string) {
   return encryptedData.ciphertext.toString();
 };
 
-
 /**
  *  @function createUser
  *  @param data
  *  @description 创建用户,组装数据
  */
+
 async function createUser(data: { username: string, password: string }) {
   // 解构传进来的参数
   const { username, password } = data;
@@ -194,7 +193,6 @@ async function authenticate(params: RequestBody) {
 }
 
 /**
- *  screensProjectsData
  *  @function loadScreensData
  *  @param storageKey
  *  @description 加载存在 localStorage里的项目数据
@@ -206,66 +204,25 @@ const loadScreensData = (storageKey: string) => {
 
   return screensData ?? []; // ??在value1和value2之间，只有当value1为null或者 undefined 时取value2，否则取value1
 };
-
-
 /**
- *  @function ScreensProjectsData
- *  @param storageKey
- *  @description 根据传入参数响应数据
- */
-async function ScreensProjectsData(storageKey: string, personId?: string, name?: string) {
-
-  // 加载localStorage里的项目数据
-  const projectsData = loadScreensData(storageKey);
-  //localStorage是string|null,personId传入的是strin，所以只需要if(personId)
-  if (personId || name) {
-    const result = projectsData.filter((item: Project) =>
-
-      item.personId === Number.parseInt(personId!, 10) || item.name === name
-    );
-
-    return result;
-  }
-
-  return projectsData;
-
-};
-/**
- *  @function changeProjectsDataPin
- *  @param storageKey
- *  @description 根据传入参数响应数据
- */
-
-async function changeProjectsDataPin(storageKey: string, id: string) {
-
-  // 加载localStorage里的项目数据
-  const projectsData = loadScreensData(storageKey);
-  //通过ID查找对应的数据
-  const project = projectsData.find((item: Project) => item.id === Number.parseInt(id!, 10));
-  //改变pin的boolean
-  project.pin = !project.pin;
-  //组装数据
-  const newProjectsData = [...projectsData, ...project];
-  //todo 写入windos.localStorage
-  const dataResuslt = window.localStorage.setItem(storageKey, JSON.stringify(newProjectsData));
-  return dataResuslt;
-}
-/*sl*
  *  @function ScreensUserData
  *  @param storageKey
  *  @description 加载项目管理用户数据
  */
+
 async function ScreensUserData(storageKey: string) {
 
   // 加载localStorage里的项目数据
   const userData = loadScreensData(storageKey);
-  //localStorage是string|null,personId传入的是string，所以只需要if(personId)
-  //if (userId) {
-  //  const result = userData.find((item: UserData) => item.id === userId);
-  //  return result;
-  //}
   return userData;
 
 }
+
 // 导出注册方法createUser，登陆方法authenticate
-export { createUser, authenticate, loadUserById, ScreensProjectsData, ScreensUserData, changeProjectsDataPin };
+export {
+  createUser,
+  authenticate,
+  loadUserById,
+  loadScreensData,
+  ScreensUserData,
+};

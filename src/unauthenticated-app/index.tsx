@@ -5,7 +5,7 @@
  * @file 注册和登陆
  */
 import styled from '@emotion/styled';
-import { Button, Card, Divider, Typography } from 'antd';
+import { Button, Card, Divider } from 'antd';
 import { useState, ReactElement } from 'react';
 
 import LoginScreen from './login';
@@ -13,6 +13,7 @@ import RegisterScreen from './register';
 import left from '@/assets/left.svg';
 import logo from '@/assets/logo.svg';
 import right from '@/assets/right.svg';
+import { ErrorBox } from '@/components/lib/lib';
 import { useDocumentTitle } from '@/utils/hooks/useDocumentTitle';
 
 /**
@@ -79,8 +80,7 @@ export const UnauthenticatedAPP = (): ReactElement => {
             <Background />
             <NewCard>
                 <Title>{isRegister ? '请注册' : '请登录'}</Title>
-
-                {error ? <Typography.Text type='danger'>{error.message}</Typography.Text> : null}
+                <ErrorBox error={error} />
                 {isRegister ? (
                     <RegisterScreen onError={setError} />
                 ) : (

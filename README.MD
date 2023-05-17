@@ -320,3 +320,16 @@ yarn add react-router@6.3.0 react-router-dom@6.3.0
 ```
 yarn add --dev @welldone-software/why-did-you-render
 ```
+
+### 使用 React-query 使 React 应用程序中的获取、缓存、同步和更新服务器状态变得轻而易举
+
+```
+yarn add react-query
+```
+
+### 使用 React-beautiful-dnd 来对看板和任务组件拖拽
+
+```
+yarn add react-beautiful-dnd
+yarn add @typescript/react-beautiful-dnd -D
+```

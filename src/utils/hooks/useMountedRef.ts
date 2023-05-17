@@ -4,7 +4,7 @@
  * @date 2023/01/11
  * @file 创建一个自定义hook，用于返回组件的挂载状态，如果还没挂载或者已经卸载，返回false,反之返回true。
  */
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 
 export const useMountedRef = () => {
 
@@ -23,6 +23,6 @@ export const useMountedRef = () => {
     };
   }, []);
 
-  //return isMounted;
-  return useCallback(() => isMounted.current, []);
+  return isMounted;
+  // return useCallback(() => isMounted.current, []);
 };
