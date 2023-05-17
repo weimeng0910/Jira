@@ -5,6 +5,7 @@
  * @file 存储全局用户信息
  */
 import { useCallback, useContext, createContext, useMemo, ReactNode } from 'react';
+import { useQueryClient } from 'react-query';
 
 import { http } from '@/api/http';
 import { FullPageErrorFallback, FullPageLoading } from '@/components/lib/lib';
@@ -50,7 +51,7 @@ export const AuthProvider = (props: { children: ReactNode }) => {
     } = useAsync<UserData | null>();
     // point free 消除user => setUserData(user)中的user参数
     // const login = (form: AuthForm) => authJira.login(form).then(user => setUserData(user));
-
+    const queryClient = useQueryClient();
     // 登陆页面获得用户名和密吗后，传给authJira生成toke
     const login = useCallback(
         (form: AuthForm) => authJira.login(form).then(setUserData),
@@ -63,8 +64,13 @@ export const AuthProvider = (props: { children: ReactNode }) => {
     );
     // 登陆退出后，传给authJira移除toke
     const logout = useCallback(
-        () => authJira.logout().then(() => setUserData(null)),
-        [setUserData]
+        () =>
+            // eslint-disable-next-line promise/always-return
+            authJira.logout().then(() => {
+                setUserData(null);
+                queryClient.clear();
+            }),
+        [queryClient, setUserData]
     );
     //加载用户token
     useEffectOnce(() => {

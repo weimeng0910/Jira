@@ -28,9 +28,6 @@ const timeout = 30_000;
 
 
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
  * 创建 axios一个实例
  */
 
@@ -46,7 +43,7 @@ const serviceAxios: AxiosInstance = axios.create({
   headers: {
 
     Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded'// 传参方式表单
+    'Content-Type': 'application/json'// 传参方式表单
   },
 
   // `transformRequest` 允许在向服务器发送前，修改请求数据
@@ -63,9 +60,6 @@ const serviceAxios: AxiosInstance = axios.create({
 });
 
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
  * http request 拦截器
  * 统一请求拦截===>前端给后端的参数 可配置自定义headers 例如 language、token等
  */
@@ -109,9 +103,6 @@ serviceAxios.interceptors.request.use(
 );
 
 /**
- * @author meng
- * @version 1.0
- * @date 2022/11/23
  * http response 拦截器
  * 后台响应数据格式===》后端给前端
  */

@@ -7,7 +7,8 @@
  */
 import { AxiosRequestConfig } from 'axios';
 
-import { Project, User } from '@/types/user';
+import { User } from '@/types/user';
+import { Project } from '@/types/Project';
 import { http } from './http';
 
 // 返回res.data的interface

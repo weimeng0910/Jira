@@ -5,6 +5,7 @@
  * @file 实现id类型
  */
 import { Select } from 'antd';
+import { nanoid } from 'nanoid';
 import { ComponentProps } from 'react';
 
 import { Raw } from '@/types/index';
@@ -31,11 +32,13 @@ const toNumber = (value: unknown) => (Number.isNaN(Number(value)) ? 0 : Number(v
 export const IdSelect = (props: IdSelectProps) => {
     //从传入的props中解构相关属性
     const { value, onChange, defaultOptionName, options, ...restProps } = props;
+
     return (
         <Select
             //当数据没有返回时，这里需要判断，否则会显示ID的数字
             //当数据加载时就显示相应的值，否则就为0显示负责人
-            value={options?.length ? toNumber(value) : 0}
+            //value={options?.length ? toNumber(value) : 0}
+            value={toNumber(value)}
             // eslint-disable-next-line @typescript-eslint/no-shadow
             onChange={value => onChange?.(toNumber(value) || undefined)}
             {...restProps}
@@ -45,7 +48,7 @@ export const IdSelect = (props: IdSelectProps) => {
             ) : null}
             {options?.map(option => (
                 <Select.Option
-                    key={option.id}
+                    key={nanoid()}
                     value={option.id}
                 >
                     {option.name}
