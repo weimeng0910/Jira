@@ -3,6 +3,15 @@
     "presets": [
         //["@emotion/babel-preset-css-prop"],
         [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "current"
+                }
+            }
+        ],
+        ["@babel/preset-typescript"],
+        [
             "@babel/env",
             {
                 "targets": { "browsers": ["> 1%", "last 2 versions", "not ie <= 8"] },
@@ -11,7 +20,9 @@
                 "loose": true
             }
         ],
-        "@babel/react"
+        "@babel/react",
+        ["@babel/preset-react", { "runtime": "automatic" }],
+        "@babel/preset-typescript"
     ],
     "plugins": [
         //给antd做按需加载
@@ -41,6 +52,12 @@
         "@babel/plugin-proposal-object-rest-spread",
         ["@babel/plugin-proposal-decorators", { "legacy": true }],
         ["@babel/plugin-proposal-class-properties", { "loose": true }],
-        ["@babel/plugin-proposal-private-methods", { "loose": true }]
+        ["@babel/plugin-proposal-private-methods", { "loose": true }],
+        [
+            "@babel/plugin-transform-react-jsx",
+            {
+                "runtime": "automatic"
+            }
+        ]
     ]
 }

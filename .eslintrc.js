@@ -8,7 +8,9 @@ module.exports = {
         browser: true,
         commonjs: true,
         es6: true,
-        node: true
+        node: true,
+        jest: true,
+        globals: true
     },
     root: true, // 标识当前配置文件为eslint的根配置文件，停止在父级目录中寻找
     extends: [
@@ -16,6 +18,7 @@ module.exports = {
         'airbnb-typescript',
         'airbnb/hooks',
         'plugin:eslint-comments/recommended',
+        'plugin:jest/recommended',
         'plugin:import/typescript',
         'plugin:react/recommended', // ESLint 内置规则官方推荐的共享配置
         'plugin:import/recommended',
@@ -256,7 +259,10 @@ module.exports = {
 
     overrides: [
         {
-            files: ['**/*.d.ts', '*.ts', '*.tsx'],
+            files: ['**/*.d.ts', '*.ts', '*.tsx', '**/*.spec.js', '**/*.spec.jsx'],
+            env: {
+                jest: true
+            },
             rules: {
                 'import/no-duplicates': OFF
             }

@@ -295,3 +295,15 @@ yarn add react-query
 yarn add react-beautiful-dnd
 yarn add @typescript/react-beautiful-dnd -D
 ```
+
+### 使用 React Testing Library 和 Jest 完成单元测试
+
+```
+yarn add mws -D
+yarn add @testing-library/react-hooks -D
+yarn add @testing-library/jest-dom @testing-library/react @testing-library/user-event @types/testing-library__jest-dom -D
+yarn add babel-jest @babel/core @babel/preset-env @babel/preset-react @babel/preset-typescript -D
+yarn add @testing-library/user-event -D
+yarn add identity-obj-proxy -D
+
+```

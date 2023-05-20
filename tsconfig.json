@@ -14,7 +14,7 @@
             "typeRoots": ["typings/*.d.ts", "node_modules/@types"],
             "esModuleInterop": true
         },
-        "exclude": ["node_modules"],
+        "exclude": ["node_modules", "_tests_"],
         "include": ["config/*", "typings/*.d.ts", "src/*"]
     },
 
@@ -27,6 +27,7 @@
         "lib": ["dom", "dom.iterable", "esnext"], // 要包含在编译中的依赖库文件列表
         "baseUrl": ".",
         "jsx": "react-jsx", // 在.tsx文件中支持JSX
+        "types": ["node", "jest", "@testing-library/jest-dom"],
         "resolveJsonModule": true, // 允许使用 .json 扩展名导入的模块
         "allowSyntheticDefaultImports": true, // 允许从没有默认导出的模块进行默认导入
         "moduleResolution": "node", // 使用 Node.js 风格解析模块
@@ -55,6 +56,7 @@
 
         "paths": {
             "crypto": ["node_modules/crypto-js"],
+            "utils/*": ["src/utils/*"],
             "@/*": ["./src/*"]
         }
     },
@@ -72,7 +74,7 @@
         "util/openBrowser.js"
     ],
     //exclude表示要排除的、不编译的文件，他也可以指定一个列表
-    "exclude": ["node_modules", "build", "dist"]
+    "exclude": ["node_modules", "build", "dist", "**/*.test.ts", "**/*.spec.ts"]
     // 自动双引号
     // "quotemark": [true, "single", "jsx-double"]
 }
