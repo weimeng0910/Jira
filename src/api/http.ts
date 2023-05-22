@@ -6,7 +6,10 @@ import { serviceAxios } from './request';
  * @param {Object} config   请求的配置
  * @return {Promise}   返回一个promise对象，axios请求数据返回值
  */
-
+//interface Config extends RequestInit {
+//  token?: string;
+//  data?: object;
+//}
 // 封装 GET POST 请求并导出
 export const http = async ({
   method,

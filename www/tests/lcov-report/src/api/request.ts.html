@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.43% </span>
+                <span class="strong">56.75% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/37</span>
+                <span class='fraction'>21/37</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">31.81% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>7/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>2/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.43% </span>
+                <span class="strong">56.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/37</span>
+                <span class='fraction'>21/37</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -285,19 +285,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -339,11 +339,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -422,7 +422,7 @@ const serviceAxios: AxiosInstance = axios.create({
 serviceAxios.interceptors.request.use(
 &nbsp;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  (c</span>onfig: AxiosRequestConfig) =&gt; {
+  (config: AxiosRequestConfig) =&gt; {
     // 1.发送网络请求时，在界面中间位置显示Loading的组件
     //......loading代码
     //2.请求要求用户必须携带token,如果没有携带直接跳转到登陆页面
@@ -430,19 +430,19 @@ serviceAxios.interceptors.request.use(
     // 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token
     // 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码
     // 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。
-<span class="cstat-no" title="statement not covered" >    config.headers = config.headers ?? {};</span>
+    config.headers = config.headers ?? <span class="branch-1 cbranch-no" title="branch not covered" >{};</span>
     //每次发送请求前判断是否存在Token，如果存在，则无统一在HTTP请求的header都加上token
-    const token = <span class="cstat-no" title="statement not covered" >localStorage.getItem(authProviderToken);</span>
+    const token = localStorage.getItem(authProviderToken);
 &nbsp;
     // 會員系統需驗證身份時
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (token) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (token) {
 <span class="cstat-no" title="statement not covered" >      config.headers.Authorization = token;</span>
     }
     //3.params/data序列化操作
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.method?.toUpperCase() === 'POST') {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (config.method<span class="branch-0 cbranch-no" title="branch not covered" >?.t</span>oUpperCase() === 'POST') {
 <span class="cstat-no" title="statement not covered" >      config.data = qs.stringify(config.data);</span>
     }
-<span class="cstat-no" title="statement not covered" >    return config;</span>
+    return config;
   },
   // 请求失败
 <span class="fstat-no" title="function not covered" >  (e</span>rror: AxiosError) =&gt; {
@@ -483,12 +483,12 @@ serviceAxios.interceptors.response.use(
 &nbsp;
   },
   // 请求失败
-<span class="fstat-no" title="function not covered" >  (e</span>rror: AxiosError) =&gt; {
-    const { response } = <span class="cstat-no" title="statement not covered" >error;</span>
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (response) {</span>
+  (error: AxiosError) =&gt; {
+    const { response } = error;
+    if (response) {
       // 请求已发出，但是不在2xx的范围
-<span class="cstat-no" title="statement not covered" >      showMessage(response.status);</span>
-<span class="cstat-no" title="statement not covered" >      return Promise.reject(response.data);</span>
+      showMessage(response.status);
+      return Promise.reject(response.data);
     }
 <span class="cstat-no" title="statement not covered" >    return message.error('网络连接异常,请稍后再试!');</span>
 &nbsp;
@@ -505,7 +505,7 @@ export { serviceAxios };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-05-20T11:27:09.220Z
+                at 2023-05-22T07:34:13.592Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

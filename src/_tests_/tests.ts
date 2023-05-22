@@ -29,13 +29,13 @@ test('http方法发送异步请求测试', async () => {
   //mork请求要返回的值
   const mockResult = { mockValue: 'mock' };
   server.use(
-    rest.get(`${API_URL}/${endpoint}`, (_req, res, ctx) =>
+    rest.get(`http://${API_URL}/${endpoint}`, (_req, res, ctx) =>
       res(ctx.json(mockResult))
     )
 
   );
   //调用http方法来获取测试结果
-  const result = await http(endpoint);
+  const result = await http({ endpoint, method: 'get' });
   //期待返回的结果和自已定义的结果一致，这样测试就是正确的
   //在写测试的时候，我们经常需要检查值是否满足指定的条件。 expect 让你可以使用不同的“匹配器”去验证不同类型的东西
   //使用toEqual递归比较对象实例的所有属性（也称为“深度”相等）。

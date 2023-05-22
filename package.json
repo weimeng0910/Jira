@@ -21,7 +21,7 @@
     "json-server": "json-server __json_server_mock__/db.json --wahtch --port 30001 --middlewares ./__json_server_mock__/middleware.js",
     "preinstall": "npx npm-force-resolutions",
     "wr": "npm run dev --WHY_RENDER",
-    "test": "jest ",
+    "test": "jest --forceExit",
     "coverage": "jest --coverage"
   },
   "proxy": "http://localhost:3001",
