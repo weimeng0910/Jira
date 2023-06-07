@@ -32,12 +32,12 @@ module.exports = {
         'eslint:recommended',
         'prettier'
     ], // 拓展
-    //globals: {
-    //    // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
-    //    $: true,
-    //    process: true,
-    //    __dirname: true
-    //},
+    globals: {
+        // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
+        $: true,
+        process: true,
+        __dirname: true
+    },
     parser: '@typescript-eslint/parser', // 解析器，本解析器支持Ts
     parserOptions: {
         // 解析器配置选项

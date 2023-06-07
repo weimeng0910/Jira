@@ -14,9 +14,9 @@
 -   使用 Babel8 配置转换 ES6、React、Mobx 等语法；
 -   使用 TypeScript 进行严格类型检查；
 -   使用 ESLint 代码规范校验，Prettier stylelint 代码自动格式化工具，EditorConfig 代码风格统一工具
--   React 版本 V18.0.0，全部采用函数化 Hooks 特性开发项目组件；
+-   React 版本 V18.0.0，全部采用函数化 Hooks 特性开发项目组件；l
 -   采用 React-router6 工具 配置项目路由；
--   采用 Mobx5 + Hooks 实现项目数据状态管理；
+-   采用 Redux + Hooks 和 URl 实现项目数据状态管理；
 -   封装 Axios 库实现与后台 http 请求交互；
 
 ## 目录结构
@@ -32,6 +32,7 @@
 ├── text                    // 测试目录
 ├── src                     // src开发目录
 │   ├── assets              // svg图片
+│   ├── _tests_             // Jest测试
 │   ├── mocks               // server，Jwt
 │   ├── components          // 公共组件
 │   │    ├── lib            // Emotion配制的CSS样式组件
