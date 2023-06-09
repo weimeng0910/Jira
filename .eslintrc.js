@@ -9,8 +9,8 @@ module.exports = {
         commonjs: true,
         es6: true,
         node: true,
-        jest: true,
-        globals: true
+        jest: true
+        //globals: true
     },
     root: true, // 标识当前配置文件为eslint的根配置文件，停止在父级目录中寻找
     extends: [
@@ -18,7 +18,6 @@ module.exports = {
         'airbnb-typescript',
         'airbnb/hooks',
         'plugin:eslint-comments/recommended',
-        'plugin:jest/recommended',
         'plugin:import/typescript',
         'plugin:react/recommended', // ESLint 内置规则官方推荐的共享配置
         'plugin:import/recommended',
@@ -30,14 +29,15 @@ module.exports = {
         // 调整 TypeScript 通用语法和击球的共享设置来自 eslint:recommended
         'plugin:@typescript-eslint/recommended',
         'eslint:recommended',
+        'plugin:jest/recommended',
         'prettier'
     ], // 拓展
-    globals: {
-        // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
-        $: true,
-        process: true,
-        __dirname: true
-    },
+    //globals: {
+    //    // 配置文件中通过globals 配置属性设置，对于每个全局变量键，将对应的值设置为 "writable"
+    //    $: true,
+    //    process: true,
+    //    __dirname: true
+    //},
     parser: '@typescript-eslint/parser', // 解析器，本解析器支持Ts
     parserOptions: {
         // 解析器配置选项
@@ -66,6 +66,7 @@ module.exports = {
     },
 
     plugins: [
+        'jest',
         'react',
         'unicorn',
         'import',
@@ -120,48 +121,23 @@ module.exports = {
                 }
             }
         ],
-        //'import/no-cycle': [
-        //    'error',
-        //    {
-        //        maxDepth: 1,
-        //        ignoreExternal: true
-        //    }
-        //],
+
         'import/order': [
             'error',
 
             {
                 groups: [['unknown', 'builtin', 'external']],
-                //pathGroups: [
-                //    {
-                //        pattern: 'unknown',
-                //        group: 'unknown',
-                //        position: 'before'
-                //    },
-                //    {
-                //        pattern: '@/**',
-                //        group: 'external',
-                //        position: 'after'
-                //    }
-                //],
-                //pathGroupsExcludedImportTypes: [],
+
                 'newlines-between': 'always'
-                //alphabetize: {
-                //    order: 'asc',
-                //    caseInsensitive: true
-                //},
-                //warnOnUnassignedImports: false
             }
         ],
 
         'import/no-extraneous-dependencies': [ERROR, { devDependencies: true }],
         'import/prefer-default-export': OFF,
-        //'import/no-unresolved': [2, { commonjs: true, amd: true }],
+
         'import/no-unresolved': ERROR,
         'import/named': 0,
-        //'import/namespace': 0,
-        //'import/default': 2,
-        //'import/export': 2,
+
         'import/no-dynamic-require': OFF,
 
         'unicorn/import-style': OFF,
@@ -201,8 +177,6 @@ module.exports = {
         'react/require-default-props': OFF,
         'react/jsx-props-no-spreading': OFF,
         'react/prop-types': OFF,
-        //'react/react-in-jsx-scope': 'off',
-        //'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
 
         'react/function-component-definition': [
             2,
